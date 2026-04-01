@@ -13,12 +13,22 @@ export default function App() {
     <div id="app-root">
       <div id="main" className="screen fade-in">
         <header>
-          <h1 id="title">
-            Word
-            <span id="cursor"> </span>
-            Finder
-          </h1>
-          <p id="subtitle">Uncover every word hiding in your letters</p>
+          <div id="header-row">
+            <div id="title-group">
+              <h1 id="title">
+                Word<span id="cursor"> </span>Finder
+              </h1>
+              <p id="subtitle">Find every word in your letters</p>
+            </div>
+            <button
+              type="button"
+              id="theme-toggle"
+              aria-label="Toggle theme"
+              data-ocid="theme.toggle"
+            >
+              <span id="theme-icon">☀️</span>
+            </button>
+          </div>
         </header>
 
         <section id="input-section">
@@ -34,9 +44,7 @@ export default function App() {
             />
             <span id="letter-count">0/8</span>
           </div>
-          <div id="input-hint">
-            Only letters · automatically uppercased · 3–8 characters
-          </div>
+          <div id="input-hint">Letters only · auto-uppercase · 3–8 chars</div>
         </section>
 
         <section id="controls">
@@ -46,7 +54,7 @@ export default function App() {
             disabled
             data-ocid="search.primary_button"
           >
-            Search
+            Scan
           </button>
           <button
             type="button"
@@ -62,35 +70,32 @@ export default function App() {
             className="hidden"
             data-ocid="search.secondary_button"
           >
-            New Search
+            New
           </button>
         </section>
 
-        <section id="progress-section" className="hidden">
-          <div id="progress-label">Scanning… 0 of 0 tested</div>
+        <section id="scan-strip" className="hidden">
+          <div id="strip-top">
+            <div id="progress-label">Scanning…</div>
+            <div id="flash-badge" className="hidden">
+              <span id="flash-label">✦</span>
+              <span id="flash-word" />
+            </div>
+          </div>
           <div id="progress-bar-wrapper">
             <div id="progress-bar" />
           </div>
-          <div id="current-word">&mdash;</div>
-        </section>
-
-        <section id="flash-section" className="hidden">
-          <div id="flash-label">Found</div>
-          <div id="flash-word" />
-        </section>
-
-        <section id="stats-bar" className="hidden">
-          <div className="stat">
-            <span id="stat-tested">0</span>
-            <span className="stat-label">Tested</span>
-          </div>
-          <div className="stat">
-            <span id="stat-found">0</span>
-            <span className="stat-label">Found</span>
-          </div>
-          <div className="stat">
-            <span id="stat-duration">0s</span>
-            <span className="stat-label">Duration</span>
+          <div id="strip-bottom">
+            <span id="current-word">—</span>
+            <div id="stats-inline">
+              <span>
+                <span id="stat-tested">0</span> tested
+              </span>
+              <span>
+                <span id="stat-found">0</span> found
+              </span>
+              <span id="stat-duration">0s</span>
+            </div>
           </div>
         </section>
 
@@ -103,23 +108,14 @@ export default function App() {
               id="copy-btn"
               data-ocid="vault.secondary_button"
             >
-              Copy All
+              Copy
             </button>
           </div>
           <div id="vault" />
         </section>
 
         <footer>
-          <p>
-            © {new Date().getFullYear()}. Built with love using{" "}
-            <a
-              href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              caffeine.ai
-            </a>
-          </p>
+          <p>© 2026 GENZ</p>
         </footer>
       </div>
     </div>
@@ -132,13 +128,12 @@ function initApp() {
   const scanBtn = document.getElementById("scan-btn") as HTMLButtonElement;
   const stopBtn = document.getElementById("stop-btn")!;
   const resetBtn = document.getElementById("reset-btn")!;
-  const progressSection = document.getElementById("progress-section")!;
+  const scanStrip = document.getElementById("scan-strip")!;
   const progressLabel = document.getElementById("progress-label")!;
   const progressBar = document.getElementById("progress-bar")!;
   const currentWord = document.getElementById("current-word")!;
-  const flashSection = document.getElementById("flash-section")!;
+  const flashBadge = document.getElementById("flash-badge")!;
   const flashWord = document.getElementById("flash-word")!;
-  const statsBar = document.getElementById("stats-bar")!;
   const statTested = document.getElementById("stat-tested")!;
   const statFound = document.getElementById("stat-found")!;
   const statDuration = document.getElementById("stat-duration")!;
@@ -146,6 +141,21 @@ function initApp() {
   const vaultEl = document.getElementById("vault")!;
   const vaultCount = document.getElementById("vault-count")!;
   const copyBtn = document.getElementById("copy-btn")!;
+  const themeToggle = document.getElementById("theme-toggle")!;
+  const themeIcon = document.getElementById("theme-icon")!;
+
+  // Theme toggle
+  let isDark = true;
+  themeToggle.addEventListener("click", () => {
+    isDark = !isDark;
+    if (isDark) {
+      document.documentElement.removeAttribute("data-theme");
+      themeIcon.textContent = "☀️";
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+      themeIcon.textContent = "🌙";
+    }
+  });
 
   let scanning = false;
   let stopRequested = false;
@@ -180,9 +190,7 @@ function initApp() {
     stopBtn.classList.add("hidden");
     resetBtn.classList.add("hidden");
     scanBtn.classList.remove("hidden");
-    progressSection.classList.add("hidden");
-    flashSection.classList.add("hidden");
-    statsBar.classList.add("hidden");
+    scanStrip.classList.add("hidden");
     vaultSection.classList.add("hidden");
     vaultEl.innerHTML = "";
     vaultCount.textContent = "0 matches";
@@ -266,9 +274,8 @@ function initApp() {
     scanBtn.classList.add("hidden");
     stopBtn.classList.remove("hidden");
     resetBtn.classList.add("hidden");
-    progressSection.classList.remove("hidden");
-    flashSection.classList.remove("hidden");
-    statsBar.classList.remove("hidden");
+    scanStrip.classList.remove("hidden");
+    flashBadge.classList.add("hidden");
     vaultSection.classList.remove("hidden");
     document.getElementById("app-root")!.classList.add("scanning");
 
@@ -276,12 +283,11 @@ function initApp() {
     statFound.textContent = "0";
     statDuration.textContent = "0s";
     progressBar.style.width = "0%";
-    flashWord.textContent = "\u2014";
-    flashSection.classList.remove("flash-active");
+    flashWord.textContent = "";
 
     const allPerms = generatePermutations(letters);
     const total = allPerms.length;
-    progressLabel.textContent = `Scanning… 0 of ${total} tested`;
+    progressLabel.textContent = `Scanning 0/${total}…`;
 
     startTime = Date.now();
     durationTimer = setInterval(() => {
@@ -294,13 +300,13 @@ function initApp() {
     for (const word of allPerms) {
       if (stopRequested) break;
 
-      currentWord.textContent = `Testing: ${word}`;
+      currentWord.textContent = word;
       const def = await checkWord(word);
       tested++;
 
       const pct = Math.round((tested / total) * 100);
       progressBar.style.width = `${pct}%`;
-      progressLabel.textContent = `Scanning… ${tested} of ${total} tested (${pct}%)`;
+      progressLabel.textContent = `Scanning ${tested}/${total} (${pct}%)`;
       statTested.textContent = String(tested);
 
       if (def !== null) {
@@ -318,12 +324,10 @@ function initApp() {
     if (durationTimer) clearInterval(durationTimer);
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
     statDuration.textContent = `${elapsed}s`;
-    currentWord.textContent = stopRequested
-      ? "Scan stopped."
-      : "Scan complete.";
+    currentWord.textContent = stopRequested ? "Stopped." : "Done!";
     progressLabel.textContent = stopRequested
-      ? `Stopped at ${tested} of ${total} tested`
-      : `Complete — ${tested} of ${total} tested`;
+      ? `Stopped — ${tested}/${total}`
+      : `Complete — ${tested}/${total}`;
 
     scanning = false;
     stopBtn.classList.add("hidden");
@@ -336,10 +340,11 @@ function initApp() {
   }
 
   function showFlash(word: string) {
+    flashBadge.classList.remove("hidden");
     flashWord.textContent = word;
-    flashSection.classList.remove("flash-active");
-    void flashSection.offsetWidth;
-    flashSection.classList.add("flash-active");
+    flashBadge.classList.remove("flash-active");
+    void flashBadge.offsetWidth;
+    flashBadge.classList.add("flash-active");
   }
 
   function addToVault(word: string, def: string) {
@@ -355,7 +360,7 @@ function initApp() {
 
       const header = document.createElement("div");
       header.className = "vault-group-header";
-      header.textContent = `${len}-letter words`;
+      header.textContent = `${len}-letter`;
       group.appendChild(header);
 
       const list = document.createElement("div");
@@ -380,7 +385,6 @@ function initApp() {
     entry.className = "vault-entry vault-entry-new";
     entry.innerHTML = `<span class="vault-word">${word}</span>${def ? `<span class="vault-def">${def}</span>` : ""}`;
     list.appendChild(entry);
-
     setTimeout(() => entry.classList.remove("vault-entry-new"), 600);
   }
 
@@ -393,7 +397,7 @@ function initApp() {
     navigator.clipboard.writeText(text).then(() => {
       copyBtn.textContent = "Copied!";
       setTimeout(() => {
-        copyBtn.textContent = "Copy All";
+        copyBtn.textContent = "Copy";
       }, 1500);
     });
   }
