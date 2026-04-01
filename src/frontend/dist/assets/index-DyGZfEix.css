@@ -1,0 +1,691 @@
+/* =========================================================
+   CSS VARIABLES & RESET
+========================================================= */
+:root {
+  --green: #00ff41;
+  --green-dim: #00cc33;
+  --green-dark: #003300;
+  --green-glow: rgba(0, 255, 65, 0.6);
+  --green-glow-soft: rgba(0, 255, 65, 0.15);
+  --bg: #0a0a0a;
+  --bg2: #0d0d0d;
+  --border: rgba(0, 255, 65, 0.3);
+  --border-bright: rgba(0, 255, 65, 0.8);
+  --font-mono: "Courier New", "Lucida Console", monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--green);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* =========================================================
+   CRT EFFECTS
+========================================================= */
+#crt-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.08) 0px,
+    rgba(0, 0, 0, 0.08) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  animation: crt-flicker 8s infinite;
+}
+
+@keyframes crt-flicker {
+  0%,
+  97%,
+  100% {
+    opacity: 1;
+  }
+  97.5% {
+    opacity: 0.85;
+  }
+  98% {
+    opacity: 1;
+  }
+  98.5% {
+    opacity: 0.9;
+  }
+}
+
+#scanline {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(transparent, rgba(0, 255, 65, 0.08), transparent);
+  z-index: 9998;
+  pointer-events: none;
+  animation: scan-move 6s linear infinite;
+  top: -4px;
+}
+
+@keyframes scan-move {
+  0% {
+    top: -4px;
+  }
+  100% {
+    top: 100vh;
+  }
+}
+
+/* =========================================================
+   SCREENS & TRANSITIONS
+========================================================= */
+.screen {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  min-height: 100vh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.fade-out {
+  animation: fadeOut 0.6s ease forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   BOOT SCREEN
+========================================================= */
+#bootup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+#ascii-art {
+  font-size: clamp(4px, 1.2vw, 11px);
+  line-height: 1.3;
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green-glow);
+  white-space: pre;
+  overflow: hidden;
+  margin-bottom: 32px;
+  letter-spacing: 0;
+}
+
+.boot-line {
+  font-size: clamp(11px, 2vw, 14px);
+  line-height: 1.9;
+  color: var(--green-dim);
+  text-shadow: 0 0 6px var(--green-glow);
+  min-height: 1.9em;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+#title {
+  font-size: clamp(28px, 8vw, 56px);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 10px var(--green-glow), 0 0 30px var(--green-glow), 0 0 60px
+    rgba(0, 255, 65, 0.2);
+  animation: phosphor-pulse 3s ease-in-out infinite;
+}
+
+@keyframes phosphor-pulse {
+  0%,
+  100% {
+    text-shadow: 0 0 10px var(--green-glow), 0 0 30px var(--green-glow), 0 0
+      60px rgba(0, 255, 65, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 14px var(--green-glow), 0 0 40px var(--green-glow), 0 0
+      80px rgba(0, 255, 65, 0.35);
+  }
+}
+
+#cursor {
+  animation: cursor-blink 1s step-start infinite;
+  color: var(--green);
+}
+
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+#subtitle {
+  font-size: clamp(9px, 2.5vw, 12px);
+  letter-spacing: 0.25em;
+  color: var(--green-dim);
+  margin-top: 6px;
+  opacity: 0.75;
+}
+
+/* =========================================================
+   INPUT SECTION
+========================================================= */
+#input-section {
+  margin-bottom: 20px;
+}
+
+#input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+  background: rgba(0, 255, 65, 0.03);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#input-wrapper:focus-within {
+  border-color: var(--border-bright);
+  box-shadow: 0 0 16px var(--green-glow-soft), inset 0 0 8px
+    rgba(0, 255, 65, 0.05);
+}
+
+#prompt {
+  color: var(--green);
+  font-size: 18px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  text-shadow: 0 0 8px var(--green-glow);
+  flex-shrink: 0;
+}
+
+#letter-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: clamp(20px, 5vw, 28px);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  caret-color: var(--green);
+  text-shadow: 0 0 8px var(--green-glow);
+  min-width: 0;
+}
+
+#letter-input::-moz-placeholder {
+  color: rgba(0, 255, 65, 0.25);
+  font-size: clamp(12px, 3vw, 16px);
+  letter-spacing: 0.1em;
+}
+
+#letter-input::placeholder {
+  color: rgba(0, 255, 65, 0.25);
+  font-size: clamp(12px, 3vw, 16px);
+  letter-spacing: 0.1em;
+}
+
+#letter-count {
+  font-size: 13px;
+  color: rgba(0, 255, 65, 0.4);
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+#letter-count.valid {
+  color: var(--green);
+  text-shadow: 0 0 6px var(--green-glow);
+}
+#letter-count.invalid {
+  color: #ff4444;
+  text-shadow: 0 0 6px rgba(255, 68, 68, 0.6);
+}
+
+#input-hint {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(0, 255, 65, 0.3);
+  margin-top: 6px;
+  padding-left: 2px;
+}
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+#controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+#controls button {
+  font-family: var(--font-mono);
+  font-size: clamp(11px, 2.5vw, 14px);
+  letter-spacing: 0.1em;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--green);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-shadow: 0 0 6px var(--green-glow);
+  position: relative;
+  overflow: hidden;
+}
+
+#controls button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--green);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+#controls button:hover:not(:disabled) {
+  border-color: var(--green);
+  box-shadow: 0 0 16px var(--green-glow-soft);
+  color: var(--bg);
+  text-shadow: none;
+}
+
+#controls button:hover:not(:disabled)::before {
+  opacity: 1;
+}
+#controls button > * {
+  position: relative;
+  z-index: 1;
+}
+#controls button span {
+  position: relative;
+  z-index: 1;
+}
+
+/* Override text color properly on hover */
+#scan-btn:hover:not(:disabled),
+#stop-btn:hover:not(:disabled),
+#reset-btn:hover:not(:disabled) {
+  color: var(--bg);
+}
+
+#controls button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+#stop-btn {
+  border-color: #ff6b35;
+  color: #ff6b35;
+  text-shadow: 0 0 6px rgba(255, 107, 53, 0.6);
+}
+#stop-btn:hover:not(:disabled) {
+  background: #ff6b35;
+  color: var(--bg);
+  border-color: #ff6b35;
+  box-shadow: 0 0 16px rgba(255, 107, 53, 0.4);
+}
+#stop-btn:hover:not(:disabled)::before {
+  background: #ff6b35;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+#progress-section {
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  background: rgba(0, 255, 65, 0.02);
+}
+
+#progress-label {
+  font-size: clamp(10px, 2.5vw, 13px);
+  letter-spacing: 0.08em;
+  color: var(--green-dim);
+  margin-bottom: 10px;
+}
+
+#progress-bar-wrapper {
+  height: 6px;
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+#progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--green-dim), var(--green));
+  box-shadow: 0 0 12px var(--green-glow);
+  transition: width 0.15s ease-out;
+}
+
+#current-word {
+  font-size: clamp(11px, 2.5vw, 13px);
+  color: rgba(0, 255, 65, 0.5);
+  letter-spacing: 0.08em;
+}
+
+/* =========================================================
+   FLASH SECTION
+========================================================= */
+#flash-section {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+  background: rgba(0, 255, 65, 0.02);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#flash-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: rgba(0, 255, 65, 0.45);
+  flex-shrink: 0;
+}
+
+#flash-word {
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--green);
+}
+
+#flash-section.flash-active {
+  animation: flash-in 0.5s ease;
+}
+
+@keyframes flash-in {
+  0% {
+    background: rgba(0, 255, 65, 0.25);
+    box-shadow: 0 0 30px var(--green-glow);
+    border-color: var(--green);
+  }
+  100% {
+    background: rgba(0, 255, 65, 0.02);
+    box-shadow: none;
+    border-color: var(--border);
+  }
+}
+
+/* =========================================================
+   STATS BAR
+========================================================= */
+#stats-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+  background: rgba(0, 255, 65, 0.02);
+  gap: 4px;
+  border-right: 1px solid var(--border);
+}
+
+.stat:last-child {
+  border-right: none;
+}
+
+.stat-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(0, 255, 65, 0.4);
+}
+
+.stat span:last-child {
+  font-size: clamp(16px, 4vw, 22px);
+  font-weight: 700;
+  color: var(--green);
+  text-shadow: 0 0 10px var(--green-glow);
+}
+
+/* =========================================================
+   VAULT
+========================================================= */
+#vault-section {
+  border: 1px solid var(--border);
+}
+
+#vault-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0, 255, 65, 0.04);
+  flex-wrap: wrap;
+}
+
+#vault-title {
+  font-size: clamp(11px, 2.5vw, 13px);
+  letter-spacing: 0.15em;
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green-glow);
+  flex: 1;
+}
+
+#vault-count {
+  font-size: 12px;
+  color: rgba(0, 255, 65, 0.5);
+  letter-spacing: 0.1em;
+}
+
+#copy-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--green-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#copy-btn:hover {
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 8px var(--green-glow-soft);
+}
+
+#vault {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+#vault::-webkit-scrollbar {
+  width: 4px;
+}
+#vault::-webkit-scrollbar-track {
+  background: transparent;
+}
+#vault::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+
+.vault-group-header {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgba(0, 255, 65, 0.45);
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+}
+
+.vault-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vault-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 8px;
+  background: rgba(0, 255, 65, 0.02);
+  border-left: 2px solid transparent;
+  transition: all 0.2s;
+  flex-wrap: wrap;
+}
+
+.vault-entry:hover {
+  background: rgba(0, 255, 65, 0.06);
+  border-left-color: var(--green-dim);
+}
+
+.vault-entry-new {
+  animation: vault-slide-in 0.5s ease forwards;
+}
+
+@keyframes vault-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+    background: rgba(0, 255, 65, 0.15);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    background: rgba(0, 255, 65, 0.02);
+  }
+}
+
+.vault-word {
+  font-size: clamp(14px, 3vw, 18px);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--green);
+  text-shadow: 0 0 6px var(--green-glow);
+  flex-shrink: 0;
+}
+
+.vault-def {
+  font-size: clamp(10px, 2vw, 12px);
+  color: rgba(0, 255, 65, 0.45);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   SCANNING STATE - BORDER GLOW INTENSIFY
+========================================================= */
+#app-root.scanning #input-wrapper {
+  border-color: var(--green);
+  box-shadow: 0 0 20px var(--green-glow-soft), 0 0 40px rgba(0, 255, 65, 0.08),
+    inset 0 0 12px rgba(0, 255, 65, 0.04);
+  animation: border-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes border-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px var(--green-glow-soft);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(0, 255, 65, 0.4), 0 0 80px rgba(0, 255, 65, 0.1);
+  }
+}
+
+#app-root.scanning #progress-section {
+  border-color: rgba(0, 255, 65, 0.5);
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE
+========================================================= */
+@media (max-width: 480px) {
+  .screen {
+    padding: 16px 12px;
+  }
+
+  #ascii-art {
+    font-size: 4px;
+    letter-spacing: -0.5px;
+  }
+
+  #controls {
+    flex-direction: column;
+  }
+  #controls button {
+    width: 100%;
+    text-align: center;
+  }
+
+  #stats-bar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #vault-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .vault-entry {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
