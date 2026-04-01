@@ -11,32 +11,23 @@ export default function App() {
 
   return (
     <div id="app-root">
-      <div id="crt-overlay" />
-      <div id="scanline" />
-
-      <div id="bootup" className="screen">
-        <pre id="ascii-art" />
-        <div id="boot-text" />
-      </div>
-
-      <div id="main" className="screen hidden">
+      <div id="main" className="screen fade-in">
         <header>
           <h1 id="title">
-            {"WORD"}
-            <span id="cursor">{"_"}</span>
-            {"FINDER"}
+            Word
+            <span id="cursor"> </span>
+            Finder
           </h1>
-          <p id="subtitle">LEXICAL PERMUTATION ENGINE v2.0</p>
+          <p id="subtitle">Uncover every word hiding in your letters</p>
         </header>
 
         <section id="input-section">
           <div id="input-wrapper">
-            <span id="prompt">&gt;&gt;&gt;</span>
             <input
               type="text"
               id="letter-input"
               maxLength={8}
-              placeholder="ENTER 3-8 LETTERS"
+              placeholder="Enter 3–8 letters…"
               autoComplete="off"
               autoCapitalize="characters"
               spellCheck={false}
@@ -44,24 +35,39 @@ export default function App() {
             <span id="letter-count">0/8</span>
           </div>
           <div id="input-hint">
-            STRIP NON-ALPHA AUTOMATICALLY &middot; UPPERCASE DISPLAY
+            Only letters · automatically uppercased · 3–8 characters
           </div>
         </section>
 
         <section id="controls">
-          <button type="button" id="scan-btn" disabled>
-            {"[ INITIATE SCAN ]"}
+          <button
+            type="button"
+            id="scan-btn"
+            disabled
+            data-ocid="search.primary_button"
+          >
+            Search
           </button>
-          <button type="button" id="stop-btn" className="hidden">
-            {"[ STOP SCAN ]"}
+          <button
+            type="button"
+            id="stop-btn"
+            className="hidden"
+            data-ocid="search.stop_button"
+          >
+            Stop
           </button>
-          <button type="button" id="reset-btn" className="hidden">
-            {"[ NEW SCAN ]"}
+          <button
+            type="button"
+            id="reset-btn"
+            className="hidden"
+            data-ocid="search.secondary_button"
+          >
+            New Search
           </button>
         </section>
 
         <section id="progress-section" className="hidden">
-          <div id="progress-label">SCANNING... 0 of 0 tested</div>
+          <div id="progress-label">Scanning… 0 of 0 tested</div>
           <div id="progress-bar-wrapper">
             <div id="progress-bar" />
           </div>
@@ -69,112 +75,58 @@ export default function App() {
         </section>
 
         <section id="flash-section" className="hidden">
-          <div id="flash-label">MATCH FOUND:</div>
+          <div id="flash-label">Found</div>
           <div id="flash-word" />
         </section>
 
         <section id="stats-bar" className="hidden">
           <div className="stat">
-            <span className="stat-label">TESTED</span>
             <span id="stat-tested">0</span>
+            <span className="stat-label">Tested</span>
           </div>
           <div className="stat">
-            <span className="stat-label">FOUND</span>
             <span id="stat-found">0</span>
+            <span className="stat-label">Found</span>
           </div>
           <div className="stat">
-            <span className="stat-label">DURATION</span>
             <span id="stat-duration">0s</span>
+            <span className="stat-label">Duration</span>
           </div>
         </section>
 
         <section id="vault-section" className="hidden">
           <div id="vault-header">
-            <span id="vault-title">{"// RESULTS VAULT //"}</span>
+            <span id="vault-title">Results</span>
             <span id="vault-count">0 matches</span>
-            <button type="button" id="copy-btn">
-              {"[ COPY ALL ]"}
+            <button
+              type="button"
+              id="copy-btn"
+              data-ocid="vault.secondary_button"
+            >
+              Copy All
             </button>
           </div>
           <div id="vault" />
         </section>
+
+        <footer>
+          <p>
+            © {new Date().getFullYear()}. Built with love using{" "}
+            <a
+              href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              caffeine.ai
+            </a>
+          </p>
+        </footer>
       </div>
     </div>
   );
 }
 
 function initApp() {
-  const bsChar = String.fromCharCode(92);
-  const ASCII_LINE1 =
-    "  __    __  ___  ____  ____     ____  ____  _  _  ____  ____  ____ ";
-  const ASCII_LINE2 = `(  )  (  )/ __)(  __)(  _ ${bsChar}   (  __)(  __)( ${bsChar}/ )(  __)(  __)(  _ ${bsChar}`;
-  const ASCII_LINE3 = ` )(__  )(${bsChar}__ ${bsChar} ) _)  )   /    ) _)  ) _)  )  /  ) _)  ) _)  )   /`;
-  const ASCII_LINE4 = `(____)(__)( ___/(____)(__${bsChar}_)   (__)  (____)(_/${bsChar}_)(____)(____)(__${bsChar}_)`;
-  const fullAscii = [ASCII_LINE1, ASCII_LINE2, ASCII_LINE3, ASCII_LINE4].join(
-    "\n",
-  );
-
-  const bootLines = [
-    "BIOS v2.0 ... OK",
-    "LOADING LEXICAL ENGINE ...",
-    "CONNECTING TO DICTIONARY API ...",
-    "PERMUTATION MODULE ... READY",
-    "VAULT STORAGE ... INITIALIZED",
-    "SYSTEM ONLINE.",
-    "",
-    "> INITIALIZING WORD FINDER ...",
-  ];
-
-  const asciiEl = document.getElementById("ascii-art")!;
-  const bootTextEl = document.getElementById("boot-text")!;
-  const bootup = document.getElementById("bootup")!;
-  const main = document.getElementById("main")!;
-
-  let lineIdx = 0;
-  let charIdx = 0;
-
-  function typeAscii() {
-    if (charIdx < fullAscii.length) {
-      asciiEl.textContent = fullAscii.slice(0, charIdx + 1);
-      charIdx++;
-      setTimeout(typeAscii, 4);
-    } else {
-      typeLine();
-    }
-  }
-
-  function typeLine() {
-    if (lineIdx >= bootLines.length) {
-      setTimeout(() => {
-        bootup.classList.add("fade-out");
-        setTimeout(() => {
-          bootup.classList.add("hidden");
-          main.classList.remove("hidden");
-          main.classList.add("fade-in");
-        }, 600);
-      }, 400);
-      return;
-    }
-    const line = bootLines[lineIdx];
-    const div = document.createElement("div");
-    div.className = "boot-line";
-    bootTextEl.appendChild(div);
-    let ci = 0;
-    function typeChar() {
-      if (ci < line.length) {
-        div.textContent = line.slice(0, ci + 1);
-        ci++;
-        setTimeout(typeChar, 18);
-      } else {
-        lineIdx++;
-        setTimeout(typeLine, line === "" ? 50 : 80);
-      }
-    }
-    typeChar();
-  }
-
-  typeAscii();
-
   const inputEl = document.getElementById("letter-input") as HTMLInputElement;
   const letterCount = document.getElementById("letter-count")!;
   const scanBtn = document.getElementById("scan-btn") as HTMLButtonElement;
@@ -329,7 +281,7 @@ function initApp() {
 
     const allPerms = generatePermutations(letters);
     const total = allPerms.length;
-    progressLabel.textContent = `SCANNING... 0 of ${total} tested`;
+    progressLabel.textContent = `Scanning… 0 of ${total} tested`;
 
     startTime = Date.now();
     durationTimer = setInterval(() => {
@@ -342,13 +294,13 @@ function initApp() {
     for (const word of allPerms) {
       if (stopRequested) break;
 
-      currentWord.textContent = `TESTING: ${word}`;
+      currentWord.textContent = `Testing: ${word}`;
       const def = await checkWord(word);
       tested++;
 
       const pct = Math.round((tested / total) * 100);
       progressBar.style.width = `${pct}%`;
-      progressLabel.textContent = `SCANNING... ${tested} of ${total} tested (${pct}%)`;
+      progressLabel.textContent = `Scanning… ${tested} of ${total} tested (${pct}%)`;
       statTested.textContent = String(tested);
 
       if (def !== null) {
@@ -367,11 +319,11 @@ function initApp() {
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
     statDuration.textContent = `${elapsed}s`;
     currentWord.textContent = stopRequested
-      ? "[ SCAN STOPPED ]"
-      : "[ SCAN COMPLETE ]";
+      ? "Scan stopped."
+      : "Scan complete.";
     progressLabel.textContent = stopRequested
-      ? `STOPPED at ${tested} of ${total} tested`
-      : `COMPLETE \u2014 ${tested} of ${total} tested`;
+      ? `Stopped at ${tested} of ${total} tested`
+      : `Complete — ${tested} of ${total} tested`;
 
     scanning = false;
     stopBtn.classList.add("hidden");
@@ -403,7 +355,7 @@ function initApp() {
 
       const header = document.createElement("div");
       header.className = "vault-group-header";
-      header.textContent = `// ${len}-LETTER WORDS //`;
+      header.textContent = `${len}-letter words`;
       group.appendChild(header);
 
       const list = document.createElement("div");
@@ -436,12 +388,12 @@ function initApp() {
     if (foundWords.length === 0) return;
     const text = [...foundWords]
       .sort((a, b) => b.len - a.len)
-      .map((w) => (w.def ? `${w.word} - ${w.def}` : w.word))
+      .map((w) => (w.def ? `${w.word} — ${w.def}` : w.word))
       .join("\n");
     navigator.clipboard.writeText(text).then(() => {
-      copyBtn.textContent = "[ COPIED! ]";
+      copyBtn.textContent = "Copied!";
       setTimeout(() => {
-        copyBtn.textContent = "[ COPY ALL ]";
+        copyBtn.textContent = "Copy All";
       }, 1500);
     });
   }

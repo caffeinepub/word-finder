@@ -13976,144 +13976,122 @@ function App() {
     mountedRef.current = true;
     initApp();
   }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "app-root", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "crt-overlay" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "scanline" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "bootup", className: "screen", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("pre", { id: "ascii-art" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "boot-text" })
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "app-root", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "main", className: "screen fade-in", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("header", { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { id: "title", children: [
+        "Word",
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "cursor", children: " " }),
+        "Finder"
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { id: "subtitle", children: "Uncover every word hiding in your letters" })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "main", className: "screen hidden", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("header", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { id: "title", children: [
-          "WORD",
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "cursor", children: "_" }),
-          "FINDER"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { id: "subtitle", children: "LEXICAL PERMUTATION ENGINE v2.0" })
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "input-section", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "input-wrapper", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "text",
+            id: "letter-input",
+            maxLength: 8,
+            placeholder: "Enter 3–8 letters…",
+            autoComplete: "off",
+            autoCapitalize: "characters",
+            spellCheck: false
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "letter-count", children: "0/8" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "input-section", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "input-wrapper", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "prompt", children: ">>>" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "text",
-              id: "letter-input",
-              maxLength: 8,
-              placeholder: "ENTER 3-8 LETTERS",
-              autoComplete: "off",
-              autoCapitalize: "characters",
-              spellCheck: false
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "letter-count", children: "0/8" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "input-hint", children: "STRIP NON-ALPHA AUTOMATICALLY · UPPERCASE DISPLAY" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "input-hint", children: "Only letters · automatically uppercased · 3–8 characters" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "controls", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          id: "scan-btn",
+          disabled: true,
+          "data-ocid": "search.primary_button",
+          children: "Search"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          id: "stop-btn",
+          className: "hidden",
+          "data-ocid": "search.stop_button",
+          children: "Stop"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          type: "button",
+          id: "reset-btn",
+          className: "hidden",
+          "data-ocid": "search.secondary_button",
+          children: "New Search"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "progress-section", className: "hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "progress-label", children: "Scanning… 0 of 0 tested" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "progress-bar-wrapper", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "progress-bar" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "current-word", children: "—" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "flash-section", className: "hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "flash-label", children: "Found" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "flash-word" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "stats-bar", className: "hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "stat", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "stat-tested", children: "0" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stat-label", children: "Tested" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "controls", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", id: "scan-btn", disabled: true, children: "[ INITIATE SCAN ]" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", id: "stop-btn", className: "hidden", children: "[ STOP SCAN ]" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", id: "reset-btn", className: "hidden", children: "[ NEW SCAN ]" })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "stat", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "stat-found", children: "0" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stat-label", children: "Found" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "progress-section", className: "hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "progress-label", children: "SCANNING... 0 of 0 tested" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "progress-bar-wrapper", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "progress-bar" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "current-word", children: "—" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "flash-section", className: "hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "flash-label", children: "MATCH FOUND:" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "flash-word" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "stats-bar", className: "hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "stat", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stat-label", children: "TESTED" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "stat-tested", children: "0" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "stat", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stat-label", children: "FOUND" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "stat-found", children: "0" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "stat", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stat-label", children: "DURATION" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "stat-duration", children: "0s" })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "vault-section", className: "hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "vault-header", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "vault-title", children: "// RESULTS VAULT //" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "vault-count", children: "0 matches" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", id: "copy-btn", children: "[ COPY ALL ]" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "vault" })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "stat", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "stat-duration", children: "0s" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "stat-label", children: "Duration" })
       ] })
-    ] })
-  ] });
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { id: "vault-section", className: "hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "vault-header", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "vault-title", children: "Results" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "vault-count", children: "0 matches" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            type: "button",
+            id: "copy-btn",
+            "data-ocid": "vault.secondary_button",
+            children: "Copy All"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "vault" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("footer", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { children: [
+      "© ",
+      (/* @__PURE__ */ new Date()).getFullYear(),
+      ". Built with love using",
+      " ",
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "a",
+        {
+          href: `https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "")}`,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          children: "caffeine.ai"
+        }
+      )
+    ] }) })
+  ] }) });
 }
 function initApp() {
-  const bsChar = String.fromCharCode(92);
-  const ASCII_LINE1 = "  __    __  ___  ____  ____     ____  ____  _  _  ____  ____  ____ ";
-  const ASCII_LINE2 = `(  )  (  )/ __)(  __)(  _ ${bsChar}   (  __)(  __)( ${bsChar}/ )(  __)(  __)(  _ ${bsChar}`;
-  const ASCII_LINE3 = ` )(__  )(${bsChar}__ ${bsChar} ) _)  )   /    ) _)  ) _)  )  /  ) _)  ) _)  )   /`;
-  const ASCII_LINE4 = `(____)(__)( ___/(____)(__${bsChar}_)   (__)  (____)(_/${bsChar}_)(____)(____)(__${bsChar}_)`;
-  const fullAscii = [ASCII_LINE1, ASCII_LINE2, ASCII_LINE3, ASCII_LINE4].join(
-    "\n"
-  );
-  const bootLines = [
-    "BIOS v2.0 ... OK",
-    "LOADING LEXICAL ENGINE ...",
-    "CONNECTING TO DICTIONARY API ...",
-    "PERMUTATION MODULE ... READY",
-    "VAULT STORAGE ... INITIALIZED",
-    "SYSTEM ONLINE.",
-    "",
-    "> INITIALIZING WORD FINDER ..."
-  ];
-  const asciiEl = document.getElementById("ascii-art");
-  const bootTextEl = document.getElementById("boot-text");
-  const bootup = document.getElementById("bootup");
-  const main = document.getElementById("main");
-  let lineIdx = 0;
-  let charIdx = 0;
-  function typeAscii() {
-    if (charIdx < fullAscii.length) {
-      asciiEl.textContent = fullAscii.slice(0, charIdx + 1);
-      charIdx++;
-      setTimeout(typeAscii, 4);
-    } else {
-      typeLine();
-    }
-  }
-  function typeLine() {
-    if (lineIdx >= bootLines.length) {
-      setTimeout(() => {
-        bootup.classList.add("fade-out");
-        setTimeout(() => {
-          bootup.classList.add("hidden");
-          main.classList.remove("hidden");
-          main.classList.add("fade-in");
-        }, 600);
-      }, 400);
-      return;
-    }
-    const line = bootLines[lineIdx];
-    const div = document.createElement("div");
-    div.className = "boot-line";
-    bootTextEl.appendChild(div);
-    let ci = 0;
-    function typeChar() {
-      if (ci < line.length) {
-        div.textContent = line.slice(0, ci + 1);
-        ci++;
-        setTimeout(typeChar, 18);
-      } else {
-        lineIdx++;
-        setTimeout(typeLine, line === "" ? 50 : 80);
-      }
-    }
-    typeChar();
-  }
-  typeAscii();
   const inputEl = document.getElementById("letter-input");
   const letterCount = document.getElementById("letter-count");
   const scanBtn = document.getElementById("scan-btn");
@@ -14251,7 +14229,7 @@ function initApp() {
     flashSection.classList.remove("flash-active");
     const allPerms = generatePermutations(letters);
     const total = allPerms.length;
-    progressLabel.textContent = `SCANNING... 0 of ${total} tested`;
+    progressLabel.textContent = `Scanning… 0 of ${total} tested`;
     startTime = Date.now();
     durationTimer = setInterval(() => {
       statDuration.textContent = `${((Date.now() - startTime) / 1e3).toFixed(1)}s`;
@@ -14260,12 +14238,12 @@ function initApp() {
     let found = 0;
     for (const word of allPerms) {
       if (stopRequested) break;
-      currentWord.textContent = `TESTING: ${word}`;
+      currentWord.textContent = `Testing: ${word}`;
       const def = await checkWord(word);
       tested++;
       const pct = Math.round(tested / total * 100);
       progressBar.style.width = `${pct}%`;
-      progressLabel.textContent = `SCANNING... ${tested} of ${total} tested (${pct}%)`;
+      progressLabel.textContent = `Scanning… ${tested} of ${total} tested (${pct}%)`;
       statTested.textContent = String(tested);
       if (def !== null) {
         found++;
@@ -14280,8 +14258,8 @@ function initApp() {
     if (durationTimer) clearInterval(durationTimer);
     const elapsed = ((Date.now() - startTime) / 1e3).toFixed(1);
     statDuration.textContent = `${elapsed}s`;
-    currentWord.textContent = stopRequested ? "[ SCAN STOPPED ]" : "[ SCAN COMPLETE ]";
-    progressLabel.textContent = stopRequested ? `STOPPED at ${tested} of ${total} tested` : `COMPLETE — ${tested} of ${total} tested`;
+    currentWord.textContent = stopRequested ? "Scan stopped." : "Scan complete.";
+    progressLabel.textContent = stopRequested ? `Stopped at ${tested} of ${total} tested` : `Complete — ${tested} of ${total} tested`;
     scanning = false;
     stopBtn.classList.add("hidden");
     resetBtn.classList.remove("hidden");
@@ -14307,7 +14285,7 @@ function initApp() {
       group.dataset.len = String(len);
       const header = document.createElement("div");
       header.className = "vault-group-header";
-      header.textContent = `// ${len}-LETTER WORDS //`;
+      header.textContent = `${len}-letter words`;
       group.appendChild(header);
       const list2 = document.createElement("div");
       list2.className = "vault-list";
@@ -14333,11 +14311,11 @@ function initApp() {
   }
   function copyAll() {
     if (foundWords.length === 0) return;
-    const text = [...foundWords].sort((a, b) => b.len - a.len).map((w) => w.def ? `${w.word} - ${w.def}` : w.word).join("\n");
+    const text = [...foundWords].sort((a, b) => b.len - a.len).map((w) => w.def ? `${w.word} — ${w.def}` : w.word).join("\n");
     navigator.clipboard.writeText(text).then(() => {
-      copyBtn.textContent = "[ COPIED! ]";
+      copyBtn.textContent = "Copied!";
       setTimeout(() => {
-        copyBtn.textContent = "[ COPY ALL ]";
+        copyBtn.textContent = "Copy All";
       }, 1500);
     });
   }
