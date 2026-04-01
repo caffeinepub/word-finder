@@ -13979,11 +13979,7 @@ function App() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { id: "app-root", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "main", className: "screen fade-in", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("header", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "header-row", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { id: "title-group", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { id: "title", children: [
-          "Word",
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { id: "cursor", children: " " }),
-          "Finder"
-        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { id: "title", children: "WordFinder" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { id: "subtitle", children: "Find every word in your letters" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(

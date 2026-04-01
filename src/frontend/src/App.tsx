@@ -15,9 +15,7 @@ export default function App() {
         <header>
           <div id="header-row">
             <div id="title-group">
-              <h1 id="title">
-                Word<span id="cursor"> </span>Finder
-              </h1>
+              <h1 id="title">WordFinder</h1>
               <p id="subtitle">Find every word in your letters</p>
             </div>
             <button
