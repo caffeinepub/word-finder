@@ -14138,19 +14138,37 @@ function initApp() {
   resetBtn.addEventListener("click", resetAll);
   copyBtn.addEventListener("click", copyAll);
   function resetAll() {
+    if (scanning) {
+      stopRequested = true;
+    }
+    if (durationTimer) {
+      clearInterval(durationTimer);
+      durationTimer = null;
+    }
+    scanning = false;
+    stopRequested = false;
+    foundWords = [];
     inputEl.value = "";
     letterCount.textContent = "0/8";
     letterCount.className = "";
+    inputEl.disabled = false;
+    inputEl.focus();
     scanBtn.disabled = true;
+    scanBtn.classList.remove("hidden");
     stopBtn.classList.add("hidden");
     resetBtn.classList.add("hidden");
-    scanBtn.classList.remove("hidden");
     scanStrip.classList.add("hidden");
+    progressBar.style.width = "0%";
+    progressLabel.textContent = "Scanning…";
+    currentWord.textContent = "—";
+    statTested.textContent = "0";
+    statFound.textContent = "0";
+    statDuration.textContent = "0s";
+    flashBadge.classList.add("hidden");
+    flashWord.textContent = "";
     vaultSection.classList.add("hidden");
     vaultEl.innerHTML = "";
     vaultCount.textContent = "0 matches";
-    progressBar.style.width = "0%";
-    foundWords = [];
     document.getElementById("app-root").classList.remove("scanning");
   }
   function generatePermutations(letters) {
@@ -14259,6 +14277,7 @@ function initApp() {
       await sleep2(200);
     }
     if (durationTimer) clearInterval(durationTimer);
+    durationTimer = null;
     const elapsed = ((Date.now() - startTime) / 1e3).toFixed(1);
     statDuration.textContent = `${elapsed}s`;
     currentWord.textContent = stopRequested ? "Stopped." : "Done!";
