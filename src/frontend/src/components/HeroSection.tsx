@@ -8,14 +8,11 @@ interface HeroSectionProps {
   onSearch: (query: string) => void;
 }
 
-const FILTER_TABS = ["All", "Images", "News", "Videos", "Maps"] as const;
-
 const CAT_BG =
   "/assets/alexas_fotos-cat-1455468_1920-019d5f4c-57d9-700e-a21b-680de6585a77.jpg";
 
 export function HeroSection({ onSearch }: HeroSectionProps) {
   const [query, setQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState<string>("All");
   const inputRef = useRef<HTMLInputElement>(null);
   const [now, setNow] = useState(new Date());
   const weather = useWeather();
@@ -193,52 +190,12 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
           </div>
         </motion.form>
 
-        {/* Filter tabs */}
-        <motion.div
-          className="flex items-center gap-2 sm:gap-2.5 mb-5 flex-wrap justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          role="tablist"
-          aria-label="Search filter tabs"
-        >
-          {FILTER_TABS.map((tab) => (
-            <button
-              key={tab}
-              type="button"
-              role="tab"
-              aria-selected={activeFilter === tab}
-              onClick={() => setActiveFilter(tab)}
-              className="px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm sm:text-base font-semibold transition-all duration-200 select-none"
-              style={{
-                background:
-                  activeFilter === tab
-                    ? "rgba(255,255,255,0.97)"
-                    : "rgba(255,255,255,0.12)",
-                color:
-                  activeFilter === tab ? "#1a1a1a" : "rgba(255,255,255,0.92)",
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                border:
-                  activeFilter === tab
-                    ? "2px solid rgba(255,255,255,0.9)"
-                    : "1.5px solid rgba(255,255,255,0.28)",
-                boxShadow:
-                  activeFilter === tab ? "0 4px 16px rgba(0,0,0,0.18)" : "none",
-              }}
-              data-ocid="search.tab"
-            >
-              {tab}
-            </button>
-          ))}
-        </motion.div>
-
         {/* Trending searches */}
         <motion.div
           className="flex flex-wrap gap-2 sm:gap-2.5 justify-center items-center max-w-2xl px-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
           <span
             className="text-sm sm:text-base font-bold tracking-wide"

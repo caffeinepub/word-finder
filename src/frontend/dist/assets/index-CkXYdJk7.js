@@ -24640,11 +24640,9 @@ const __iconNode = [
   ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
 ];
 const Search = createLucideIcon("search", __iconNode);
-const FILTER_TABS = ["All", "Images", "News", "Videos", "Maps"];
 const CAT_BG = "/assets/alexas_fotos-cat-1455468_1920-019d5f4c-57d9-700e-a21b-680de6585a77.jpg";
 function HeroSection({ onSearch }) {
   const [query, setQuery] = reactExports.useState("");
-  const [activeFilter, setActiveFilter] = reactExports.useState("All");
   const inputRef = reactExports.useRef(null);
   const [now2, setNow] = reactExports.useState(/* @__PURE__ */ new Date());
   const weather = useWeather();
@@ -24841,45 +24839,13 @@ function HeroSection({ onSearch }) {
                   )
                 }
               ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                motion.div,
-                {
-                  className: "flex items-center gap-2 sm:gap-2.5 mb-5 flex-wrap justify-center",
-                  initial: { opacity: 0 },
-                  animate: { opacity: 1 },
-                  transition: { duration: 0.5, delay: 0.2 },
-                  role: "tablist",
-                  "aria-label": "Search filter tabs",
-                  children: FILTER_TABS.map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "button",
-                    {
-                      type: "button",
-                      role: "tab",
-                      "aria-selected": activeFilter === tab,
-                      onClick: () => setActiveFilter(tab),
-                      className: "px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm sm:text-base font-semibold transition-all duration-200 select-none",
-                      style: {
-                        background: activeFilter === tab ? "rgba(255,255,255,0.97)" : "rgba(255,255,255,0.12)",
-                        color: activeFilter === tab ? "#1a1a1a" : "rgba(255,255,255,0.92)",
-                        backdropFilter: "blur(10px)",
-                        WebkitBackdropFilter: "blur(10px)",
-                        border: activeFilter === tab ? "2px solid rgba(255,255,255,0.9)" : "1.5px solid rgba(255,255,255,0.28)",
-                        boxShadow: activeFilter === tab ? "0 4px 16px rgba(0,0,0,0.18)" : "none"
-                      },
-                      "data-ocid": "search.tab",
-                      children: tab
-                    },
-                    tab
-                  ))
-                }
-              ),
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 motion.div,
                 {
                   className: "flex flex-wrap gap-2 sm:gap-2.5 justify-center items-center max-w-2xl px-2",
                   initial: { opacity: 0 },
                   animate: { opacity: 1 },
-                  transition: { duration: 0.5, delay: 0.3 },
+                  transition: { duration: 0.5, delay: 0.2 },
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "span",
