@@ -1,379 +1,288 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  type SearchResult as LocalResult,
-  SEARCH_RESULTS,
-} from "@/data/catData";
 import { useSearch } from "@/hooks/useSearch";
 import { ArrowLeft, Search } from "lucide-react";
 import { motion } from "motion/react";
 import { useRef, useState } from "react";
 
-type FilterType =
-  | "All"
-  | "Web"
-  | "Breeds"
-  | "News"
-  | "Marketplace"
-  | "Gallery"
-  | "Community";
+type FilterType = "All" | "Images" | "News" | "Videos";
 
-const FILTERS: FilterType[] = [
-  "All",
-  "Web",
-  "Breeds",
-  "News",
-  "Marketplace",
-  "Gallery",
-  "Community",
-];
-
-const CATEGORY_COLORS: Record<string, string> = {
-  Breeds: "bg-orange-100 text-orange-700",
-  News: "bg-blue-100 text-blue-700",
-  Marketplace: "bg-green-100 text-green-700",
-  Gallery: "bg-purple-100 text-purple-700",
-  Community: "bg-pink-100 text-pink-700",
-};
+const FILTERS: FilterType[] = ["All", "Images", "News", "Videos"];
 
 interface SearchResultsProps {
   query: string;
   onBack: () => void;
+  onSearch?: (q: string) => void;
 }
 
-function filterLocalResults(
-  results: LocalResult[],
-  query: string,
-  filter: FilterType,
-): LocalResult[] {
-  const q = query.toLowerCase();
-  return results.filter((r) => {
-    const matchesFilter =
-      filter === "All" || filter === "Web" || r.category === filter;
-    const matchesQuery =
-      r.title.toLowerCase().includes(q) ||
-      r.description.toLowerCase().includes(q) ||
-      r.category.toLowerCase().includes(q);
-    return matchesFilter && matchesQuery;
-  });
-}
-
-export function SearchResults({ query, onBack }: SearchResultsProps) {
+export function SearchResults({ query, onBack, onSearch }: SearchResultsProps) {
   const [activeFilter, setActiveFilter] = useState<FilterType>("All");
   const [searchInput, setSearchInput] = useState(query);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { results: webResults, loading: webLoading } = useSearch(
-    activeFilter === "All" || activeFilter === "Web" ? query : null,
-  );
-
-  const localResults = filterLocalResults(SEARCH_RESULTS, query, activeFilter);
+  const { results, loading, error, totalResults, timeTaken } = useSearch(query);
 
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (searchInput.trim() && searchInput.trim() !== query) {
+    const trimmed = searchInput.trim();
+    if (!trimmed) return;
+    if (onSearch) {
+      onSearch(trimmed);
+    } else {
       onBack();
     }
   }
 
-  const showWebSection = activeFilter === "All" || activeFilter === "Web";
-  const showLocalSection = activeFilter !== "Web";
+  const formattedTotal = totalResults.toLocaleString();
 
   return (
-    <section
-      className="min-h-screen py-8"
-      style={{ background: "var(--becat-bg)" }}
+    <div
+      className="min-h-screen"
+      style={{ background: "#fff" }}
       data-ocid="search.section"
     >
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back button */}
+      {/* ─── Sticky top bar ─── */}
+      <header
+        className="sticky top-0 z-50 bg-white border-b"
+        style={{ borderColor: "#e0e0e0" }}
+      >
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          {/* Row 1: Logo + Search bar */}
+          <div className="flex items-center gap-3 py-3">
+            {/* Logo */}
+            <button
+              type="button"
+              onClick={onBack}
+              className="flex items-center gap-1.5 flex-shrink-0 mr-1 transition-opacity hover:opacity-80"
+              aria-label="Go back to home"
+              data-ocid="search.back_button"
+            >
+              <span className="text-xl">🐱</span>
+              <span
+                className="font-bold text-lg hidden sm:block"
+                style={{
+                  fontFamily: "var(--font-display)",
+                  color: "var(--becat-accent)",
+                }}
+              >
+                BeCat<span style={{ color: "#f4a261" }}>.Tech</span>
+              </span>
+            </button>
+
+            {/* Inline search bar */}
+            <form onSubmit={handleSearchSubmit} className="flex-1">
+              <div
+                className="flex items-center rounded-full border bg-white"
+                style={{
+                  borderColor: "#dfe1e5",
+                  boxShadow: "0 1px 6px rgba(32,33,36,.18)",
+                  height: "44px",
+                  padding: "0 4px 0 16px",
+                  maxWidth: "580px",
+                }}
+              >
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  placeholder="Search anything…"
+                  className="flex-1 bg-transparent outline-none text-sm"
+                  style={{ color: "#1a1a1a", fontSize: "16px" }}
+                  data-ocid="search.input"
+                />
+                <button
+                  type="submit"
+                  className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-gray-100 active:scale-95"
+                  aria-label="Search"
+                  data-ocid="search.submit_button"
+                >
+                  <Search size={18} style={{ color: "#4285f4" }} />
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Row 2: Filter tabs */}
+          <div
+            className="flex items-center gap-0 overflow-x-auto pb-0"
+            style={{ scrollbarWidth: "none" }}
+            role="tablist"
+          >
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                type="button"
+                role="tab"
+                aria-selected={activeFilter === f}
+                onClick={() => setActiveFilter(f)}
+                className="px-3 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap"
+                style={{
+                  color: activeFilter === f ? "#1558d6" : "#5f6368",
+                  borderColor: activeFilter === f ? "#1558d6" : "transparent",
+                  background: "transparent",
+                }}
+                data-ocid="search.tab"
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* ─── Results area ─── */}
+      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-4">
+        {/* Back button (mobile-friendly) */}
         <button
           type="button"
           onClick={onBack}
-          className="flex items-center gap-2 text-sm font-medium mb-5 transition-colors hover:opacity-80"
+          className="flex sm:hidden items-center gap-1.5 text-sm font-medium mb-4 transition-opacity hover:opacity-70"
           style={{ color: "var(--becat-accent)" }}
           data-ocid="search.back_button"
         >
-          <ArrowLeft size={16} />
+          <ArrowLeft size={14} />
           Back to Home
         </button>
 
-        {/* Inline search bar */}
-        <form onSubmit={handleSearchSubmit} className="mb-6">
-          <div
-            className="flex items-center rounded-full bg-white pl-4 pr-2 py-1.5"
-            style={{
-              border: "2px solid var(--becat-border)",
-              boxShadow: "0 2px 12px rgba(58,42,34,0.08)",
-              maxWidth: "600px",
-            }}
-          >
-            <Search
-              size={18}
-              style={{ color: "var(--becat-text-muted)" }}
-              className="mr-2 flex-shrink-0"
-            />
-            <input
-              ref={inputRef}
-              type="text"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Search for anything cat…"
-              className="flex-1 bg-transparent outline-none text-sm"
-              style={{ color: "var(--becat-text)", fontSize: "16px" }}
-              data-ocid="search.input"
-            />
-            <button
-              type="submit"
-              className="ml-2 h-8 px-4 rounded-full text-white text-xs font-semibold flex items-center gap-1 transition-all hover:opacity-90 active:scale-95"
-              style={{ background: "var(--becat-accent)" }}
-              data-ocid="search.submit_button"
-            >
-              Search
-            </button>
-          </div>
-        </form>
-
-        {/* Heading */}
-        <div className="mb-5">
-          <h2
-            className="text-2xl font-bold font-display mb-1"
-            style={{ color: "var(--becat-text)" }}
-          >
-            Results for &ldquo;{query}&rdquo;
-          </h2>
-          <p className="text-sm" style={{ color: "var(--becat-text-muted)" }}>
-            {webLoading ? (
-              <span>Searching the web…</span>
-            ) : (
-              <span>
-                {activeFilter === "Web"
-                  ? `${webResults.length} web result${
-                      webResults.length !== 1 ? "s" : ""
-                    }`
-                  : `${localResults.length} cat result${
-                      localResults.length !== 1 ? "s" : ""
-                    }${webResults.length > 0 ? ` · ${webResults.length} from the web` : ""}`}
-              </span>
-            )}
+        {/* Results count */}
+        {!loading && results.length > 0 && (
+          <p className="text-sm mb-4" style={{ color: "#70757a" }}>
+            About {formattedTotal} results ({timeTaken} seconds)
           </p>
-        </div>
+        )}
 
-        {/* Filter tabs */}
-        <div
-          className="flex flex-wrap gap-2 mb-7"
-          role="tablist"
-          data-ocid="search.tab"
-        >
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              type="button"
-              role="tab"
-              aria-selected={activeFilter === f}
-              onClick={() => setActiveFilter(f)}
-              className="px-4 py-2 rounded-full text-sm font-medium border transition-all"
-              style={{
-                background:
-                  activeFilter === f ? "var(--becat-accent)" : "white",
-                color: activeFilter === f ? "white" : "var(--becat-text-muted)",
-                borderColor:
-                  activeFilter === f
-                    ? "var(--becat-accent)"
-                    : "var(--becat-border)",
-              }}
-              data-ocid="search.tab"
+        {/* Loading skeletons */}
+        {loading && (
+          <div className="flex flex-col gap-6" data-ocid="search.loading_state">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="w-4 h-4 rounded-full" />
+                  <Skeleton className="h-3 w-48 rounded" />
+                </div>
+                <Skeleton className="h-5 w-3/4 rounded" />
+                <Skeleton className="h-3.5 w-full rounded" />
+                <Skeleton className="h-3.5 w-5/6 rounded" />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Error state */}
+        {!loading && error && (
+          <div className="text-center py-16" data-ocid="search.error_state">
+            <div className="text-5xl mb-4">😿</div>
+            <p
+              className="text-base font-medium mb-1"
+              style={{ color: "#3c4043" }}
             >
-              {f === "Web" ? "🌐 Web" : f}
-            </button>
-          ))}
-        </div>
-
-        {/* ── Web Results ── */}
-        {showWebSection && (
-          <div className="mb-8">
-            {activeFilter === "All" && webResults.length > 0 && (
-              <h3
-                className="text-sm font-semibold uppercase tracking-wide mb-3 flex items-center gap-1.5"
-                style={{ color: "var(--becat-text-muted)" }}
-              >
-                <span>🌐</span> From the Web
-              </h3>
-            )}
-
-            {webLoading ? (
-              <div
-                className="flex flex-col gap-3"
-                data-ocid="search.loading_state"
-              >
-                {[1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="bg-white rounded-2xl p-5 border"
-                    style={{ borderColor: "var(--becat-border)" }}
-                  >
-                    <Skeleton className="h-4 w-40 mb-2 rounded-full" />
-                    <Skeleton className="h-5 w-3/4 mb-2 rounded-lg" />
-                    <Skeleton className="h-3 w-full rounded-full" />
-                    <Skeleton className="h-3 w-5/6 mt-1 rounded-full" />
-                  </div>
-                ))}
-              </div>
-            ) : webResults.length > 0 ? (
-              <div className="flex flex-col gap-3">
-                {(activeFilter === "All"
-                  ? webResults.slice(0, 3)
-                  : webResults
-                ).map((result, i) => (
-                  <motion.a
-                    key={result.url}
-                    href={result.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.05 }}
-                    className="group bg-white rounded-2xl p-5 border flex flex-col gap-2 hover:-translate-y-0.5 transition-all"
-                    style={{
-                      borderColor: "var(--becat-border)",
-                      boxShadow: "0 2px 12px rgba(58,42,34,0.07)",
-                    }}
-                    data-ocid={`search.item.${i + 1}`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">🌐</span>
-                      <p
-                        className="text-xs truncate"
-                        style={{ color: "var(--becat-text-muted)" }}
-                      >
-                        {result.url}
-                      </p>
-                    </div>
-                    <h3
-                      className="text-base font-bold leading-snug group-hover:underline"
-                      style={{ color: "var(--becat-accent)" }}
-                    >
-                      {result.title}
-                    </h3>
-                    <p
-                      className="text-sm line-clamp-2"
-                      style={{ color: "var(--becat-text-muted)" }}
-                    >
-                      {result.snippet}
-                    </p>
-                  </motion.a>
-                ))}
-              </div>
-            ) : activeFilter === "Web" ? (
-              <div
-                className="text-center py-10 rounded-2xl"
-                style={{ background: "var(--becat-section-bg)" }}
-                data-ocid="search.empty_state"
-              >
-                <div className="text-4xl mb-3">😿</div>
-                <p
-                  className="text-sm"
-                  style={{ color: "var(--becat-text-muted)" }}
-                >
-                  No web results found for this search.
-                </p>
-              </div>
-            ) : null}
+              Search ran into a problem
+            </p>
+            <p className="text-sm" style={{ color: "#70757a" }}>
+              {error}
+            </p>
           </div>
         )}
 
-        {/* ── Local Cat Content ── */}
-        {showLocalSection && (
-          <div>
-            {activeFilter === "All" && localResults.length > 0 && (
-              <h3
-                className="text-sm font-semibold uppercase tracking-wide mb-3 flex items-center gap-1.5"
-                style={{ color: "var(--becat-text-muted)" }}
+        {/* Results list */}
+        {!loading && !error && results.length > 0 && (
+          <div className="flex flex-col">
+            {results.map((result, i) => (
+              <motion.div
+                key={result.url}
+                className="py-5"
+                style={{
+                  borderBottom:
+                    i < results.length - 1 ? "1px solid #f0f0f0" : "none",
+                }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25, delay: i * 0.04 }}
+                data-ocid={`search.item.${i + 1}`}
               >
-                <span>🐾</span> Cat Content
-              </h3>
-            )}
-
-            {localResults.length === 0 ? (
-              <div
-                className="text-center py-16 rounded-2xl"
-                style={{ background: "var(--becat-section-bg)" }}
-                data-ocid="search.empty_state"
-              >
-                <div className="text-5xl mb-4">😿</div>
-                <h3
-                  className="text-lg font-semibold mb-2"
-                  style={{ color: "var(--becat-text)" }}
-                >
-                  No results found
-                </h3>
-                <p
-                  className="text-sm"
-                  style={{ color: "var(--becat-text-muted)" }}
-                >
-                  Try a different search term or category
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {localResults.map((result, i) => (
-                  <motion.div
-                    key={result.id}
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.05 }}
-                    className="group bg-white rounded-2xl p-5 border transition-all hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
-                    style={{
-                      borderColor: "var(--becat-border)",
-                      boxShadow: "0 2px 12px rgba(58,42,34,0.07)",
-                    }}
-                    data-ocid={`search.item.${i + 1}`}
-                  >
-                    <div className="flex items-start gap-3 mb-3">
-                      <span className="text-2xl flex-shrink-0">
-                        {result.emoji}
-                      </span>
-                      <div className="min-w-0">
-                        <span
-                          className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-2 ${CATEGORY_COLORS[result.category]}`}
-                        >
-                          {result.category}
-                        </span>
-                        <h3
-                          className="text-base font-bold font-display leading-snug"
-                          style={{ color: "var(--becat-text)" }}
-                        >
-                          {result.title}
-                        </h3>
-                      </div>
-                    </div>
-                    <p
-                      className="text-sm line-clamp-3 mb-3"
-                      style={{ color: "var(--becat-text-muted)" }}
-                    >
-                      {result.description}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        onBack();
-                        setTimeout(() => {
-                          document
-                            .querySelector(result.link)
-                            ?.scrollIntoView({ behavior: "smooth" });
-                        }, 100);
+                {/* Row 1: Favicon + Display URL */}
+                <div className="flex items-center gap-2 mb-1">
+                  {result.favicon ? (
+                    <img
+                      src={result.favicon}
+                      alt=""
+                      width={16}
+                      height={16}
+                      className="flex-shrink-0"
+                      style={{ borderRadius: "2px" }}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = "none";
                       }}
-                      className="text-sm font-semibold transition-colors hover:opacity-70"
-                      style={{ color: "var(--becat-accent)" }}
+                    />
+                  ) : (
+                    <span
+                      className="flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center text-white text-xs"
+                      style={{
+                        background: "var(--becat-accent)",
+                        fontSize: "8px",
+                      }}
                     >
-                      View More →
-                    </button>
-                  </motion.div>
-                ))}
-              </div>
-            )}
+                      🌐
+                    </span>
+                  )}
+                  <span className="result-url truncate max-w-md">
+                    {result.displayUrl}
+                  </span>
+                </div>
+
+                {/* Row 2: Title link */}
+                <a
+                  href={result.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="result-title block text-xl font-normal leading-snug mb-1 hover:underline"
+                >
+                  {result.title}
+                </a>
+
+                {/* Row 3: Snippet */}
+                {result.snippet && (
+                  <p className="result-snippet line-clamp-3">
+                    {result.snippet}
+                  </p>
+                )}
+              </motion.div>
+            ))}
+
+            {/* Next page placeholder */}
+            <div className="flex justify-center py-8">
+              <button
+                type="button"
+                onClick={() => inputRef.current?.focus()}
+                className="px-8 py-2.5 rounded-full text-sm font-medium border transition-all hover:bg-gray-50 active:scale-95"
+                style={{
+                  borderColor: "#dfe1e5",
+                  color: "#1558d6",
+                }}
+                data-ocid="search.pagination_next"
+              >
+                Next
+              </button>
+            </div>
           </div>
         )}
-      </div>
-    </section>
+
+        {/* Empty state */}
+        {!loading && !error && results.length === 0 && (
+          <div className="text-center py-20" data-ocid="search.empty_state">
+            <div className="text-6xl mb-4">😿</div>
+            <h3
+              className="text-lg font-medium mb-2"
+              style={{ color: "#3c4043" }}
+            >
+              No results found for &ldquo;{query}&rdquo;
+            </h3>
+            <p className="text-sm" style={{ color: "#70757a" }}>
+              Try different keywords or check your spelling
+            </p>
+          </div>
+        )}
+      </main>
+    </div>
   );
 }

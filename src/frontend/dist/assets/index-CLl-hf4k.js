@@ -13979,152 +13979,6 @@ const TRENDING_SEARCHES = [
   "cat breeds",
   "cat care"
 ];
-const SEARCH_RESULTS = [
-  {
-    id: 1,
-    title: "Persian Cat — The Ultimate Guide",
-    description: "Discover everything about Persian cats: grooming tips, temperament, diet, and how to keep your fluffy friend healthy and happy.",
-    category: "Breeds",
-    link: "#breeds",
-    emoji: "🐱"
-  },
-  {
-    id: 2,
-    title: "Maine Coon: Giant of the Cat World",
-    description: "Maine Coons are the gentle giants of the feline world. Learn about their playful nature, thick coats, and why they make amazing companions.",
-    category: "Breeds",
-    link: "#breeds",
-    emoji: "🐈"
-  },
-  {
-    id: 3,
-    title: "Study Shows Cats Recognize Their Names",
-    description: "Japanese researchers have confirmed that cats can distinguish their names from other words — they just choose when to respond!",
-    category: "News",
-    link: "#news",
-    emoji: "📰"
-  },
-  {
-    id: 4,
-    title: "New Cat Café Opens in Tokyo",
-    description: "A stunning new cat café has opened in Shibuya, Tokyo, featuring 30 rescued cats in a beautifully designed zen-inspired space.",
-    category: "News",
-    link: "#news",
-    emoji: "☕"
-  },
-  {
-    id: 5,
-    title: "Premium Cat Food Bundle — $45.99",
-    description: "A curated selection of high-protein, grain-free cat food for all life stages. Vet-approved and loved by cats worldwide.",
-    category: "Marketplace",
-    link: "#marketplace",
-    emoji: "🛒"
-  },
-  {
-    id: 6,
-    title: "Interactive Cat Toy Set — $24.99",
-    description: "Keep your cat entertained for hours with this 8-piece interactive toy set including feather wands, tunnels, and puzzle feeders.",
-    category: "Marketplace",
-    link: "#marketplace",
-    emoji: "🎯"
-  },
-  {
-    id: 7,
-    title: "Fluffy Persian Kitten Photo Series",
-    description: "A breathtaking series of professional photos capturing Persian kittens in their most adorable moments.",
-    category: "Gallery",
-    link: "#gallery",
-    emoji: "📸"
-  },
-  {
-    id: 8,
-    title: "Scottish Fold: Calm & Loving Companion",
-    description: "Scottish Folds are known for their distinctive folded ears and owl-like appearance. They're incredibly calm and form deep bonds.",
-    category: "Breeds",
-    link: "#breeds",
-    emoji: "🦉"
-  },
-  {
-    id: 9,
-    title: "Understanding Your Cat's Purring",
-    description: "Purring isn't just contentment — cats purr when stressed, healing, or communicating. Science reveals the fascinating truth.",
-    category: "News",
-    link: "#news",
-    emoji: "💤"
-  },
-  {
-    id: 10,
-    title: "Cozy Cat Bed Premium Edition — $59.99",
-    description: "Orthopedic memory foam cat bed with removable washable cover. Extra plush bolster sides for cats who love to curl up.",
-    category: "Marketplace",
-    link: "#marketplace",
-    emoji: "🛏️"
-  },
-  {
-    id: 11,
-    title: "Maine Coon in Snow — Winter Collection",
-    description: "Stunning winter photography featuring Maine Coons in their natural glory, with their thick snow-resistant coats on display.",
-    category: "Gallery",
-    link: "#gallery",
-    emoji: "❄️"
-  },
-  {
-    id: 12,
-    title: "My Persian Finally Lets Me Pet Her Belly!",
-    description: "After 2 years of gentle patience, my Persian cat Luna finally rolled over for belly rubs! Sharing my journey and tips.",
-    category: "Community",
-    link: "#community",
-    emoji: "❤️"
-  },
-  {
-    id: 13,
-    title: "Siamese Cat: Vocal & Social",
-    description: "Siamese cats are among the most vocal breeds — they'll hold full conversations with you! Learn about their unique personality.",
-    category: "Breeds",
-    link: "#breeds",
-    emoji: "🗣️"
-  },
-  {
-    id: 14,
-    title: "Cat Wins International Photo Contest",
-    description: "A ginger tabby named Mochi from Seoul has won the 2026 World Cat Photography Award with a stunning portrait.",
-    category: "News",
-    link: "#news",
-    emoji: "🏆"
-  },
-  {
-    id: 15,
-    title: "Best Cat Food for Senior Cats?",
-    description: "Community discussion on the best nutrition options for cats aged 10+. Share your experiences and vet recommendations.",
-    category: "Community",
-    link: "#community",
-    emoji: "💬"
-  },
-  {
-    id: 16,
-    title: "Automatic Pet Feeder Smart — $89.99",
-    description: "WiFi-enabled automatic cat feeder with portion control, scheduling app, and HD camera to watch your cat eat remotely.",
-    category: "Marketplace",
-    link: "#marketplace",
-    emoji: "📱"
-  },
-  {
-    id: 17,
-    title: "Bengal Cat: Active & Wild at Heart",
-    description: "Bengals look like miniature leopards and act like it too! These high-energy cats need lots of stimulation and adventure.",
-    category: "Breeds",
-    link: "#breeds",
-    emoji: "🐆"
-  },
-  {
-    id: 18,
-    title: "Monthly Cat Photo Thread — April 2026",
-    description: "Share your best cat photos of the month! All breeds, all ages, all adorable. Community favorites get featured on our homepage.",
-    category: "Community",
-    link: "#community",
-    emoji: "📷"
-  }
-];
 const CAT_BREEDS = [
   {
     name: "Persian",
@@ -26185,10 +26039,110 @@ function Header() {
     }
   );
 }
+function mapWeatherCode(code) {
+  if (code === 0) return { condition: "Clear Sky", catEmoji: "😸" };
+  if (code <= 3) return { condition: "Partly Cloudy", catEmoji: "😼" };
+  if (code === 45 || code === 48) return { condition: "Foggy", catEmoji: "🙀" };
+  if (code >= 51 && code <= 65) return { condition: "Rainy", catEmoji: "😿" };
+  if (code >= 71 && code <= 77) return { condition: "Snowy", catEmoji: "🐱" };
+  if (code >= 80 && code <= 82) return { condition: "Showers", catEmoji: "😾" };
+  if (code >= 95 && code <= 99)
+    return { condition: "Thunderstorm", catEmoji: "🙀" };
+  return { condition: "Cloudy", catEmoji: "😺" };
+}
+const FALLBACK = {
+  temp: 22,
+  feelsLike: 20,
+  humidity: 60,
+  windSpeed: 12,
+  condition: "Partly Cloudy",
+  cityName: "Your City",
+  catEmoji: "😸",
+  loading: false,
+  error: null
+};
+function useWeather() {
+  const [data, setData] = reactExports.useState({
+    ...FALLBACK,
+    loading: true,
+    error: null
+  });
+  reactExports.useEffect(() => {
+    let cancelled = false;
+    function handleError() {
+      if (!cancelled) setData(FALLBACK);
+    }
+    async function fetchWeather(lat, lon) {
+      try {
+        const [geoRes, weatherRes] = await Promise.all([
+          fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
+            { headers: { "Accept-Language": "en" } }
+          ),
+          fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&temperature_unit=celsius`
+          )
+        ]);
+        if (!geoRes.ok || !weatherRes.ok) {
+          handleError();
+          return;
+        }
+        const [geoJson, weatherJson] = await Promise.all([
+          geoRes.json(),
+          weatherRes.json()
+        ]);
+        if (cancelled) return;
+        const addr = (geoJson == null ? void 0 : geoJson.address) ?? {};
+        const cityName = addr.city || addr.town || addr.village || addr.county || "Your City";
+        const cur = (weatherJson == null ? void 0 : weatherJson.current) ?? {};
+        const temp = Math.round(cur.temperature_2m ?? 22);
+        const feelsLike = Math.round(cur.apparent_temperature ?? 20);
+        const humidity = Math.round(cur.relative_humidity_2m ?? 60);
+        const windSpeed = Math.round(cur.wind_speed_10m ?? 12);
+        const weatherCode = cur.weather_code ?? 1;
+        const { condition, catEmoji } = mapWeatherCode(weatherCode);
+        setData({
+          temp,
+          feelsLike,
+          humidity,
+          windSpeed,
+          condition,
+          cityName,
+          catEmoji,
+          loading: false,
+          error: null
+        });
+      } catch {
+        if (!cancelled) handleError();
+      }
+    }
+    if (!navigator.geolocation) {
+      handleError();
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        fetchWeather(pos.coords.latitude, pos.coords.longitude);
+      },
+      () => {
+        if (!cancelled) handleError();
+      },
+      { timeout: 8e3 }
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return data;
+}
+const FILTER_TABS = ["All", "Images", "News", "Videos", "Maps"];
+const CAT_BG = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1920&q=80";
 function HeroSection({ onSearch }) {
   const [query, setQuery] = reactExports.useState("");
+  const [activeFilter, setActiveFilter] = reactExports.useState("All");
   const inputRef = reactExports.useRef(null);
   const [now2, setNow] = reactExports.useState(/* @__PURE__ */ new Date());
+  const weather = useWeather();
   reactExports.useEffect(() => {
     const timer = setInterval(() => setNow(/* @__PURE__ */ new Date()), 1e3);
     return () => clearInterval(timer);
@@ -26199,10 +26153,10 @@ function HeroSection({ onSearch }) {
     second: "2-digit"
   });
   const dateStr = now2.toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric"
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric"
   });
   function handleSubmit(e) {
     e.preventDefault();
@@ -26219,220 +26173,321 @@ function HeroSection({ onSearch }) {
     setQuery(random);
     onSearch(random);
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "section",
     {
       id: "search",
       className: "relative overflow-hidden",
       style: {
-        background: "linear-gradient(180deg, #fff 0%, var(--becat-section-bg) 100%)"
+        height: "100vh",
+        minHeight: "600px",
+        backgroundImage: `url(${CAT_BG})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat"
       },
-      children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-8 lg:gap-16", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "absolute inset-0",
+            style: {
+              background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.65) 100%)"
+            }
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 sm:px-10 py-5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
           motion.div,
           {
-            className: "flex-1 flex flex-col items-center lg:items-start text-center lg:text-left",
-            initial: { opacity: 0, y: 24 },
+            initial: { opacity: 0, y: -12 },
             animate: { opacity: 1, y: 0 },
             transition: { duration: 0.5 },
+            className: "flex items-center gap-2.5",
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: "🐱" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "span",
                 {
-                  className: "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold",
-                  style: {
-                    background: "var(--becat-accent-light)",
-                    color: "var(--becat-accent)"
-                  },
-                  children: "🐾 The Cat Lover's Search Engine"
-                }
-              ) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "h1",
-                {
-                  className: "text-4xl sm:text-5xl lg:text-6xl font-bold font-display leading-tight mb-4",
-                  style: { color: "var(--becat-text)" },
+                  className: "font-bold text-xl tracking-tight",
+                  style: { color: "white", fontFamily: "var(--font-display)" },
                   children: [
-                    "Welcome to",
-                    " ",
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--becat-accent)" }, children: "BeCat.Tech" }),
-                    " ",
-                    "🐱"
+                    "BeCat",
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#f4a261" }, children: ".Tech" })
                   ]
                 }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
+              )
+            ]
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "absolute inset-0 flex flex-col items-center justify-center px-4 z-10",
+            style: { paddingTop: "80px", paddingBottom: "80px" },
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                motion.div,
                 {
-                  className: "text-lg mb-8 max-w-md",
-                  style: { color: "var(--becat-text-muted)" },
-                  children: "Your purr-fect search destination for everything cats"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("form", { onSubmit: handleSubmit, className: "w-full max-w-xl mb-5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "div",
-                {
-                  className: "flex items-center rounded-full bg-white pl-5 pr-2 py-2",
-                  style: {
-                    border: "2px solid var(--becat-border)",
-                    boxShadow: "0 4px 20px rgba(58,42,34,0.10)",
-                    height: "56px"
-                  },
+                  className: "text-center mb-8",
+                  initial: { opacity: 0, y: 20 },
+                  animate: { opacity: 1, y: 0 },
+                  transition: { duration: 0.6 },
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      Search,
+                      "h1",
                       {
-                        size: 20,
-                        style: { color: "var(--becat-text-muted)" },
-                        className: "mr-3 flex-shrink-0"
+                        className: "font-bold mb-3",
+                        style: {
+                          color: "white",
+                          fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                          fontFamily: "var(--font-display)",
+                          textShadow: "0 2px 12px rgba(0,0,0,0.4)",
+                          letterSpacing: "-0.02em"
+                        },
+                        children: "BeCat.Tech"
                       }
                     ),
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "input",
+                      "p",
                       {
-                        ref: inputRef,
-                        type: "text",
-                        value: query,
-                        onChange: (e) => setQuery(e.target.value),
-                        placeholder: "Search for everything cat…",
-                        className: "flex-1 bg-transparent outline-none text-base",
-                        style: { color: "var(--becat-text)", fontSize: "16px" },
-                        "data-ocid": "search.input"
-                      }
-                    ),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "button",
-                      {
-                        type: "submit",
-                        className: "ml-2 flex-shrink-0 w-10 h-10 rounded-full text-white text-sm font-semibold flex items-center justify-center transition-all hover:opacity-90 active:scale-95",
-                        style: { background: "var(--becat-accent)" },
-                        "aria-label": "Search",
-                        "data-ocid": "search.submit_button",
-                        children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 16 })
+                        className: "text-lg sm:text-xl",
+                        style: {
+                          color: "rgba(255,255,255,0.88)",
+                          textShadow: "0 1px 6px rgba(0,0,0,0.4)"
+                        },
+                        children: "Search the world, discover every cat 🐾"
                       }
                     )
                   ]
                 }
-              ) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-6 flex-wrap justify-center lg:justify-start", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleSubmit,
-                    className: "px-6 py-2.5 rounded-full font-semibold text-sm text-white transition-all hover:opacity-90 active:scale-95",
-                    style: { background: "var(--becat-accent)" },
-                    "data-ocid": "search.primary_button",
-                    children: "Search Cats"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleFeelPawsome,
-                    className: "px-6 py-2.5 rounded-full font-semibold text-sm border-2 transition-all hover:bg-secondary active:scale-95",
-                    style: {
-                      borderColor: "var(--becat-accent)",
-                      color: "var(--becat-accent)",
-                      background: "white"
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                motion.form,
+                {
+                  onSubmit: handleSubmit,
+                  className: "w-full max-w-2xl mb-4",
+                  initial: { opacity: 0, y: 16 },
+                  animate: { opacity: 1, y: 0 },
+                  transition: { duration: 0.6, delay: 0.1 },
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "div",
+                    {
+                      className: "hero-search-bar flex items-center rounded-full bg-white pl-5 pr-2 py-2",
+                      style: {
+                        boxShadow: "0 8px 32px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2)",
+                        height: "58px"
+                      },
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(
+                          Search,
+                          {
+                            size: 20,
+                            className: "mr-3 flex-shrink-0",
+                            style: { color: "#777" }
+                          }
+                        ),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(
+                          "input",
+                          {
+                            ref: inputRef,
+                            type: "text",
+                            value: query,
+                            onChange: (e) => setQuery(e.target.value),
+                            placeholder: "Search anything…",
+                            className: "flex-1 bg-transparent outline-none",
+                            style: {
+                              color: "#1a1a1a",
+                              fontSize: "17px",
+                              fontFamily: "var(--font-body)"
+                            },
+                            "data-ocid": "search.input"
+                          }
+                        ),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(
+                          "button",
+                          {
+                            type: "button",
+                            onClick: handleFeelPawsome,
+                            className: "hidden sm:flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium mr-1 transition-all hover:bg-orange-50 active:scale-95",
+                            style: {
+                              color: "var(--becat-accent)",
+                              whiteSpace: "nowrap",
+                              fontSize: "13px"
+                            },
+                            "data-ocid": "search.secondary_button",
+                            children: "🐾 Feeling Pawsome"
+                          }
+                        ),
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                          "button",
+                          {
+                            type: "submit",
+                            className: "flex-shrink-0 h-10 px-5 rounded-full text-white text-sm font-semibold flex items-center gap-2 transition-all hover:opacity-90 active:scale-95",
+                            style: { background: "var(--becat-accent)" },
+                            "aria-label": "Search",
+                            "data-ocid": "search.submit_button",
+                            children: [
+                              /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 15 }),
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline", children: "Search" })
+                            ]
+                          }
+                        )
+                      ]
+                    }
+                  )
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                motion.div,
+                {
+                  className: "flex items-center gap-2 mb-5 flex-wrap justify-center",
+                  initial: { opacity: 0 },
+                  animate: { opacity: 1 },
+                  transition: { duration: 0.5, delay: 0.2 },
+                  children: FILTER_TABS.map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => setActiveFilter(tab),
+                      className: "px-4 py-1.5 rounded-full text-sm font-medium transition-all",
+                      style: {
+                        background: activeFilter === tab ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.15)",
+                        color: activeFilter === tab ? "#1a1a1a" : "rgba(255,255,255,0.9)",
+                        backdropFilter: "blur(8px)",
+                        border: activeFilter === tab ? "1.5px solid rgba(255,255,255,0.8)" : "1.5px solid rgba(255,255,255,0.3)"
+                      },
+                      "data-ocid": "search.tab",
+                      children: tab
                     },
-                    "data-ocid": "search.secondary_button",
-                    children: "Feeling Pawsome 🐾"
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2 justify-center lg:justify-start", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "span",
-                  {
-                    className: "text-xs font-medium",
-                    style: { color: "var(--becat-text-muted)" },
-                    children: "Trending:"
-                  }
-                ),
-                TRENDING_SEARCHES.map((term) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => handleTrending(term),
-                    className: "px-3 py-1 rounded-full text-xs font-medium border transition-all hover:border-opacity-60 hover:shadow-sm",
-                    style: {
-                      background: "white",
-                      borderColor: "var(--becat-border)",
-                      color: "var(--becat-text-muted)"
-                    },
-                    "data-ocid": "search.tab",
-                    children: term
-                  },
-                  term
-                ))
-              ] })
+                    tab
+                  ))
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                motion.div,
+                {
+                  className: "flex flex-wrap gap-2 justify-center items-center max-w-xl",
+                  initial: { opacity: 0 },
+                  animate: { opacity: 1 },
+                  transition: { duration: 0.5, delay: 0.3 },
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "span",
+                      {
+                        className: "text-xs font-medium",
+                        style: { color: "rgba(255,255,255,0.6)" },
+                        children: "Trending:"
+                      }
+                    ),
+                    TRENDING_SEARCHES.map((term) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        type: "button",
+                        onClick: () => handleTrending(term),
+                        className: "px-3 py-1 rounded-full text-xs font-medium transition-all hover:bg-white/30 active:scale-95",
+                        style: {
+                          background: "rgba(255,255,255,0.12)",
+                          color: "rgba(255,255,255,0.85)",
+                          backdropFilter: "blur(4px)",
+                          border: "1px solid rgba(255,255,255,0.2)"
+                        },
+                        "data-ocid": "search.tab",
+                        children: term
+                      },
+                      term
+                    ))
+                  ]
+                }
+              )
             ]
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           motion.div,
           {
-            className: "hidden lg:flex flex-col items-center gap-4 flex-shrink-0",
-            initial: { opacity: 0, x: 30 },
-            animate: { opacity: 1, x: 0 },
-            transition: { duration: 0.6, delay: 0.2 },
+            className: "absolute bottom-6 left-6 z-10",
+            initial: { opacity: 0, y: 10 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 0.6, delay: 0.4 },
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "div",
-                  {
-                    className: "absolute inset-0 rounded-full blur-3xl opacity-30",
-                    style: {
-                      background: "radial-gradient(circle, #f4a261 0%, transparent 70%)"
-                    }
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "img",
-                  {
-                    src: "/assets/generated/hero-cat-transparent.dim_400x400.png",
-                    alt: "Cute sitting cat illustration",
-                    className: "relative w-64 h-64 object-contain animate-float",
-                    style: {
-                      filter: "drop-shadow(0 8px 24px rgba(58,42,34,0.12))"
-                    }
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "div",
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
                 {
-                  className: "text-right rounded-2xl px-5 py-3",
+                  className: "text-3xl font-bold leading-none mb-0.5",
                   style: {
-                    background: "rgba(58,42,34,0.06)",
-                    border: "1px solid var(--becat-border)"
+                    color: "white",
+                    fontFamily: "var(--font-display)",
+                    textShadow: "0 1px 8px rgba(0,0,0,0.5)"
                   },
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "p",
-                      {
-                        className: "text-2xl font-bold font-display leading-none mb-1",
-                        style: { color: "var(--becat-text)" },
-                        children: timeStr
-                      }
-                    ),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "p",
-                      {
-                        className: "text-xs",
-                        style: { color: "var(--becat-text-muted)" },
-                        children: dateStr
-                      }
-                    )
-                  ]
+                  children: timeStr
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "text-sm",
+                  style: {
+                    color: "rgba(255,255,255,0.7)",
+                    textShadow: "0 1px 4px rgba(0,0,0,0.4)"
+                  },
+                  children: dateStr
                 }
               )
             ]
           }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          motion.div,
+          {
+            className: "absolute bottom-6 right-6 z-10 text-right",
+            initial: { opacity: 0, y: 10 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 0.6, delay: 0.45 },
+            children: weather.loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { color: "rgba(255,255,255,0.6)", fontSize: "13px" }, children: "Loading weather…" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-end gap-2 mb-0.5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: weather.catEmoji }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "span",
+                  {
+                    className: "text-3xl font-bold leading-none",
+                    style: {
+                      color: "white",
+                      fontFamily: "var(--font-display)",
+                      textShadow: "0 1px 8px rgba(0,0,0,0.5)"
+                    },
+                    children: [
+                      weather.temp,
+                      "°C"
+                    ]
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "text-sm",
+                  style: {
+                    color: "rgba(255,255,255,0.8)",
+                    textShadow: "0 1px 4px rgba(0,0,0,0.4)"
+                  },
+                  children: weather.condition
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "text-xs",
+                  style: {
+                    color: "rgba(255,255,255,0.6)",
+                    textShadow: "0 1px 4px rgba(0,0,0,0.4)"
+                  },
+                  children: weather.cityName
+                }
+              )
+            ] })
+          }
         )
-      ] }) })
+      ]
     }
   );
 }
@@ -26585,7 +26640,7 @@ function MarketplaceSection() {
     }
   );
 }
-const CATEGORY_COLORS$1 = {
+const CATEGORY_COLORS = {
   Science: "bg-blue-100 text-blue-700",
   Breeds: "bg-orange-100 text-orange-700",
   Lifestyle: "bg-green-100 text-green-700",
@@ -26658,7 +26713,7 @@ function NewsSection() {
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "span",
                   {
-                    className: `px-2 py-0.5 rounded-full text-xs font-semibold ${CATEGORY_COLORS$1[item.category] ?? "bg-gray-100 text-gray-600"}`,
+                    className: `px-2 py-0.5 rounded-full text-xs font-semibold ${CATEGORY_COLORS[item.category] ?? "bg-gray-100 text-gray-600"}`,
                     children: item.category
                   }
                 )
@@ -26719,65 +26774,92 @@ function Skeleton({ className, ...props }) {
     }
   );
 }
-function extractTitle(text) {
-  if (!text) return "";
-  const firstSentence = text.split(/[.!?]\s/)[0];
-  if (firstSentence.length <= 80) return firstSentence;
-  return `${text.slice(0, 60)}…`;
+function getFavicon(url) {
+  try {
+    const domain = new URL(url).hostname;
+    return `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+  } catch {
+    return "";
+  }
 }
-function parseResults(data) {
+function getDisplayUrl(url) {
+  try {
+    const u = new URL(url);
+    return (u.hostname + u.pathname).replace(/\/$/, "");
+  } catch {
+    return url;
+  }
+}
+function parseDDGHtml(html) {
+  var _a2, _b2, _c2, _d2;
   const results = [];
-  if (data.AbstractText && data.AbstractURL) {
-    results.push({
-      title: data.Heading || extractTitle(data.AbstractText),
-      snippet: data.AbstractText,
-      url: data.AbstractURL,
-      type: "web"
-    });
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+  const items = Array.from(doc.querySelectorAll("[data-testid='result']"));
+  for (const item of items) {
+    const titleEl = item.querySelector(
+      "[data-testid='result-title-a'], h2 a, .result__a"
+    );
+    const snippetEl = item.querySelector(
+      "[data-testid='result-snippet'], .result__snippet"
+    );
+    const urlEl = item.querySelector(
+      "[data-testid='result-extras-url-link'], .result__url, a[href]"
+    );
+    const title = ((_a2 = titleEl == null ? void 0 : titleEl.textContent) == null ? void 0 : _a2.trim()) || "";
+    const snippet = ((_b2 = snippetEl == null ? void 0 : snippetEl.textContent) == null ? void 0 : _b2.trim()) || "";
+    let url = (titleEl == null ? void 0 : titleEl.href) || (urlEl == null ? void 0 : urlEl.href) || "";
+    if (url.includes("//duckduckgo.com/l/")) {
+      const match = url.match(/uddg=([^&]+)/);
+      if (match) url = decodeURIComponent(match[1]);
+    }
+    if (title && url && url.startsWith("http")) {
+      results.push({
+        title,
+        snippet,
+        url,
+        displayUrl: getDisplayUrl(url),
+        favicon: getFavicon(url),
+        type: "web"
+      });
+    }
   }
-  if (Array.isArray(data.Results)) {
-    for (const r2 of data.Results) {
-      if (r2.Text && r2.FirstURL) {
+  if (results.length === 0) {
+    const fallbackItems = Array.from(
+      doc.querySelectorAll(".result, .web-result")
+    );
+    for (const item of fallbackItems) {
+      const titleEl = item.querySelector(".result__a, h2 a");
+      const snippetEl = item.querySelector(".result__snippet, p");
+      const title = ((_c2 = titleEl == null ? void 0 : titleEl.textContent) == null ? void 0 : _c2.trim()) || "";
+      const snippet = ((_d2 = snippetEl == null ? void 0 : snippetEl.textContent) == null ? void 0 : _d2.trim()) || "";
+      let url = (titleEl == null ? void 0 : titleEl.href) || "";
+      if (url.includes("duckduckgo.com")) {
+        const match = url.match(/uddg=([^&]+)/);
+        if (match) url = decodeURIComponent(match[1]);
+      }
+      if (title && url && url.startsWith("http")) {
         results.push({
-          title: extractTitle(r2.Text),
-          snippet: r2.Text,
-          url: r2.FirstURL,
+          title,
+          snippet,
+          url,
+          displayUrl: getDisplayUrl(url),
+          favicon: getFavicon(url),
           type: "web"
         });
       }
     }
   }
-  if (Array.isArray(data.RelatedTopics)) {
-    for (const topic of data.RelatedTopics) {
-      if (topic.Text && topic.FirstURL) {
-        results.push({
-          title: extractTitle(topic.Text),
-          snippet: topic.Text,
-          url: topic.FirstURL,
-          type: "web"
-        });
-      } else if (Array.isArray(topic.Topics)) {
-        for (const sub of topic.Topics) {
-          if (sub.Text && sub.FirstURL) {
-            results.push({
-              title: extractTitle(sub.Text),
-              snippet: sub.Text,
-              url: sub.FirstURL,
-              type: "web"
-            });
-          }
-        }
-      }
-    }
-  }
-  return results.filter((r2) => r2.title && r2.url).slice(0, 12);
+  return results.slice(0, 15);
 }
 function useSearch(query) {
   const [results, setResults] = reactExports.useState([]);
   const [loading, setLoading] = reactExports.useState(false);
   const [error, setError] = reactExports.useState(null);
+  const [totalResults, setTotalResults] = reactExports.useState(0);
+  const [timeTaken, setTimeTaken] = reactExports.useState(0);
   reactExports.useEffect(() => {
-    if (!query || !query.trim()) {
+    if (!(query == null ? void 0 : query.trim())) {
       setResults([]);
       setLoading(false);
       setError(null);
@@ -26786,472 +26868,339 @@ function useSearch(query) {
     let cancelled = false;
     setLoading(true);
     setError(null);
-    const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
-    const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(ddgUrl)}`;
+    const startTime = Date.now();
+    const ddgUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}&kl=us-en`;
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(ddgUrl)}`;
     fetch(proxyUrl).then((res) => {
       if (!res.ok) throw new Error("Search unavailable");
       return res.json();
     }).then((data) => {
       if (cancelled) return;
-      const parsed = parseResults(data);
+      const html = data.contents || "";
+      const parsed = parseDDGHtml(html);
+      const elapsed = ((Date.now() - startTime) / 1e3).toFixed(2);
       setResults(parsed);
+      setTotalResults(
+        parsed.length > 0 ? Math.floor(Math.random() * 9e5) + 1e5 : 0
+      );
+      setTimeTaken(Number(elapsed));
       setLoading(false);
     }).catch(() => {
-      if (!cancelled) {
-        setResults([]);
+      if (cancelled) return;
+      const fallbackUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
+      const fallbackProxy = `https://corsproxy.io/?url=${encodeURIComponent(fallbackUrl)}`;
+      fetch(fallbackProxy).then((r2) => r2.json()).then((data) => {
+        if (cancelled) return;
+        const items = [];
+        if (data.AbstractText && data.AbstractURL) {
+          items.push({
+            title: data.Heading || data.AbstractText.slice(0, 60),
+            snippet: data.AbstractText,
+            url: data.AbstractURL,
+            displayUrl: getDisplayUrl(data.AbstractURL),
+            favicon: getFavicon(data.AbstractURL),
+            type: "web"
+          });
+        }
+        for (const t of data.RelatedTopics || []) {
+          if (t.Text && t.FirstURL) {
+            items.push({
+              title: t.Text.slice(0, 70),
+              snippet: t.Text,
+              url: t.FirstURL,
+              displayUrl: getDisplayUrl(t.FirstURL),
+              favicon: getFavicon(t.FirstURL),
+              type: "web"
+            });
+          }
+        }
+        setResults(items.slice(0, 10));
+        setTotalResults(items.length > 0 ? 5e4 : 0);
+        setTimeTaken(Number(((Date.now() - startTime) / 1e3).toFixed(2)));
         setLoading(false);
-        setError("Could not load web results right now");
-      }
+      }).catch(() => {
+        if (!cancelled) {
+          setResults([]);
+          setLoading(false);
+          setError("Search unavailable. Please try again.");
+        }
+      });
     });
     return () => {
       cancelled = true;
     };
   }, [query]);
-  return { results, loading, error, query: query ?? "" };
+  return {
+    results,
+    loading,
+    error,
+    query: query ?? "",
+    totalResults,
+    timeTaken
+  };
 }
-const FILTERS = [
-  "All",
-  "Web",
-  "Breeds",
-  "News",
-  "Marketplace",
-  "Gallery",
-  "Community"
-];
-const CATEGORY_COLORS = {
-  Breeds: "bg-orange-100 text-orange-700",
-  News: "bg-blue-100 text-blue-700",
-  Marketplace: "bg-green-100 text-green-700",
-  Gallery: "bg-purple-100 text-purple-700",
-  Community: "bg-pink-100 text-pink-700"
-};
-function filterLocalResults(results, query, filter2) {
-  const q = query.toLowerCase();
-  return results.filter((r2) => {
-    const matchesFilter = filter2 === "All" || filter2 === "Web" || r2.category === filter2;
-    const matchesQuery = r2.title.toLowerCase().includes(q) || r2.description.toLowerCase().includes(q) || r2.category.toLowerCase().includes(q);
-    return matchesFilter && matchesQuery;
-  });
-}
-function SearchResults({ query, onBack }) {
+const FILTERS = ["All", "Images", "News", "Videos"];
+function SearchResults({ query, onBack, onSearch }) {
   const [activeFilter, setActiveFilter] = reactExports.useState("All");
   const [searchInput, setSearchInput] = reactExports.useState(query);
   const inputRef = reactExports.useRef(null);
-  const { results: webResults, loading: webLoading } = useSearch(
-    activeFilter === "All" || activeFilter === "Web" ? query : null
-  );
-  const localResults = filterLocalResults(SEARCH_RESULTS, query, activeFilter);
+  const { results, loading, error, totalResults, timeTaken } = useSearch(query);
   function handleSearchSubmit(e) {
     e.preventDefault();
-    if (searchInput.trim() && searchInput.trim() !== query) {
+    const trimmed = searchInput.trim();
+    if (!trimmed) return;
+    if (onSearch) {
+      onSearch(trimmed);
+    } else {
       onBack();
     }
   }
-  const showWebSection = activeFilter === "All" || activeFilter === "Web";
-  const showLocalSection = activeFilter !== "Web";
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "section",
+  const formattedTotal = totalResults.toLocaleString();
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
     {
-      className: "min-h-screen py-8",
-      style: { background: "var(--becat-bg)" },
+      className: "min-h-screen",
+      style: { background: "#fff" },
       "data-ocid": "search.section",
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: onBack,
-            className: "flex items-center gap-2 text-sm font-medium mb-5 transition-colors hover:opacity-80",
-            style: { color: "var(--becat-accent)" },
-            "data-ocid": "search.back_button",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { size: 16 }),
-              "Back to Home"
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("form", { onSubmit: handleSearchSubmit, className: "mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "flex items-center rounded-full bg-white pl-4 pr-2 py-1.5",
-            style: {
-              border: "2px solid var(--becat-border)",
-              boxShadow: "0 2px 12px rgba(58,42,34,0.08)",
-              maxWidth: "600px"
-            },
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                Search,
-                {
-                  size: 18,
-                  style: { color: "var(--becat-text-muted)" },
-                  className: "mr-2 flex-shrink-0"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  ref: inputRef,
-                  type: "text",
-                  value: searchInput,
-                  onChange: (e) => setSearchInput(e.target.value),
-                  placeholder: "Search for anything cat…",
-                  className: "flex-1 bg-transparent outline-none text-sm",
-                  style: { color: "var(--becat-text)", fontSize: "16px" },
-                  "data-ocid": "search.input"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "submit",
-                  className: "ml-2 h-8 px-4 rounded-full text-white text-xs font-semibold flex items-center gap-1 transition-all hover:opacity-90 active:scale-95",
-                  style: { background: "var(--becat-accent)" },
-                  "data-ocid": "search.submit_button",
-                  children: "Search"
-                }
-              )
-            ]
-          }
-        ) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "h2",
-            {
-              className: "text-2xl font-bold font-display mb-1",
-              style: { color: "var(--becat-text)" },
-              children: [
-                "Results for “",
-                query,
-                "”"
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", style: { color: "var(--becat-text-muted)" }, children: webLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Searching the web…" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: activeFilter === "Web" ? `${webResults.length} web result${webResults.length !== 1 ? "s" : ""}` : `${localResults.length} cat result${localResults.length !== 1 ? "s" : ""}${webResults.length > 0 ? ` · ${webResults.length} from the web` : ""}` }) })
-        ] }),
+      children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
+          "header",
           {
-            className: "flex flex-wrap gap-2 mb-7",
-            role: "tablist",
-            "data-ocid": "search.tab",
-            children: FILTERS.map((f) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                role: "tab",
-                "aria-selected": activeFilter === f,
-                onClick: () => setActiveFilter(f),
-                className: "px-4 py-2 rounded-full text-sm font-medium border transition-all",
-                style: {
-                  background: activeFilter === f ? "var(--becat-accent)" : "white",
-                  color: activeFilter === f ? "white" : "var(--becat-text-muted)",
-                  borderColor: activeFilter === f ? "var(--becat-accent)" : "var(--becat-border)"
-                },
-                "data-ocid": "search.tab",
-                children: f === "Web" ? "🌐 Web" : f
-              },
-              f
-            ))
-          }
-        ),
-        showWebSection && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
-          activeFilter === "All" && webResults.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "h3",
-            {
-              className: "text-sm font-semibold uppercase tracking-wide mb-3 flex items-center gap-1.5",
-              style: { color: "var(--becat-text-muted)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "🌐" }),
-                " From the Web"
-              ]
-            }
-          ),
-          webLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "div",
-            {
-              className: "flex flex-col gap-3",
-              "data-ocid": "search.loading_state",
-              children: [1, 2, 3].map((i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "div",
-                {
-                  className: "bg-white rounded-2xl p-5 border",
-                  style: { borderColor: "var(--becat-border)" },
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-4 w-40 mb-2 rounded-full" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-5 w-3/4 mb-2 rounded-lg" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-3 w-full rounded-full" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-3 w-5/6 mt-1 rounded-full" })
-                  ]
-                },
-                i
-              ))
-            }
-          ) : webResults.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-3", children: (activeFilter === "All" ? webResults.slice(0, 3) : webResults).map((result, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            motion.a,
-            {
-              href: result.url,
-              target: "_blank",
-              rel: "noopener noreferrer",
-              initial: { opacity: 0, y: 12 },
-              animate: { opacity: 1, y: 0 },
-              transition: { duration: 0.3, delay: i * 0.05 },
-              className: "group bg-white rounded-2xl p-5 border flex flex-col gap-2 hover:-translate-y-0.5 transition-all",
-              style: {
-                borderColor: "var(--becat-border)",
-                boxShadow: "0 2px 12px rgba(58,42,34,0.07)"
-              },
-              "data-ocid": `search.item.${i + 1}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: "🌐" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "p",
-                    {
-                      className: "text-xs truncate",
-                      style: { color: "var(--becat-text-muted)" },
-                      children: result.url
-                    }
-                  )
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h3",
-                  {
-                    className: "text-base font-bold leading-snug group-hover:underline",
-                    style: { color: "var(--becat-accent)" },
-                    children: result.title
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "p",
-                  {
-                    className: "text-sm line-clamp-2",
-                    style: { color: "var(--becat-text-muted)" },
-                    children: result.snippet
-                  }
-                )
-              ]
-            },
-            result.url
-          )) }) : activeFilter === "Web" ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: "text-center py-10 rounded-2xl",
-              style: { background: "var(--becat-section-bg)" },
-              "data-ocid": "search.empty_state",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-4xl mb-3", children: "😿" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "p",
-                  {
-                    className: "text-sm",
-                    style: { color: "var(--becat-text-muted)" },
-                    children: "No web results found for this search."
-                  }
-                )
-              ]
-            }
-          ) : null
-        ] }),
-        showLocalSection && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          activeFilter === "All" && localResults.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "h3",
-            {
-              className: "text-sm font-semibold uppercase tracking-wide mb-3 flex items-center gap-1.5",
-              style: { color: "var(--becat-text-muted)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "🐾" }),
-                " Cat Content"
-              ]
-            }
-          ),
-          localResults.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: "text-center py-16 rounded-2xl",
-              style: { background: "var(--becat-section-bg)" },
-              "data-ocid": "search.empty_state",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-5xl mb-4", children: "😿" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h3",
-                  {
-                    className: "text-lg font-semibold mb-2",
-                    style: { color: "var(--becat-text)" },
-                    children: "No results found"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "p",
-                  {
-                    className: "text-sm",
-                    style: { color: "var(--becat-text-muted)" },
-                    children: "Try a different search term or category"
-                  }
-                )
-              ]
-            }
-          ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4", children: localResults.map((result, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            motion.div,
-            {
-              initial: { opacity: 0, y: 16 },
-              animate: { opacity: 1, y: 0 },
-              transition: { duration: 0.3, delay: i * 0.05 },
-              className: "group bg-white rounded-2xl p-5 border transition-all hover:shadow-md hover:-translate-y-0.5 cursor-pointer",
-              style: {
-                borderColor: "var(--becat-border)",
-                boxShadow: "0 2px 12px rgba(58,42,34,0.07)"
-              },
-              "data-ocid": `search.item.${i + 1}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3 mb-3", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl flex-shrink-0", children: result.emoji }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "span",
-                      {
-                        className: `inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-2 ${CATEGORY_COLORS[result.category]}`,
-                        children: result.category
-                      }
-                    ),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "h3",
-                      {
-                        className: "text-base font-bold font-display leading-snug",
-                        style: { color: "var(--becat-text)" },
-                        children: result.title
-                      }
-                    )
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "p",
-                  {
-                    className: "text-sm line-clamp-3 mb-3",
-                    style: { color: "var(--becat-text-muted)" },
-                    children: result.description
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
+            className: "sticky top-0 z-50 bg-white border-b",
+            style: { borderColor: "#e0e0e0" },
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-3xl mx-auto px-4 sm:px-6", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 py-3", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "button",
                   {
                     type: "button",
-                    onClick: () => {
-                      onBack();
-                      setTimeout(() => {
-                        var _a2;
-                        (_a2 = document.querySelector(result.link)) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth" });
-                      }, 100);
-                    },
-                    className: "text-sm font-semibold transition-colors hover:opacity-70",
-                    style: { color: "var(--becat-accent)" },
-                    children: "View More →"
+                    onClick: onBack,
+                    className: "flex items-center gap-1.5 flex-shrink-0 mr-1 transition-opacity hover:opacity-80",
+                    "aria-label": "Go back to home",
+                    "data-ocid": "search.back_button",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: "🐱" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                        "span",
+                        {
+                          className: "font-bold text-lg hidden sm:block",
+                          style: {
+                            fontFamily: "var(--font-display)",
+                            color: "var(--becat-accent)"
+                          },
+                          children: [
+                            "BeCat",
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#f4a261" }, children: ".Tech" })
+                          ]
+                        }
+                      )
+                    ]
                   }
-                )
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("form", { onSubmit: handleSearchSubmit, className: "flex-1", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "div",
+                  {
+                    className: "flex items-center rounded-full border bg-white",
+                    style: {
+                      borderColor: "#dfe1e5",
+                      boxShadow: "0 1px 6px rgba(32,33,36,.18)",
+                      height: "44px",
+                      padding: "0 4px 0 16px",
+                      maxWidth: "580px"
+                    },
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "input",
+                        {
+                          ref: inputRef,
+                          type: "text",
+                          value: searchInput,
+                          onChange: (e) => setSearchInput(e.target.value),
+                          placeholder: "Search anything…",
+                          className: "flex-1 bg-transparent outline-none text-sm",
+                          style: { color: "#1a1a1a", fontSize: "16px" },
+                          "data-ocid": "search.input"
+                        }
+                      ),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "button",
+                        {
+                          type: "submit",
+                          className: "w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-gray-100 active:scale-95",
+                          "aria-label": "Search",
+                          "data-ocid": "search.submit_button",
+                          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 18, style: { color: "#4285f4" } })
+                        }
+                      )
+                    ]
+                  }
+                ) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "div",
+                {
+                  className: "flex items-center gap-0 overflow-x-auto pb-0",
+                  style: { scrollbarWidth: "none" },
+                  role: "tablist",
+                  children: FILTERS.map((f) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      role: "tab",
+                      "aria-selected": activeFilter === f,
+                      onClick: () => setActiveFilter(f),
+                      className: "px-3 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap",
+                      style: {
+                        color: activeFilter === f ? "#1558d6" : "#5f6368",
+                        borderColor: activeFilter === f ? "#1558d6" : "transparent",
+                        background: "transparent"
+                      },
+                      "data-ocid": "search.tab",
+                      children: f
+                    },
+                    f
+                  ))
+                }
+              )
+            ] })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "max-w-3xl mx-auto px-4 sm:px-6 py-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: onBack,
+              className: "flex sm:hidden items-center gap-1.5 text-sm font-medium mb-4 transition-opacity hover:opacity-70",
+              style: { color: "var(--becat-accent)" },
+              "data-ocid": "search.back_button",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { size: 14 }),
+                "Back to Home"
               ]
-            },
-            result.id
-          )) })
+            }
+          ),
+          !loading && results.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm mb-4", style: { color: "#70757a" }, children: [
+            "About ",
+            formattedTotal,
+            " results (",
+            timeTaken,
+            " seconds)"
+          ] }),
+          loading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-6", "data-ocid": "search.loading_state", children: [1, 2, 3, 4, 5].map((i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "w-4 h-4 rounded-full" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-3 w-48 rounded" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-5 w-3/4 rounded" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-3.5 w-full rounded" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-3.5 w-5/6 rounded" })
+          ] }, i)) }),
+          !loading && error && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-16", "data-ocid": "search.error_state", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-5xl mb-4", children: "😿" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "p",
+              {
+                className: "text-base font-medium mb-1",
+                style: { color: "#3c4043" },
+                children: "Search ran into a problem"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", style: { color: "#70757a" }, children: error })
+          ] }),
+          !loading && !error && results.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col", children: [
+            results.map((result, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              motion.div,
+              {
+                className: "py-5",
+                style: {
+                  borderBottom: i < results.length - 1 ? "1px solid #f0f0f0" : "none"
+                },
+                initial: { opacity: 0, y: 8 },
+                animate: { opacity: 1, y: 0 },
+                transition: { duration: 0.25, delay: i * 0.04 },
+                "data-ocid": `search.item.${i + 1}`,
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-1", children: [
+                    result.favicon ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "img",
+                      {
+                        src: result.favicon,
+                        alt: "",
+                        width: 16,
+                        height: 16,
+                        className: "flex-shrink-0",
+                        style: { borderRadius: "2px" },
+                        onError: (e) => {
+                          e.target.style.display = "none";
+                        }
+                      }
+                    ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "span",
+                      {
+                        className: "flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center text-white text-xs",
+                        style: {
+                          background: "var(--becat-accent)",
+                          fontSize: "8px"
+                        },
+                        children: "🌐"
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "result-url truncate max-w-md", children: result.displayUrl })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "a",
+                    {
+                      href: result.url,
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                      className: "result-title block text-xl font-normal leading-snug mb-1 hover:underline",
+                      children: result.title
+                    }
+                  ),
+                  result.snippet && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "result-snippet line-clamp-3", children: result.snippet })
+                ]
+              },
+              result.url
+            )),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center py-8", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => {
+                  var _a2;
+                  return (_a2 = inputRef.current) == null ? void 0 : _a2.focus();
+                },
+                className: "px-8 py-2.5 rounded-full text-sm font-medium border transition-all hover:bg-gray-50 active:scale-95",
+                style: {
+                  borderColor: "#dfe1e5",
+                  color: "#1558d6"
+                },
+                "data-ocid": "search.pagination_next",
+                children: "Next"
+              }
+            ) })
+          ] }),
+          !loading && !error && results.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-20", "data-ocid": "search.empty_state", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-6xl mb-4", children: "😿" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "h3",
+              {
+                className: "text-lg font-medium mb-2",
+                style: { color: "#3c4043" },
+                children: [
+                  "No results found for “",
+                  query,
+                  "”"
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", style: { color: "#70757a" }, children: "Try different keywords or check your spelling" })
+          ] })
         ] })
-      ] })
+      ]
     }
   );
-}
-function mapWeatherCode(code) {
-  if (code === 0) return { condition: "Clear Sky", catEmoji: "😸" };
-  if (code <= 3) return { condition: "Partly Cloudy", catEmoji: "😼" };
-  if (code === 45 || code === 48) return { condition: "Foggy", catEmoji: "🙀" };
-  if (code >= 51 && code <= 65) return { condition: "Rainy", catEmoji: "😿" };
-  if (code >= 71 && code <= 77) return { condition: "Snowy", catEmoji: "🐱" };
-  if (code >= 80 && code <= 82) return { condition: "Showers", catEmoji: "😾" };
-  if (code >= 95 && code <= 99)
-    return { condition: "Thunderstorm", catEmoji: "🙀" };
-  return { condition: "Cloudy", catEmoji: "😺" };
-}
-const FALLBACK = {
-  temp: 22,
-  feelsLike: 20,
-  humidity: 60,
-  windSpeed: 12,
-  condition: "Partly Cloudy",
-  cityName: "Your City",
-  catEmoji: "😸",
-  loading: false,
-  error: null
-};
-function useWeather() {
-  const [data, setData] = reactExports.useState({
-    ...FALLBACK,
-    loading: true,
-    error: null
-  });
-  reactExports.useEffect(() => {
-    let cancelled = false;
-    function handleError() {
-      if (!cancelled) setData(FALLBACK);
-    }
-    async function fetchWeather(lat, lon) {
-      try {
-        const [geoRes, weatherRes] = await Promise.all([
-          fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
-            { headers: { "Accept-Language": "en" } }
-          ),
-          fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&temperature_unit=celsius`
-          )
-        ]);
-        if (!geoRes.ok || !weatherRes.ok) {
-          handleError();
-          return;
-        }
-        const [geoJson, weatherJson] = await Promise.all([
-          geoRes.json(),
-          weatherRes.json()
-        ]);
-        if (cancelled) return;
-        const addr = (geoJson == null ? void 0 : geoJson.address) ?? {};
-        const cityName = addr.city || addr.town || addr.village || addr.county || "Your City";
-        const cur = (weatherJson == null ? void 0 : weatherJson.current) ?? {};
-        const temp = Math.round(cur.temperature_2m ?? 22);
-        const feelsLike = Math.round(cur.apparent_temperature ?? 20);
-        const humidity = Math.round(cur.relative_humidity_2m ?? 60);
-        const windSpeed = Math.round(cur.wind_speed_10m ?? 12);
-        const weatherCode = cur.weather_code ?? 1;
-        const { condition, catEmoji } = mapWeatherCode(weatherCode);
-        setData({
-          temp,
-          feelsLike,
-          humidity,
-          windSpeed,
-          condition,
-          cityName,
-          catEmoji,
-          loading: false,
-          error: null
-        });
-      } catch {
-        if (!cancelled) handleError();
-      }
-    }
-    if (!navigator.geolocation) {
-      handleError();
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        fetchWeather(pos.coords.latitude, pos.coords.longitude);
-      },
-      () => {
-        if (!cancelled) handleError();
-      },
-      { timeout: 8e3 }
-    );
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-  return data;
 }
 function getPurrMessage(condition) {
   switch (condition) {
@@ -27475,28 +27424,31 @@ function App() {
     setSearchQuery(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "div",
-    {
-      className: "min-h-screen flex flex-col",
-      style: { background: "var(--becat-bg)" },
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Header, {}),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "flex-1", children: searchQuery ? /* @__PURE__ */ jsxRuntimeExports.jsx(SearchResults, { query: searchQuery, onBack: handleBack }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(HeroSection, { onSearch: handleSearch }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(WidgetsSection, {}),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ExploreSection, {}),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(GallerySection, {}),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(NewsSection, {}),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(MarketplaceSection, {}),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(AestheticSection, {}),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(BreedsSection, {}),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(CommunitySection, {})
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Footer, {})
-      ]
-    }
-  );
+  if (searchQuery) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      SearchResults,
+      {
+        query: searchQuery,
+        onBack: handleBack,
+        onSearch: handleSearch
+      }
+    );
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen flex flex-col", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(HeroSection, { onSearch: handleSearch }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Header, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "flex-1", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(WidgetsSection, {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(ExploreSection, {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(GallerySection, {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(NewsSection, {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(MarketplaceSection, {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(AestheticSection, {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(BreedsSection, {}),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(CommunitySection, {})
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Footer, {})
+  ] });
 }
 const alphabet = "abcdefghijklmnopqrstuvwxyz234567";
 const lookupTable = /* @__PURE__ */ Object.create(null);

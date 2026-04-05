@@ -25,28 +25,33 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  if (searchQuery) {
+    return (
+      <SearchResults
+        query={searchQuery}
+        onBack={handleBack}
+        onSearch={handleSearch}
+      />
+    );
+  }
+
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "var(--becat-bg)" }}
-    >
+    <div className="min-h-screen flex flex-col">
+      {/* Hero is full-screen and handles its own branding */}
+      <HeroSection onSearch={handleSearch} />
+
+      {/* Below-the-fold sections get the sticky header for nav */}
       <Header />
+
       <main className="flex-1">
-        {searchQuery ? (
-          <SearchResults query={searchQuery} onBack={handleBack} />
-        ) : (
-          <>
-            <HeroSection onSearch={handleSearch} />
-            <WidgetsSection />
-            <ExploreSection />
-            <GallerySection />
-            <NewsSection />
-            <MarketplaceSection />
-            <AestheticSection />
-            <BreedsSection />
-            <CommunitySection />
-          </>
-        )}
+        <WidgetsSection />
+        <ExploreSection />
+        <GallerySection />
+        <NewsSection />
+        <MarketplaceSection />
+        <AestheticSection />
+        <BreedsSection />
+        <CommunitySection />
       </main>
       <Footer />
     </div>
