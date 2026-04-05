@@ -20296,152 +20296,6 @@ const MotionConfigContext = reactExports.createContext({
   isStatic: false,
   reducedMotion: "never"
 });
-function setRef$1(ref, value) {
-  if (typeof ref === "function") {
-    return ref(value);
-  } else if (ref !== null && ref !== void 0) {
-    ref.current = value;
-  }
-}
-function composeRefs$1(...refs) {
-  return (node) => {
-    let hasCleanup = false;
-    const cleanups = refs.map((ref) => {
-      const cleanup = setRef$1(ref, node);
-      if (!hasCleanup && typeof cleanup === "function") {
-        hasCleanup = true;
-      }
-      return cleanup;
-    });
-    if (hasCleanup) {
-      return () => {
-        for (let i = 0; i < cleanups.length; i++) {
-          const cleanup = cleanups[i];
-          if (typeof cleanup === "function") {
-            cleanup();
-          } else {
-            setRef$1(refs[i], null);
-          }
-        }
-      };
-    }
-  };
-}
-function useComposedRefs(...refs) {
-  return reactExports.useCallback(composeRefs$1(...refs), refs);
-}
-class PopChildMeasure extends reactExports.Component {
-  getSnapshotBeforeUpdate(prevProps) {
-    const element = this.props.childRef.current;
-    if (element && prevProps.isPresent && !this.props.isPresent && this.props.pop !== false) {
-      const parent = element.offsetParent;
-      const parentWidth = isHTMLElement(parent) ? parent.offsetWidth || 0 : 0;
-      const parentHeight = isHTMLElement(parent) ? parent.offsetHeight || 0 : 0;
-      const size = this.props.sizeRef.current;
-      size.height = element.offsetHeight || 0;
-      size.width = element.offsetWidth || 0;
-      size.top = element.offsetTop;
-      size.left = element.offsetLeft;
-      size.right = parentWidth - size.width - size.left;
-      size.bottom = parentHeight - size.height - size.top;
-    }
-    return null;
-  }
-  /**
-   * Required with getSnapshotBeforeUpdate to stop React complaining.
-   */
-  componentDidUpdate() {
-  }
-  render() {
-    return this.props.children;
-  }
-}
-function PopChild({ children, isPresent, anchorX, anchorY, root: root2, pop: pop2 }) {
-  var _a2;
-  const id2 = reactExports.useId();
-  const ref = reactExports.useRef(null);
-  const size = reactExports.useRef({
-    width: 0,
-    height: 0,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0
-  });
-  const { nonce } = reactExports.useContext(MotionConfigContext);
-  const childRef = ((_a2 = children.props) == null ? void 0 : _a2.ref) ?? (children == null ? void 0 : children.ref);
-  const composedRef = useComposedRefs(ref, childRef);
-  reactExports.useInsertionEffect(() => {
-    const { width, height, top, left, right, bottom } = size.current;
-    if (isPresent || pop2 === false || !ref.current || !width || !height)
-      return;
-    const x = anchorX === "left" ? `left: ${left}` : `right: ${right}`;
-    const y = anchorY === "bottom" ? `bottom: ${bottom}` : `top: ${top}`;
-    ref.current.dataset.motionPopId = id2;
-    const style2 = document.createElement("style");
-    if (nonce)
-      style2.nonce = nonce;
-    const parent = root2 ?? document.head;
-    parent.appendChild(style2);
-    if (style2.sheet) {
-      style2.sheet.insertRule(`
-          [data-motion-pop-id="${id2}"] {
-            position: absolute !important;
-            width: ${width}px !important;
-            height: ${height}px !important;
-            ${x}px !important;
-            ${y}px !important;
-          }
-        `);
-    }
-    return () => {
-      if (parent.contains(style2)) {
-        parent.removeChild(style2);
-      }
-    };
-  }, [isPresent]);
-  return jsxRuntimeExports.jsx(PopChildMeasure, { isPresent, childRef: ref, sizeRef: size, pop: pop2, children: pop2 === false ? children : reactExports.cloneElement(children, { ref: composedRef }) });
-}
-const PresenceChild = ({ children, initial, isPresent, onExitComplete, custom, presenceAffectsLayout, mode, anchorX, anchorY, root: root2 }) => {
-  const presenceChildren = useConstant(newChildrenMap);
-  const id2 = reactExports.useId();
-  let isReusedContext = true;
-  let context = reactExports.useMemo(() => {
-    isReusedContext = false;
-    return {
-      id: id2,
-      initial,
-      isPresent,
-      custom,
-      onExitComplete: (childId) => {
-        presenceChildren.set(childId, true);
-        for (const isComplete of presenceChildren.values()) {
-          if (!isComplete)
-            return;
-        }
-        onExitComplete && onExitComplete();
-      },
-      register: (childId) => {
-        presenceChildren.set(childId, false);
-        return () => presenceChildren.delete(childId);
-      }
-    };
-  }, [isPresent, presenceChildren, onExitComplete]);
-  if (presenceAffectsLayout && isReusedContext) {
-    context = { ...context };
-  }
-  reactExports.useMemo(() => {
-    presenceChildren.forEach((_, key) => presenceChildren.set(key, false));
-  }, [isPresent]);
-  reactExports.useEffect(() => {
-    !isPresent && !presenceChildren.size && onExitComplete && onExitComplete();
-  }, [isPresent]);
-  children = jsxRuntimeExports.jsx(PopChild, { pop: mode === "popLayout", isPresent, anchorX, anchorY, root: root2, children });
-  return jsxRuntimeExports.jsx(PresenceContext.Provider, { value: context, children });
-};
-function newChildrenMap() {
-  return /* @__PURE__ */ new Map();
-}
 function usePresence(subscribe = true) {
   const context = reactExports.useContext(PresenceContext);
   if (context === null)
@@ -20456,87 +20310,6 @@ function usePresence(subscribe = true) {
   const safeToRemove = reactExports.useCallback(() => subscribe && onExitComplete && onExitComplete(id2), [id2, onExitComplete, subscribe]);
   return !isPresent && onExitComplete ? [false, safeToRemove] : [true];
 }
-const getChildKey = (child) => child.key || "";
-function onlyElements(children) {
-  const filtered = [];
-  reactExports.Children.forEach(children, (child) => {
-    if (reactExports.isValidElement(child))
-      filtered.push(child);
-  });
-  return filtered;
-}
-const AnimatePresence = ({ children, custom, initial = true, onExitComplete, presenceAffectsLayout = true, mode = "sync", propagate = false, anchorX = "left", anchorY = "top", root: root2 }) => {
-  const [isParentPresent, safeToRemove] = usePresence(propagate);
-  const presentChildren = reactExports.useMemo(() => onlyElements(children), [children]);
-  const presentKeys = propagate && !isParentPresent ? [] : presentChildren.map(getChildKey);
-  const isInitialRender = reactExports.useRef(true);
-  const pendingPresentChildren = reactExports.useRef(presentChildren);
-  const exitComplete = useConstant(() => /* @__PURE__ */ new Map());
-  const exitingComponents = reactExports.useRef(/* @__PURE__ */ new Set());
-  const [diffedChildren, setDiffedChildren] = reactExports.useState(presentChildren);
-  const [renderedChildren, setRenderedChildren] = reactExports.useState(presentChildren);
-  useIsomorphicLayoutEffect(() => {
-    isInitialRender.current = false;
-    pendingPresentChildren.current = presentChildren;
-    for (let i = 0; i < renderedChildren.length; i++) {
-      const key = getChildKey(renderedChildren[i]);
-      if (!presentKeys.includes(key)) {
-        if (exitComplete.get(key) !== true) {
-          exitComplete.set(key, false);
-        }
-      } else {
-        exitComplete.delete(key);
-        exitingComponents.current.delete(key);
-      }
-    }
-  }, [renderedChildren, presentKeys.length, presentKeys.join("-")]);
-  const exitingChildren = [];
-  if (presentChildren !== diffedChildren) {
-    let nextChildren = [...presentChildren];
-    for (let i = 0; i < renderedChildren.length; i++) {
-      const child = renderedChildren[i];
-      const key = getChildKey(child);
-      if (!presentKeys.includes(key)) {
-        nextChildren.splice(i, 0, child);
-        exitingChildren.push(child);
-      }
-    }
-    if (mode === "wait" && exitingChildren.length) {
-      nextChildren = exitingChildren;
-    }
-    setRenderedChildren(onlyElements(nextChildren));
-    setDiffedChildren(presentChildren);
-    return null;
-  }
-  const { forceRender } = reactExports.useContext(LayoutGroupContext);
-  return jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: renderedChildren.map((child) => {
-    const key = getChildKey(child);
-    const isPresent = propagate && !isParentPresent ? false : presentChildren === renderedChildren || presentKeys.includes(key);
-    const onExit = () => {
-      if (exitingComponents.current.has(key)) {
-        return;
-      }
-      exitingComponents.current.add(key);
-      if (exitComplete.has(key)) {
-        exitComplete.set(key, true);
-      } else {
-        return;
-      }
-      let isEveryExitComplete = true;
-      exitComplete.forEach((isExitComplete) => {
-        if (!isExitComplete)
-          isEveryExitComplete = false;
-      });
-      if (isEveryExitComplete) {
-        forceRender == null ? void 0 : forceRender();
-        setRenderedChildren(pendingPresentChildren.current);
-        propagate && (safeToRemove == null ? void 0 : safeToRemove());
-        onExitComplete && onExitComplete();
-      }
-    };
-    return jsxRuntimeExports.jsx(PresenceChild, { isPresent, initial: !isInitialRender.current || initial ? void 0 : false, custom, presenceAffectsLayout, mode, root: root2, onExitComplete: isPresent ? void 0 : onExit, anchorX, anchorY, children: child }, key);
-  }) });
-};
 const LazyContext = reactExports.createContext({ strict: false });
 const featureProps = {
   animation: [
@@ -22527,37 +22300,18 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$7 = [
+const __iconNode$4 = [
   ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
   ["path", { d: "M19 12H5", key: "x3x0zl" }]
 ];
-const ArrowLeft = createLucideIcon("arrow-left", __iconNode$7);
+const ArrowLeft = createLucideIcon("arrow-left", __iconNode$4);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$6 = [
-  [
-    "path",
-    {
-      d: "M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z",
-      key: "x6xyqk"
-    }
-  ],
-  ["path", { d: "M8 14v.5", key: "1nzgdb" }],
-  ["path", { d: "M16 14v.5", key: "1lajdz" }],
-  ["path", { d: "M11.25 16.25h1.5L12 17l-.75-.75Z", key: "12kq1m" }]
-];
-const Cat = createLucideIcon("cat", __iconNode$6);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$5 = [
+const __iconNode$3 = [
   [
     "path",
     {
@@ -22566,29 +22320,7 @@ const __iconNode$5 = [
     }
   ]
 ];
-const Heart = createLucideIcon("heart", __iconNode$5);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$4 = [
-  ["path", { d: "M4 12h16", key: "1lakjw" }],
-  ["path", { d: "M4 18h16", key: "19g7jn" }],
-  ["path", { d: "M4 6h16", key: "1o0s65" }]
-];
-const Menu = createLucideIcon("menu", __iconNode$4);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$3 = [
-  ["path", { d: "M7.9 20A9 9 0 1 0 4 16.1L2 22Z", key: "vv11sd" }]
-];
-const MessageCircle = createLucideIcon("message-circle", __iconNode$3);
+const Heart = createLucideIcon("heart", __iconNode$3);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -22596,10 +22328,9 @@ const MessageCircle = createLucideIcon("message-circle", __iconNode$3);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$2 = [
-  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
-  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
+  ["path", { d: "M7.9 20A9 9 0 1 0 4 16.1L2 22Z", key: "vv11sd" }]
 ];
-const Search = createLucideIcon("search", __iconNode$2);
+const MessageCircle = createLucideIcon("message-circle", __iconNode$2);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -22607,6 +22338,17 @@ const Search = createLucideIcon("search", __iconNode$2);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$1 = [
+  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
+  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
+];
+const Search = createLucideIcon("search", __iconNode$1);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode = [
   ["circle", { cx: "8", cy: "21", r: "1", key: "jimo8o" }],
   ["circle", { cx: "19", cy: "21", r: "1", key: "13723u" }],
   [
@@ -22617,18 +22359,7 @@ const __iconNode$1 = [
     }
   ]
 ];
-const ShoppingCart = createLucideIcon("shopping-cart", __iconNode$1);
-/**
- * @license lucide-react v0.511.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode = [
-  ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
-  ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
-];
-const X = createLucideIcon("x", __iconNode);
+const ShoppingCart = createLucideIcon("shopping-cart", __iconNode);
 function CommunitySection() {
   const { ref, inView } = useInView();
   const [liked, setLiked] = reactExports.useState([]);
@@ -22831,154 +22562,6 @@ function CommunitySection() {
             ]
           }
         )
-      ] })
-    }
-  );
-}
-const EXPLORE_CARDS = [
-  {
-    id: 1,
-    emoji: "📸",
-    title: "Cat Gallery",
-    description: "Beautiful photos and illustrations from cat lovers worldwide",
-    href: "#gallery",
-    gradient: "linear-gradient(135deg, #fff3cd 0%, #f4a261 100%)"
-  },
-  {
-    id: 2,
-    emoji: "📰",
-    title: "Cat News",
-    description: "Latest stories, research, and viral cat content",
-    href: "#news",
-    gradient: "linear-gradient(135deg, #e8f4f8 0%, #b8d4e8 100%)"
-  },
-  {
-    id: 3,
-    emoji: "🛒",
-    title: "Cat Marketplace",
-    description: "Premium products curated for your beloved feline",
-    href: "#marketplace",
-    gradient: "linear-gradient(135deg, #d1fae5 0%, #6ee7b7 100%)"
-  },
-  {
-    id: 4,
-    emoji: "🎨",
-    title: "Cat Aesthetic",
-    description: "Artistic inspiration and design content for cat lovers",
-    href: "#aesthetic",
-    gradient: "linear-gradient(135deg, #f0e6ff 0%, #c9b1d9 100%)"
-  },
-  {
-    id: 5,
-    emoji: "🐈",
-    title: "Breeds Guide",
-    description: "Comprehensive info on the world's most beloved cat breeds",
-    href: "#breeds",
-    gradient: "linear-gradient(135deg, #fed7aa 0%, #ea580c 50%, #c2410c 100%)"
-  },
-  {
-    id: 6,
-    emoji: "💬",
-    title: "Community",
-    description: "Connect with cat lovers, share stories, and get advice",
-    href: "#community",
-    gradient: "linear-gradient(135deg, #fce4ec 0%, #f48fb1 100%)"
-  }
-];
-function ExploreSection() {
-  const { ref, inView } = useInView();
-  function handleScrollTo(e, href) {
-    var _a2;
-    e.preventDefault();
-    (_a2 = document.querySelector(href)) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "section",
-    {
-      ref,
-      className: "py-16",
-      style: { background: "var(--becat-section-bg)" },
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          motion.div,
-          {
-            initial: { opacity: 0, y: 20 },
-            animate: inView ? { opacity: 1, y: 0 } : {},
-            transition: { duration: 0.5 },
-            className: "text-center mb-10",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "h2",
-                {
-                  className: "text-3xl font-bold font-display",
-                  style: { color: "var(--becat-text)" },
-                  children: "Explore BeCat"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
-                {
-                  className: "mt-2 text-sm",
-                  style: { color: "var(--becat-text-muted)" },
-                  children: "Everything you need as a cat lover, in one place"
-                }
-              )
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5", children: EXPLORE_CARDS.map((card, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          motion.a,
-          {
-            href: card.href,
-            onClick: (e) => handleScrollTo(e, card.href),
-            initial: { opacity: 0, y: 20 },
-            animate: inView ? { opacity: 1, y: 0 } : {},
-            transition: { duration: 0.4, delay: i * 0.08 },
-            className: "group bg-white rounded-2xl overflow-hidden border flex flex-col transition-all hover:-translate-y-1 cursor-pointer no-underline",
-            style: {
-              borderColor: "var(--becat-border)",
-              boxShadow: "0 2px 12px rgba(58,42,34,0.07)"
-            },
-            "data-ocid": `explore.item.${i + 1}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "div",
-                {
-                  className: "h-28 flex items-center justify-center text-5xl transition-transform duration-300 group-hover:scale-110",
-                  style: { background: card.gradient },
-                  children: card.emoji
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "h3",
-                  {
-                    className: "text-base font-bold font-display mb-1",
-                    style: { color: "var(--becat-text)" },
-                    children: card.title
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "p",
-                  {
-                    className: "text-sm mb-3",
-                    style: { color: "var(--becat-text-muted)" },
-                    children: card.description
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "span",
-                  {
-                    className: "text-sm font-semibold transition-colors group-hover:opacity-70",
-                    style: { color: "var(--becat-accent)" },
-                    children: "Learn More →"
-                  }
-                )
-              ] })
-            ]
-          },
-          card.id
-        )) })
       ] })
     }
   );
@@ -25647,158 +25230,121 @@ function Separator({
     }
   );
 }
+const FOOTER_LINKS = [
+  "About",
+  "How Search Works",
+  "Privacy Policy",
+  "Terms of Service",
+  "Settings",
+  "FAQ"
+];
 function Footer() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     "footer",
     {
-      className: "py-12",
+      className: "py-12 sm:py-16",
       style: {
         background: "var(--becat-text)",
         color: "rgba(255,255,255,0.75)"
       },
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row items-center justify-between gap-8 mb-8", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "div",
-              {
-                className: "flex items-center gap-3 font-display font-bold text-2xl mb-2",
-                style: { color: "rgba(255,255,255,0.95)" },
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: "🐱" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "BeCat.Tech" })
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", style: { color: "rgba(255,255,255,0.5)" }, children: "Your purr-fect search destination" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                className: "w-10 h-10 flex items-center justify-center rounded-full transition-all hover:opacity-70 hover:bg-white/10",
-                "aria-label": "Twitter/X",
-                onClick: () => {
-                },
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "svg",
-                  {
-                    width: "24",
-                    height: "24",
-                    viewBox: "0 0 24 24",
-                    fill: "none",
-                    stroke: "currentColor",
-                    strokeWidth: "2",
-                    strokeLinecap: "round",
-                    strokeLinejoin: "round",
-                    role: "img",
-                    "aria-label": "Twitter/X",
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M4 4l16 16M20 4L4 20" })
-                  }
-                )
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                className: "w-10 h-10 flex items-center justify-center rounded-full transition-all hover:opacity-70 hover:bg-white/10",
-                "aria-label": "Instagram",
-                onClick: () => {
-                },
-                children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "svg",
-                  {
-                    width: "24",
-                    height: "24",
-                    viewBox: "0 0 24 24",
-                    fill: "none",
-                    stroke: "currentColor",
-                    strokeWidth: "2",
-                    strokeLinecap: "round",
-                    strokeLinejoin: "round",
-                    role: "img",
-                    "aria-label": "Instagram",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("rect", { x: "2", y: "2", width: "20", height: "20", rx: "5", ry: "5" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("line", { x1: "17.5", y1: "6.5", x2: "17.51", y2: "6.5" })
-                    ]
-                  }
-                )
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                className: "w-10 h-10 flex items-center justify-center rounded-full transition-all hover:opacity-70 hover:bg-white/10",
-                "aria-label": "Facebook",
-                onClick: () => {
-                },
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "svg",
-                  {
-                    width: "24",
-                    height: "24",
-                    viewBox: "0 0 24 24",
-                    fill: "none",
-                    stroke: "currentColor",
-                    strokeWidth: "2",
-                    strokeLinecap: "round",
-                    strokeLinejoin: "round",
-                    role: "img",
-                    "aria-label": "Facebook",
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" })
-                  }
-                )
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "flex flex-wrap gap-x-8 gap-y-3 mb-8", children: [
-          { label: "About", note: "Created by Shahed" },
-          { label: "How Search Works" },
-          { label: "Privacy Policy" },
-          { label: "Terms of Service" },
-          { label: "Settings" },
-          { label: "FAQ" }
-        ].map((link) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-3xl mx-auto px-5 sm:px-8", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          motion.div,
           {
-            type: "button",
-            className: "text-sm py-1 transition-colors hover:text-white",
-            style: { color: "rgba(255,255,255,0.55)" },
-            title: link.note,
-            onClick: () => {
-            },
-            children: link.label
-          },
-          link.label
-        )) }),
+            className: "text-center mb-8",
+            initial: { opacity: 0, y: 12 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true },
+            transition: { duration: 0.5 },
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2.5 mb-3", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl sm:text-4xl", children: "🐱" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "span",
+                  {
+                    className: "font-bold text-2xl sm:text-3xl tracking-tight",
+                    style: {
+                      color: "rgba(255,255,255,0.97)",
+                      fontFamily: "var(--font-display)"
+                    },
+                    children: "BeCat.Tech"
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "p",
+                {
+                  className: "text-sm sm:text-base",
+                  style: { color: "rgba(255,255,255,0.48)" },
+                  children: "Your purr-fect search destination"
+                }
+              )
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          motion.nav,
+          {
+            className: "flex flex-wrap items-center justify-center gap-x-4 gap-y-3 mb-8",
+            "aria-label": "Footer navigation",
+            initial: { opacity: 0 },
+            whileInView: { opacity: 1 },
+            viewport: { once: true },
+            transition: { duration: 0.5, delay: 0.1 },
+            children: FOOTER_LINKS.map((label, index2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "button",
+                  className: "text-sm sm:text-base font-medium transition-colors hover:text-white focus:outline-none focus-visible:text-white",
+                  style: { color: "rgba(255,255,255,0.52)" },
+                  onClick: () => {
+                  },
+                  "data-ocid": "nav.link",
+                  children: label
+                }
+              ),
+              index2 < FOOTER_LINKS.length - 1 && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
+                {
+                  className: "text-xs select-none pointer-events-none",
+                  style: { color: "rgba(255,255,255,0.18)" },
+                  "aria-hidden": "true",
+                  children: "·"
+                }
+              )
+            ] }, label))
+          }
+        ),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           Separator,
           {
-            style: { background: "rgba(255,255,255,0.12)" },
+            style: { background: "rgba(255,255,255,0.09)" },
             className: "mb-6"
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm", style: { color: "rgba(255,255,255,0.45)" }, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "a",
-            {
-              href: "https://shahed.gt.tc/",
-              target: "_blank",
-              rel: "noopener noreferrer",
-              className: "hover:text-white transition-colors font-semibold",
-              style: { color: "rgba(255,255,255,0.75)" },
-              children: "Shahed"
-            }
-          ),
-          " ",
-          "© 2026 BeCat.Tech"
-        ] }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "p",
+          {
+            className: "text-sm sm:text-base",
+            style: { color: "rgba(255,255,255,0.42)" },
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "a",
+                {
+                  href: "https://shahed.gt.tc/",
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                  className: "font-semibold transition-colors hover:text-white",
+                  style: { color: "rgba(255,255,255,0.78)" },
+                  children: "Shahed"
+                }
+              ),
+              " ",
+              "© 2026 BeCat.Tech"
+            ]
+          }
+        ) })
       ] })
     }
   );
@@ -25884,141 +25430,6 @@ function GallerySection() {
           item.id
         )) })
       ] })
-    }
-  );
-}
-const NAV_LINKS = [
-  { label: "Search", href: "#search" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "News", href: "#news" },
-  { label: "Marketplace", href: "#marketplace" },
-  { label: "Breeds", href: "#breeds" },
-  { label: "Community", href: "#community" }
-];
-function Header() {
-  const [menuOpen, setMenuOpen] = reactExports.useState(false);
-  function handleNavClick(e, href) {
-    e.preventDefault();
-    setMenuOpen(false);
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "header",
-    {
-      className: "sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b",
-      style: { borderColor: "var(--becat-border)" },
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between h-20", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              className: "flex items-center gap-3 font-display font-bold text-2xl",
-              style: { color: "var(--becat-text)" },
-              onClick: () => window.scrollTo({ top: 0, behavior: "smooth" }),
-              "data-ocid": "nav.link",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "span",
-                  {
-                    className: "flex items-center justify-center w-10 h-10 rounded-full text-white",
-                    style: { background: "var(--becat-accent)" },
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(Cat, { size: 20 })
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                  "BeCat",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "var(--becat-accent)" }, children: ".Tech" })
-                ] })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "nav",
-            {
-              className: "hidden md:flex items-center gap-2",
-              "aria-label": "Main navigation",
-              children: NAV_LINKS.map((link) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "a",
-                {
-                  href: link.href,
-                  onClick: (e) => handleNavClick(e, link.href),
-                  className: "px-5 py-3 rounded-full text-base font-medium transition-colors hover:bg-secondary",
-                  style: { color: "var(--becat-text-muted)" },
-                  "data-ocid": "nav.link",
-                  children: link.label
-                },
-                link.label
-              ))
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hidden md:flex items-center gap-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "div",
-            {
-              className: "flex items-center gap-2 text-base",
-              style: { color: "var(--becat-text-muted)" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "div",
-                  {
-                    className: "w-10 h-10 rounded-full flex items-center justify-center text-white text-base font-bold",
-                    style: { background: "var(--becat-accent)" },
-                    children: "😺"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-medium", children: "Cat Lover" })
-              ]
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              className: "md:hidden p-3 rounded-lg transition-colors",
-              style: { color: "var(--becat-text)" },
-              onClick: () => setMenuOpen(!menuOpen),
-              "aria-label": "Toggle navigation menu",
-              "data-ocid": "nav.toggle",
-              children: menuOpen ? /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 26 }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Menu, { size: 26 })
-            }
-          )
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { children: menuOpen && /* @__PURE__ */ jsxRuntimeExports.jsx(
-          motion.div,
-          {
-            initial: { opacity: 0, height: 0 },
-            animate: { opacity: 1, height: "auto" },
-            exit: { opacity: 0, height: 0 },
-            transition: { duration: 0.2 },
-            className: "md:hidden border-t overflow-hidden bg-white",
-            style: { borderColor: "var(--becat-border)" },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "nav",
-              {
-                className: "px-4 py-4 flex flex-col gap-1",
-                "aria-label": "Mobile navigation",
-                children: NAV_LINKS.map((link) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "a",
-                  {
-                    href: link.href,
-                    onClick: (e) => handleNavClick(e, link.href),
-                    className: "px-5 py-4 rounded-xl text-base font-medium transition-colors hover:bg-secondary",
-                    style: { color: "var(--becat-text)" },
-                    "data-ocid": "nav.link",
-                    children: link.label
-                  },
-                  link.label
-                ))
-              }
-            )
-          }
-        ) })
-      ]
     }
   );
 }
@@ -26179,19 +25590,19 @@ function HeroSection({ onSearch }) {
             }
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 sm:px-10 py-5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-5 sm:px-8 lg:px-12 py-5", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
           motion.div,
           {
             initial: { opacity: 0, y: -12 },
             animate: { opacity: 1, y: 0 },
             transition: { duration: 0.5 },
-            className: "flex items-center gap-3",
+            className: "flex items-center gap-2.5",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: "🐱" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "span",
                 {
-                  className: "font-bold text-2xl tracking-tight",
+                  className: "font-bold text-xl sm:text-2xl tracking-tight",
                   style: { color: "white", fontFamily: "var(--font-display)" },
                   children: [
                     "BeCat",
@@ -26205,13 +25616,13 @@ function HeroSection({ onSearch }) {
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "div",
           {
-            className: "absolute inset-0 flex flex-col items-center justify-center px-4 z-10",
-            style: { paddingTop: "80px", paddingBottom: "80px" },
+            className: "absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 z-10",
+            style: { paddingTop: "80px", paddingBottom: "100px" },
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 motion.div,
                 {
-                  className: "text-center mb-10",
+                  className: "text-center mb-8 sm:mb-10",
                   initial: { opacity: 0, y: 20 },
                   animate: { opacity: 1, y: 0 },
                   transition: { duration: 0.6 },
@@ -26219,10 +25630,10 @@ function HeroSection({ onSearch }) {
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "h1",
                       {
-                        className: "font-bold mb-4",
+                        className: "font-bold mb-3",
                         style: {
                           color: "white",
-                          fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+                          fontSize: "clamp(2.2rem, 6vw, 4.5rem)",
                           fontFamily: "var(--font-display)",
                           textShadow: "0 2px 12px rgba(0,0,0,0.4)",
                           letterSpacing: "-0.02em"
@@ -26233,7 +25644,7 @@ function HeroSection({ onSearch }) {
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "p",
                       {
-                        className: "text-xl sm:text-2xl",
+                        className: "text-lg sm:text-xl md:text-2xl",
                         style: {
                           color: "rgba(255,255,255,0.88)",
                           textShadow: "0 1px 6px rgba(0,0,0,0.4)"
@@ -26248,25 +25659,28 @@ function HeroSection({ onSearch }) {
                 motion.form,
                 {
                   onSubmit: handleSubmit,
-                  className: "w-full max-w-2xl mb-5",
+                  className: "w-full max-w-xl sm:max-w-2xl mb-5",
                   initial: { opacity: 0, y: 16 },
                   animate: { opacity: 1, y: 0 },
                   transition: { duration: 0.6, delay: 0.1 },
                   children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
                     "div",
                     {
-                      className: "hero-search-bar flex items-center rounded-full bg-white pl-6 pr-2 py-2",
+                      className: "hero-search-bar flex items-center rounded-full bg-white pl-5 sm:pl-6 pr-2 py-2",
                       style: {
-                        boxShadow: "0 8px 32px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2)",
-                        height: "72px"
+                        boxShadow: "0 8px 40px rgba(0,0,0,0.4), 0 2px 12px rgba(0,0,0,0.25)",
+                        height: "64px",
+                        border: "2px solid rgba(255,255,255,0.6)",
+                        outline: "2px solid rgba(244,162,97,0.3)",
+                        outlineOffset: "2px"
                       },
                       children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
-                          Search,
+                          "span",
                           {
-                            size: 22,
-                            className: "mr-4 flex-shrink-0",
-                            style: { color: "#777" }
+                            className: "flex-shrink-0 mr-3 sm:mr-4 flex items-center justify-center w-9 h-9 rounded-full",
+                            style: { background: "rgba(244,162,97,0.12)" },
+                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 18, style: { color: "#d4722a" } })
                           }
                         ),
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -26277,10 +25691,10 @@ function HeroSection({ onSearch }) {
                             value: query,
                             onChange: (e) => setQuery(e.target.value),
                             placeholder: "Search anything…",
-                            className: "flex-1 bg-transparent outline-none",
+                            className: "flex-1 bg-transparent outline-none min-w-0",
                             style: {
                               color: "#1a1a1a",
-                              fontSize: "20px",
+                              fontSize: "clamp(16px, 2.5vw, 19px)",
                               fontFamily: "var(--font-body)"
                             },
                             "data-ocid": "search.input"
@@ -26291,11 +25705,8 @@ function HeroSection({ onSearch }) {
                           {
                             type: "button",
                             onClick: handleFeelPawsome,
-                            className: "hidden sm:flex items-center gap-1.5 px-5 py-3 rounded-full text-base font-medium mr-2 transition-all hover:bg-orange-50 active:scale-95",
-                            style: {
-                              color: "var(--becat-accent)",
-                              whiteSpace: "nowrap"
-                            },
+                            className: "hidden sm:flex items-center gap-1.5 px-4 py-2.5 rounded-full text-[14px] font-medium mr-2 transition-all hover:bg-orange-50 active:scale-95 whitespace-nowrap",
+                            style: { color: "var(--becat-accent)" },
                             "data-ocid": "search.secondary_button",
                             children: "🐾 Feeling Pawsome"
                           }
@@ -26304,12 +25715,12 @@ function HeroSection({ onSearch }) {
                           "button",
                           {
                             type: "submit",
-                            className: "flex-shrink-0 h-12 px-7 rounded-full text-white text-base font-semibold flex items-center gap-2 transition-all hover:opacity-90 active:scale-95",
+                            className: "flex-shrink-0 h-11 px-5 sm:px-7 rounded-full text-white text-sm sm:text-base font-semibold flex items-center gap-2 transition-all hover:opacity-90 active:scale-95",
                             style: { background: "var(--becat-accent)" },
                             "aria-label": "Search",
                             "data-ocid": "search.submit_button",
                             children: [
-                              /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 17 }),
+                              /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 15 }),
                               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline", children: "Search" })
                             ]
                           }
@@ -26322,21 +25733,27 @@ function HeroSection({ onSearch }) {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 motion.div,
                 {
-                  className: "flex items-center gap-2 mb-6 flex-wrap justify-center",
+                  className: "flex items-center gap-2 sm:gap-2.5 mb-5 flex-wrap justify-center",
                   initial: { opacity: 0 },
                   animate: { opacity: 1 },
                   transition: { duration: 0.5, delay: 0.2 },
+                  role: "tablist",
+                  "aria-label": "Search filter tabs",
                   children: FILTER_TABS.map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "button",
                     {
                       type: "button",
+                      role: "tab",
+                      "aria-selected": activeFilter === tab,
                       onClick: () => setActiveFilter(tab),
-                      className: "px-6 py-2.5 rounded-full text-base font-medium transition-all",
+                      className: "px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm sm:text-base font-semibold transition-all duration-200 select-none",
                       style: {
-                        background: activeFilter === tab ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.15)",
-                        color: activeFilter === tab ? "#1a1a1a" : "rgba(255,255,255,0.9)",
-                        backdropFilter: "blur(8px)",
-                        border: activeFilter === tab ? "1.5px solid rgba(255,255,255,0.8)" : "1.5px solid rgba(255,255,255,0.3)"
+                        background: activeFilter === tab ? "rgba(255,255,255,0.97)" : "rgba(255,255,255,0.12)",
+                        color: activeFilter === tab ? "#1a1a1a" : "rgba(255,255,255,0.92)",
+                        backdropFilter: "blur(10px)",
+                        WebkitBackdropFilter: "blur(10px)",
+                        border: activeFilter === tab ? "2px solid rgba(255,255,255,0.9)" : "1.5px solid rgba(255,255,255,0.28)",
+                        boxShadow: activeFilter === tab ? "0 4px 16px rgba(0,0,0,0.18)" : "none"
                       },
                       "data-ocid": "search.tab",
                       children: tab
@@ -26348,7 +25765,7 @@ function HeroSection({ onSearch }) {
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 motion.div,
                 {
-                  className: "flex flex-wrap gap-2.5 justify-center items-center max-w-xl",
+                  className: "flex flex-wrap gap-2 sm:gap-2.5 justify-center items-center max-w-2xl px-2",
                   initial: { opacity: 0 },
                   animate: { opacity: 1 },
                   transition: { duration: 0.5, delay: 0.3 },
@@ -26356,8 +25773,11 @@ function HeroSection({ onSearch }) {
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "span",
                       {
-                        className: "text-sm font-medium",
-                        style: { color: "rgba(255,255,255,0.6)" },
+                        className: "text-sm sm:text-base font-bold tracking-wide",
+                        style: {
+                          color: "rgba(255,255,255,0.92)",
+                          textShadow: "0 1px 4px rgba(0,0,0,0.4)"
+                        },
                         children: "Trending:"
                       }
                     ),
@@ -26366,12 +25786,14 @@ function HeroSection({ onSearch }) {
                       {
                         type: "button",
                         onClick: () => handleTrending(term),
-                        className: "px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-white/30 active:scale-95",
+                        className: "px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 hover:scale-105 hover:bg-white/25 active:scale-95",
                         style: {
-                          background: "rgba(255,255,255,0.12)",
-                          color: "rgba(255,255,255,0.85)",
-                          backdropFilter: "blur(4px)",
-                          border: "1px solid rgba(255,255,255,0.2)"
+                          background: "rgba(255,255,255,0.14)",
+                          color: "rgba(255,255,255,0.93)",
+                          backdropFilter: "blur(8px)",
+                          WebkitBackdropFilter: "blur(8px)",
+                          border: "1.5px solid rgba(255,255,255,0.25)",
+                          boxShadow: "0 2px 8px rgba(0,0,0,0.15)"
                         },
                         "data-ocid": "search.tab",
                         children: term
@@ -26387,7 +25809,7 @@ function HeroSection({ onSearch }) {
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           motion.div,
           {
-            className: "absolute bottom-6 left-6 z-10",
+            className: "absolute bottom-5 sm:bottom-6 left-4 sm:left-6 z-10",
             initial: { opacity: 0, y: 10 },
             animate: { opacity: 1, y: 0 },
             transition: { duration: 0.6, delay: 0.4 },
@@ -26395,7 +25817,7 @@ function HeroSection({ onSearch }) {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "text-3xl font-bold leading-none mb-0.5",
+                  className: "text-2xl sm:text-3xl font-bold leading-none mb-0.5",
                   style: {
                     color: "white",
                     fontFamily: "var(--font-display)",
@@ -26407,7 +25829,7 @@ function HeroSection({ onSearch }) {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "text-sm",
+                  className: "text-xs sm:text-sm",
                   style: {
                     color: "rgba(255,255,255,0.7)",
                     textShadow: "0 1px 4px rgba(0,0,0,0.4)"
@@ -26421,17 +25843,17 @@ function HeroSection({ onSearch }) {
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           motion.div,
           {
-            className: "absolute bottom-6 right-6 z-10 text-right",
+            className: "absolute bottom-5 sm:bottom-6 right-4 sm:right-6 z-10 text-right",
             initial: { opacity: 0, y: 10 },
             animate: { opacity: 1, y: 0 },
             transition: { duration: 0.6, delay: 0.45 },
             children: weather.loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { color: "rgba(255,255,255,0.6)", fontSize: "14px" }, children: "Loading weather…" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-end gap-2 mb-0.5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: weather.catEmoji }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-end gap-1.5 sm:gap-2 mb-0.5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl sm:text-2xl", children: weather.catEmoji }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "span",
                   {
-                    className: "text-3xl font-bold leading-none",
+                    className: "text-2xl sm:text-3xl font-bold leading-none",
                     style: {
                       color: "white",
                       fontFamily: "var(--font-display)",
@@ -26447,23 +25869,12 @@ function HeroSection({ onSearch }) {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "text-sm",
+                  className: "text-xs sm:text-sm",
                   style: {
                     color: "rgba(255,255,255,0.8)",
                     textShadow: "0 1px 4px rgba(0,0,0,0.4)"
                   },
                   children: weather.condition
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
-                {
-                  className: "text-sm",
-                  style: {
-                    color: "rgba(255,255,255,0.6)",
-                    textShadow: "0 1px 4px rgba(0,0,0,0.4)"
-                  },
-                  children: weather.cityName
                 }
               )
             ] })
@@ -26955,7 +26366,7 @@ function SearchResults({ query, onBack, onSearch }) {
             style: { borderColor: "#e0e0e0" },
             children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-3xl mx-auto px-4 sm:px-6", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 py-3", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "button",
                   {
                     type: "button",
@@ -26963,23 +26374,7 @@ function SearchResults({ query, onBack, onSearch }) {
                     className: "flex items-center gap-1.5 flex-shrink-0 mr-1 transition-opacity hover:opacity-80",
                     "aria-label": "Go back to home",
                     "data-ocid": "search.back_button",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: "🐱" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                        "span",
-                        {
-                          className: "font-bold text-lg hidden sm:block",
-                          style: {
-                            fontFamily: "var(--font-display)",
-                            color: "var(--becat-accent)"
-                          },
-                          children: [
-                            "BeCat",
-                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#f4a261" }, children: ".Tech" })
-                          ]
-                        }
-                      )
-                    ]
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: "🐱" })
                   }
                 ),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("form", { onSubmit: handleSearchSubmit, className: "flex-1", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -27014,7 +26409,7 @@ function SearchResults({ query, onBack, onSearch }) {
                           className: "w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-gray-100 active:scale-95",
                           "aria-label": "Search",
                           "data-ocid": "search.submit_button",
-                          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 18, style: { color: "#4285f4" } })
+                          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 18, style: { color: "#f4a261" } })
                         }
                       )
                     ]
@@ -27036,8 +26431,8 @@ function SearchResults({ query, onBack, onSearch }) {
                       onClick: () => setActiveFilter(f),
                       className: "px-3 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap",
                       style: {
-                        color: activeFilter === f ? "#1558d6" : "#5f6368",
-                        borderColor: activeFilter === f ? "#1558d6" : "transparent",
+                        color: activeFilter === f ? "var(--becat-accent)" : "#5f6368",
+                        borderColor: activeFilter === f ? "var(--becat-accent)" : "transparent",
                         background: "transparent"
                       },
                       "data-ocid": "search.tab",
@@ -27159,7 +26554,7 @@ function SearchResults({ query, onBack, onSearch }) {
                 className: "px-8 py-2.5 rounded-full text-sm font-medium border transition-all hover:bg-gray-50 active:scale-95",
                 style: {
                   borderColor: "#dfe1e5",
-                  color: "#1558d6"
+                  color: "var(--becat-accent)"
                 },
                 "data-ocid": "search.pagination_next",
                 children: "Next"
@@ -27187,218 +26582,6 @@ function SearchResults({ query, onBack, onSearch }) {
     }
   );
 }
-function getPurrMessage(condition) {
-  switch (condition) {
-    case "Clear Sky":
-      return "Purr-fect day for a sunbath! ☀️";
-    case "Partly Cloudy":
-      return "Ideal for window watching 🪟";
-    case "Foggy":
-      return "Mysterious vibes, stay cozy 🌫️";
-    case "Rainy":
-      return "Curl up and purr 🌧️";
-    case "Snowy":
-      return "Snow paws! Stay warm indoors ❄️";
-    case "Showers":
-      return "Perfect nap weather 💤";
-    case "Thunderstorm":
-      return "Hide under the blanket! ⛈️";
-    default:
-      return "A good day for cat things 🐾";
-  }
-}
-function WidgetsSection() {
-  const weather = useWeather();
-  const { ref, inView } = useInView();
-  const newsItems = CAT_NEWS.slice(0, 3);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "section",
-    {
-      ref,
-      id: "widgets",
-      className: "py-10",
-      style: { background: "var(--becat-section-bg)" },
-      children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        motion.div,
-        {
-          className: "flex flex-col lg:flex-row gap-5",
-          initial: { opacity: 0, y: 20 },
-          animate: inView ? { opacity: 1, y: 0 } : {},
-          transition: { duration: 0.5 },
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "div",
-              {
-                className: "w-full lg:w-2/5 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden",
-                style: {
-                  background: "linear-gradient(135deg, oklch(96% 0.035 60) 0%, oklch(93% 0.05 55) 100%)",
-                  border: "1px solid var(--becat-border)",
-                  boxShadow: "0 4px 18px rgba(58,42,34,0.10)",
-                  minHeight: "200px"
-                },
-                "data-ocid": "widgets.card",
-                children: weather.loading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-5 w-32 rounded-full" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-12 w-24 rounded-xl" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-4 w-28 rounded-full" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-4 w-full rounded-full" })
-                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                      "p",
-                      {
-                        className: "text-xs font-semibold uppercase tracking-wide",
-                        style: { color: "var(--becat-text-muted)" },
-                        children: [
-                          "📍 ",
-                          weather.cityName
-                        ]
-                      }
-                    ) }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: weather.catEmoji })
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-1", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "span",
-                    {
-                      className: "text-5xl font-bold leading-none",
-                      style: { color: "var(--becat-text)" },
-                      children: [
-                        weather.temp,
-                        "°C"
-                      ]
-                    }
-                  ) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "p",
-                    {
-                      className: "text-sm font-semibold mb-3",
-                      style: { color: "var(--becat-accent)" },
-                      children: weather.condition
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "p",
-                    {
-                      className: "text-xs mb-3",
-                      style: { color: "var(--becat-text-muted)" },
-                      children: [
-                        "Feels like ",
-                        weather.feelsLike,
-                        "°C   💧",
-                        " ",
-                        weather.humidity,
-                        "%   🌬️ ",
-                        weather.windSpeed,
-                        " km/h"
-                      ]
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "div",
-                    {
-                      className: "flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium",
-                      style: {
-                        background: "rgba(255,255,255,0.55)",
-                        color: "var(--becat-text)"
-                      },
-                      children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(
-                          "img",
-                          {
-                            src: "/assets/generated/hero-cat-transparent.dim_400x400.png",
-                            alt: "cat",
-                            className: "w-7 h-7 object-contain flex-shrink-0"
-                          }
-                        ),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: getPurrMessage(weather.condition) })
-                      ]
-                    }
-                  )
-                ] })
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col gap-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "h2",
-                {
-                  className: "text-base font-bold font-display flex items-center gap-2",
-                  style: { color: "var(--becat-text)" },
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: "📰" }),
-                    " Today's Cat News"
-                  ]
-                }
-              ),
-              newsItems.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                motion.div,
-                {
-                  initial: { opacity: 0, x: 16 },
-                  animate: inView ? { opacity: 1, x: 0 } : {},
-                  transition: { duration: 0.4, delay: i * 0.08 },
-                  className: "bg-white rounded-xl px-4 py-3 flex items-start gap-3 border hover:shadow-md transition-all hover:-translate-y-0.5 cursor-pointer",
-                  style: {
-                    borderColor: "var(--becat-border)",
-                    boxShadow: "0 2px 8px rgba(58,42,34,0.06)"
-                  },
-                  "data-ocid": `widgets.item.${i + 1}`,
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl flex-shrink-0 mt-0.5", children: item.emoji }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(
-                        "h3",
-                        {
-                          className: "text-sm font-semibold leading-snug line-clamp-2 mb-1",
-                          style: { color: "var(--becat-text)" },
-                          children: item.title
-                        }
-                      ),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                        "div",
-                        {
-                          className: "flex items-center gap-2 text-xs",
-                          style: { color: "var(--becat-text-muted)" },
-                          children: [
-                            /* @__PURE__ */ jsxRuntimeExports.jsx(
-                              "span",
-                              {
-                                className: "px-2 py-0.5 rounded-full text-xs font-medium",
-                                style: {
-                                  background: "var(--becat-accent-light)",
-                                  color: "var(--becat-accent)"
-                                },
-                                children: item.category
-                              }
-                            ),
-                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: item.date })
-                          ]
-                        }
-                      )
-                    ] })
-                  ]
-                },
-                item.id
-              )),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: () => {
-                    var _a2;
-                    return (_a2 = document.querySelector("#news")) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth" });
-                  },
-                  className: "text-sm font-semibold self-start transition-colors hover:opacity-70",
-                  style: { color: "var(--becat-accent)" },
-                  "data-ocid": "widgets.button",
-                  children: "See all news ↓"
-                }
-              )
-            ] })
-          ]
-        }
-      ) })
-    }
-  );
-}
 function App() {
   const [searchQuery, setSearchQuery] = reactExports.useState(null);
   function handleSearch(query) {
@@ -27421,10 +26604,7 @@ function App() {
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen flex flex-col", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(HeroSection, { onSearch: handleSearch }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Header, {}),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "flex-1", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(WidgetsSection, {}),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(ExploreSection, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsx(GallerySection, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsx(NewsSection, {}),
       /* @__PURE__ */ jsxRuntimeExports.jsx(MarketplaceSection, {}),
@@ -31099,11 +30279,11 @@ function edwards(params, extraOpts = {}) {
       throw new Error("ExtendedPoint expected");
   }
   const toAffineMemo = memoized((p, iz) => {
-    const { X: X2, Y, Z } = p;
+    const { X, Y, Z } = p;
     const is0 = p.is0();
     if (iz == null)
       iz = is0 ? _8n$1 : Fp2.inv(Z);
-    const x = modP(X2 * iz);
+    const x = modP(X * iz);
     const y = modP(Y * iz);
     const zz = Fp2.mul(Z, iz);
     if (is0)
@@ -31116,25 +30296,25 @@ function edwards(params, extraOpts = {}) {
     const { a, d } = CURVE;
     if (p.is0())
       throw new Error("bad point: ZERO");
-    const { X: X2, Y, Z, T } = p;
-    const X22 = modP(X2 * X2);
+    const { X, Y, Z, T } = p;
+    const X2 = modP(X * X);
     const Y2 = modP(Y * Y);
     const Z2 = modP(Z * Z);
     const Z4 = modP(Z2 * Z2);
-    const aX2 = modP(X22 * a);
+    const aX2 = modP(X2 * a);
     const left = modP(Z2 * modP(aX2 + Y2));
-    const right = modP(Z4 + modP(d * modP(X22 * Y2)));
+    const right = modP(Z4 + modP(d * modP(X2 * Y2)));
     if (left !== right)
       throw new Error("bad point: equation left != right (1)");
-    const XY = modP(X2 * Y);
+    const XY = modP(X * Y);
     const ZT = modP(Z * T);
     if (XY !== ZT)
       throw new Error("bad point: equation left != right (2)");
     return true;
   });
   class Point {
-    constructor(X2, Y, Z, T) {
-      this.X = acoord("x", X2);
+    constructor(X, Y, Z, T) {
+      this.X = acoord("x", X);
       this.Y = acoord("y", Y);
       this.Z = acoord("z", Z, true);
       this.T = acoord("t", T);

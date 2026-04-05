@@ -48,7 +48,7 @@ export function SearchResults({ query, onBack, onSearch }: SearchResultsProps) {
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           {/* Row 1: Logo + Search bar */}
           <div className="flex items-center gap-3 py-3">
-            {/* Logo */}
+            {/* Back button (logo style) */}
             <button
               type="button"
               onClick={onBack}
@@ -57,15 +57,6 @@ export function SearchResults({ query, onBack, onSearch }: SearchResultsProps) {
               data-ocid="search.back_button"
             >
               <span className="text-xl">🐱</span>
-              <span
-                className="font-bold text-lg hidden sm:block"
-                style={{
-                  fontFamily: "var(--font-display)",
-                  color: "var(--becat-accent)",
-                }}
-              >
-                BeCat<span style={{ color: "#f4a261" }}>.Tech</span>
-              </span>
             </button>
 
             {/* Inline search bar */}
@@ -96,7 +87,7 @@ export function SearchResults({ query, onBack, onSearch }: SearchResultsProps) {
                   aria-label="Search"
                   data-ocid="search.submit_button"
                 >
-                  <Search size={18} style={{ color: "#4285f4" }} />
+                  <Search size={18} style={{ color: "#f4a261" }} />
                 </button>
               </div>
             </form>
@@ -117,8 +108,9 @@ export function SearchResults({ query, onBack, onSearch }: SearchResultsProps) {
                 onClick={() => setActiveFilter(f)}
                 className="px-3 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap"
                 style={{
-                  color: activeFilter === f ? "#1558d6" : "#5f6368",
-                  borderColor: activeFilter === f ? "#1558d6" : "transparent",
+                  color: activeFilter === f ? "var(--becat-accent)" : "#5f6368",
+                  borderColor:
+                    activeFilter === f ? "var(--becat-accent)" : "transparent",
                   background: "transparent",
                 }}
                 data-ocid="search.tab"
@@ -132,7 +124,7 @@ export function SearchResults({ query, onBack, onSearch }: SearchResultsProps) {
 
       {/* ─── Results area ─── */}
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-4">
-        {/* Back button (mobile-friendly) */}
+        {/* Back button (mobile) */}
         <button
           type="button"
           onClick={onBack}
@@ -257,7 +249,7 @@ export function SearchResults({ query, onBack, onSearch }: SearchResultsProps) {
                 className="px-8 py-2.5 rounded-full text-sm font-medium border transition-all hover:bg-gray-50 active:scale-95"
                 style={{
                   borderColor: "#dfe1e5",
-                  color: "#1558d6",
+                  color: "var(--becat-accent)",
                 }}
                 data-ocid="search.pagination_next"
               >

@@ -1,9 +1,8 @@
-import { Cat, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
 const NAV_LINKS = [
-  { label: "Search", href: "#search" },
   { label: "Gallery", href: "#gallery" },
   { label: "News", href: "#news" },
   { label: "Marketplace", href: "#marketplace" },
@@ -30,33 +29,17 @@ export function Header() {
 
   return (
     <header
-      className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b"
-      style={{ borderColor: "var(--becat-border)" }}
+      className="sticky top-0 z-50 backdrop-blur-md border-b"
+      style={{
+        background: "rgba(255,255,255,0.92)",
+        borderColor: "var(--becat-border)",
+      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Brand */}
-          <button
-            type="button"
-            className="flex items-center gap-3 font-display font-bold text-2xl"
-            style={{ color: "var(--becat-text)" }}
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            data-ocid="nav.link"
-          >
-            <span
-              className="flex items-center justify-center w-10 h-10 rounded-full text-white"
-              style={{ background: "var(--becat-accent)" }}
-            >
-              <Cat size={20} />
-            </span>
-            <span>
-              BeCat<span style={{ color: "var(--becat-accent)" }}>.Tech</span>
-            </span>
-          </button>
-
-          {/* Desktop Nav */}
+        <div className="flex items-center justify-between h-16 md:h-14">
+          {/* Desktop Nav — centered */}
           <nav
-            className="hidden md:flex items-center gap-2"
+            className="hidden md:flex items-center gap-1 flex-1 justify-center"
             aria-label="Main navigation"
           >
             {NAV_LINKS.map((link) => (
@@ -64,7 +47,7 @@ export function Header() {
                 key={link.label}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="px-5 py-3 rounded-full text-base font-medium transition-colors hover:bg-secondary"
+                className="px-5 py-2.5 rounded-full text-[15px] font-semibold tracking-wide transition-all duration-200 hover:bg-orange-50 hover:text-orange-600"
                 style={{ color: "var(--becat-text-muted)" }}
                 data-ocid="nav.link"
               >
@@ -73,33 +56,25 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Right side */}
-          <div className="hidden md:flex items-center gap-3">
-            <div
-              className="flex items-center gap-2 text-base"
+          {/* Mobile: show nav label + hamburger */}
+          <div className="md:hidden flex items-center justify-between w-full">
+            <span
+              className="text-sm font-semibold tracking-wider uppercase"
               style={{ color: "var(--becat-text-muted)" }}
             >
-              <div
-                className="w-10 h-10 rounded-full flex items-center justify-center text-white text-base font-bold"
-                style={{ background: "var(--becat-accent)" }}
-              >
-                😺
-              </div>
-              <span className="font-medium">Cat Lover</span>
-            </div>
+              Navigate
+            </span>
+            <button
+              type="button"
+              className="p-2.5 rounded-lg transition-colors hover:bg-secondary"
+              style={{ color: "var(--becat-text)" }}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle navigation menu"
+              data-ocid="nav.toggle"
+            >
+              {menuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
-
-          {/* Mobile hamburger */}
-          <button
-            type="button"
-            className="md:hidden p-3 rounded-lg transition-colors"
-            style={{ color: "var(--becat-text)" }}
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle navigation menu"
-            data-ocid="nav.toggle"
-          >
-            {menuOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
         </div>
       </div>
 
@@ -111,11 +86,14 @@ export function Header() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden border-t overflow-hidden bg-white"
-            style={{ borderColor: "var(--becat-border)" }}
+            className="md:hidden border-t overflow-hidden"
+            style={{
+              background: "rgba(255,255,255,0.97)",
+              borderColor: "var(--becat-border)",
+            }}
           >
             <nav
-              className="px-4 py-4 flex flex-col gap-1"
+              className="px-4 py-3 flex flex-col gap-1"
               aria-label="Mobile navigation"
             >
               {NAV_LINKS.map((link) => (
@@ -123,7 +101,7 @@ export function Header() {
                   key={link.label}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="px-5 py-4 rounded-xl text-base font-medium transition-colors hover:bg-secondary"
+                  className="px-5 py-3.5 rounded-xl text-base font-semibold transition-colors hover:bg-orange-50 hover:text-orange-600"
                   style={{ color: "var(--becat-text)" }}
                   data-ocid="nav.link"
                 >
