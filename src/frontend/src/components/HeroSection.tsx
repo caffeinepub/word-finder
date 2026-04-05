@@ -10,8 +10,7 @@ interface HeroSectionProps {
 
 const FILTER_TABS = ["All", "Images", "News", "Videos", "Maps"] as const;
 
-const CAT_BG =
-  "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1920&q=80";
+const CAT_BG = "/assets/generated/becat-hero-bg.dim_1920x1080.jpg";
 
 export function HeroSection({ onSearch }: HeroSectionProps) {
   const [query, setQuery] = useState("");
