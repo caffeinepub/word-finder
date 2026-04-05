@@ -98,7 +98,7 @@ body {
   background: var(--becat-bg);
   color: var(--becat-text);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -144,13 +144,13 @@ body {
 
 .result-url {
   color: #0d652d;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.3;
 }
 
 .result-snippet {
   color: #4d5156;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.58;
 }
 

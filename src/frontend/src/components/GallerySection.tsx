@@ -9,7 +9,7 @@ export function GallerySection() {
     <section
       id="gallery"
       ref={ref}
-      className="py-16"
+      className="py-24"
       style={{ background: "var(--becat-section-bg)" }}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -17,10 +17,10 @@ export function GallerySection() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10"
+          className="text-center mb-16"
         >
           <span
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3"
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold mb-4"
             style={{
               background: "var(--becat-accent-light)",
               color: "var(--becat-accent)",
@@ -29,20 +29,20 @@ export function GallerySection() {
             📸 Cat Gallery
           </span>
           <h2
-            className="text-3xl font-bold font-display"
+            className="text-4xl font-bold font-display"
             style={{ color: "var(--becat-text)" }}
           >
             Beautiful Cat Moments
           </h2>
           <p
-            className="mt-2 text-sm"
+            className="mt-3 text-base"
             style={{ color: "var(--becat-text-muted)" }}
           >
             Curated photos and illustrations from around the cat-loving world
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-5">
           {GALLERY_ITEMS.map((item, i) => (
             <motion.div
               key={item.id}
@@ -57,10 +57,10 @@ export function GallerySection() {
                 className="aspect-square flex flex-col items-center justify-center transition-transform duration-300 group-hover:scale-105"
                 style={{ background: item.gradient }}
               >
-                <span className="text-4xl mb-2">{item.emoji}</span>
+                <span className="text-6xl mb-3">{item.emoji}</span>
               </div>
               <div
-                className="absolute bottom-0 left-0 right-0 p-3 text-xs font-semibold text-white text-center"
+                className="absolute bottom-0 left-0 right-0 p-4 text-sm font-semibold text-white text-center"
                 style={{
                   background:
                     "linear-gradient(0deg, rgba(0,0,0,0.55) 0%, transparent 100%)",

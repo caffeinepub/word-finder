@@ -1,38 +1,41 @@
 # BeCat.Tech
 
 ## Current State
-A cat-themed search engine with:
-- HeroSection: split layout (text left, cat illustration right), warm cream background
-- SearchResults: mixed web results (from DDG Instant Answer API — very limited) + local cat content cards
-- useSearch hook: calls DuckDuckGo Instant Answer API via corsproxy.io — returns almost no results for most queries
-- Header: sticky nav with cat links
-- Footer: Shahed credit
-- Weather widget, news, gallery, breeds, etc.
+BeCat.Tech is a cat-themed search engine with a full-screen hero, sticky header, and multiple content sections (Gallery, News, Marketplace, Breeds, Community). The existing UI uses small text, tight spacing, small buttons, and a compact layout that makes everything feel cramped and hard to read.
 
 ## Requested Changes (Diff)
 
 ### Add
-- Full-screen Bing-style hero with a beautiful daily cat/nature background image, centered search bar, date/time overlay, weather mini-widget overlaid on hero
-- Rich real web search results using DDG HTML scraping via allorigins.win proxy (returns 10+ real blue-link results for ANY query)
-- Search suggestions/autocomplete dropdown as user types
-- Search result page: Bing/Google style — full blue link title, green URL, snippet, favicon, sponsored-like layout
-- Info bar in results: "About X results" count + time taken
-- Image creator / video creator / text creator glassmorphism buttons on hero (Bing-style)
+- Larger font sizes across all headings, body text, and labels (bump base body from 15px to 16-17px, headings from text-3xl to text-4xl/5xl)
+- More generous padding and spacing throughout every section
+- Bigger, more prominent buttons with larger text and taller hit areas
+- Merge BeCat.Tech brand + all nav links (Search, Gallery, News, Marketplace, Breeds, Community) into a single unified header bar with proper spacing
 
 ### Modify
-- useSearch hook: replace DDG Instant Answer API with DDG HTML parsing via allorigins.win proxy for richer results on ANY topic
-- HeroSection: full-screen background (cat/nature photo), centered pill search bar, transparent header overlay
-- SearchResults: full Bing/Google-style result cards (blue title link, green URL breadcrumb, snippet text, favicon)
-- Header: becomes transparent overlay on hero, turns white on scroll
+- Header: merge brand logo + nav into one horizontal bar; make nav links larger (text-base/text-lg), add more px/py padding, bigger logo text
+- HeroSection: larger h1, larger subtitle, bigger search bar (taller), bigger filter tab buttons, bigger trending chips
+- All section headers (Gallery, News, Marketplace, Breeds, Community): increase heading size to text-4xl, increase badge/label text, more top/bottom padding
+- GallerySection: bigger gallery items, larger emoji, larger caption text
+- NewsSection: larger card padding, bigger title text, bigger article emoji, bigger category badge text, bigger "Learn More" button
+- MarketplaceSection: taller product image area, bigger product name/price, bigger Add to Cart button with more padding
+- BreedsSection: bigger breed cards, larger emoji avatar, larger breed name, bigger trait tags
+- CommunitySection: bigger post cards, larger author avatar, bigger title and body text, bigger Like/Reply buttons, bigger CTA button
+- Footer: larger text, more spacing between links
+- All small text labels (xs → sm), all button padding increased, all card internal padding increased
 
 ### Remove
-- Split hero layout (text-left, cat-right)
-- Local cat content cards in search results (replace with real web results)
-- Separate "Web" vs local filter (simplify to type filters: All, Images, News, Videos)
+- Nothing removed
 
 ## Implementation Plan
-1. Upgrade useSearch hook with DDG HTML parsing via allorigins proxy for real results
-2. Rebuild HeroSection as full-screen Bing-style with background image, centered search
-3. Redesign SearchResults to Google/Bing style (blue links, green URLs, snippets, favicons)
-4. Update Header to be transparent over hero, white on scroll
-5. Validate and deploy
+1. Rework Header to merge BeCat.Tech brand + nav links into one unified bar with text-base nav links, larger logo, more padding
+2. Bump HeroSection search bar height, font sizes, filter tab and trending button padding
+3. Increase all section py from py-16 to py-24, mb-10 to mb-14 in section headers
+4. Increase all h2 headings from text-3xl to text-4xl
+5. Increase all card internal padding (p-4→p-6, p-5→p-7, p-6→p-8)
+6. Increase all button padding and font sizes
+7. Bump body text from text-sm to text-base, and xs labels to text-sm throughout
+8. Make gallery items taller, emoji bigger
+9. Bigger Marketplace product image area (h-36→h-48), bigger Add button
+10. Bigger Breeds card avatar (w-16→w-20), bigger name text
+11. Community posts: bigger avatar, bigger text, bigger action buttons
+12. Footer: bigger text, more link spacing

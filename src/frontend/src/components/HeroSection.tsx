@@ -84,11 +84,11 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex items-center gap-2.5"
+          className="flex items-center gap-3"
         >
-          <span className="text-2xl">🐱</span>
+          <span className="text-3xl">🐱</span>
           <span
-            className="font-bold text-xl tracking-tight"
+            className="font-bold text-2xl tracking-tight"
             style={{ color: "white", fontFamily: "var(--font-display)" }}
           >
             BeCat<span style={{ color: "#f4a261" }}>.Tech</span>
@@ -103,16 +103,16 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
       >
         {/* Brand heading */}
         <motion.div
-          className="text-center mb-8"
+          className="text-center mb-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <h1
-            className="font-bold mb-3"
+            className="font-bold mb-4"
             style={{
               color: "white",
-              fontSize: "clamp(2rem, 5vw, 3.5rem)",
+              fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
               fontFamily: "var(--font-display)",
               textShadow: "0 2px 12px rgba(0,0,0,0.4)",
               letterSpacing: "-0.02em",
@@ -121,7 +121,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
             BeCat.Tech
           </h1>
           <p
-            className="text-lg sm:text-xl"
+            className="text-xl sm:text-2xl"
             style={{
               color: "rgba(255,255,255,0.88)",
               textShadow: "0 1px 6px rgba(0,0,0,0.4)",
@@ -134,22 +134,22 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
         {/* Search bar */}
         <motion.form
           onSubmit={handleSubmit}
-          className="w-full max-w-2xl mb-4"
+          className="w-full max-w-2xl mb-5"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           <div
-            className="hero-search-bar flex items-center rounded-full bg-white pl-5 pr-2 py-2"
+            className="hero-search-bar flex items-center rounded-full bg-white pl-6 pr-2 py-2"
             style={{
               boxShadow:
                 "0 8px 32px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2)",
-              height: "58px",
+              height: "72px",
             }}
           >
             <Search
-              size={20}
-              className="mr-3 flex-shrink-0"
+              size={22}
+              className="mr-4 flex-shrink-0"
               style={{ color: "#777" }}
             />
             <input
@@ -161,7 +161,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
               className="flex-1 bg-transparent outline-none"
               style={{
                 color: "#1a1a1a",
-                fontSize: "17px",
+                fontSize: "20px",
                 fontFamily: "var(--font-body)",
               }}
               data-ocid="search.input"
@@ -169,11 +169,10 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
             <button
               type="button"
               onClick={handleFeelPawsome}
-              className="hidden sm:flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium mr-1 transition-all hover:bg-orange-50 active:scale-95"
+              className="hidden sm:flex items-center gap-1.5 px-5 py-3 rounded-full text-base font-medium mr-2 transition-all hover:bg-orange-50 active:scale-95"
               style={{
                 color: "var(--becat-accent)",
                 whiteSpace: "nowrap",
-                fontSize: "13px",
               }}
               data-ocid="search.secondary_button"
             >
@@ -181,12 +180,12 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
             </button>
             <button
               type="submit"
-              className="flex-shrink-0 h-10 px-5 rounded-full text-white text-sm font-semibold flex items-center gap-2 transition-all hover:opacity-90 active:scale-95"
+              className="flex-shrink-0 h-12 px-7 rounded-full text-white text-base font-semibold flex items-center gap-2 transition-all hover:opacity-90 active:scale-95"
               style={{ background: "var(--becat-accent)" }}
               aria-label="Search"
               data-ocid="search.submit_button"
             >
-              <Search size={15} />
+              <Search size={17} />
               <span className="hidden sm:inline">Search</span>
             </button>
           </div>
@@ -194,7 +193,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
 
         {/* Filter tabs */}
         <motion.div
-          className="flex items-center gap-2 mb-5 flex-wrap justify-center"
+          className="flex items-center gap-2 mb-6 flex-wrap justify-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -204,7 +203,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
               key={tab}
               type="button"
               onClick={() => setActiveFilter(tab)}
-              className="px-4 py-1.5 rounded-full text-sm font-medium transition-all"
+              className="px-6 py-2.5 rounded-full text-base font-medium transition-all"
               style={{
                 background:
                   activeFilter === tab
@@ -227,13 +226,13 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
 
         {/* Trending searches */}
         <motion.div
-          className="flex flex-wrap gap-2 justify-center items-center max-w-xl"
+          className="flex flex-wrap gap-2.5 justify-center items-center max-w-xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <span
-            className="text-xs font-medium"
+            className="text-sm font-medium"
             style={{ color: "rgba(255,255,255,0.6)" }}
           >
             Trending:
@@ -243,7 +242,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
               key={term}
               type="button"
               onClick={() => handleTrending(term)}
-              className="px-3 py-1 rounded-full text-xs font-medium transition-all hover:bg-white/30 active:scale-95"
+              className="px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-white/30 active:scale-95"
               style={{
                 background: "rgba(255,255,255,0.12)",
                 color: "rgba(255,255,255,0.85)",
@@ -294,7 +293,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
         transition={{ duration: 0.6, delay: 0.45 }}
       >
         {weather.loading ? (
-          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "13px" }}>
+          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "14px" }}>
             Loading weather…
           </div>
         ) : (
@@ -322,7 +321,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
               {weather.condition}
             </p>
             <p
-              className="text-xs"
+              className="text-sm"
               style={{
                 color: "rgba(255,255,255,0.6)",
                 textShadow: "0 1px 4px rgba(0,0,0,0.4)",

@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 export function Footer() {
   return (
     <footer
-      className="py-8"
+      className="py-12"
       style={{
         background: "var(--becat-text)",
         color: "rgba(255,255,255,0.75)",
@@ -11,17 +11,17 @@ export function Footer() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top row */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-6">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-8 mb-8">
           {/* Brand */}
           <div>
             <div
-              className="flex items-center gap-2 font-display font-bold text-lg mb-1"
+              className="flex items-center gap-3 font-display font-bold text-2xl mb-2"
               style={{ color: "rgba(255,255,255,0.95)" }}
             >
-              <span>🐱</span>
+              <span className="text-2xl">🐱</span>
               <span>BeCat.Tech</span>
             </div>
-            <p className="text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>
+            <p className="text-sm" style={{ color: "rgba(255,255,255,0.5)" }}>
               Your purr-fect search destination
             </p>
           </div>
@@ -31,13 +31,13 @@ export function Footer() {
             {/* Twitter/X */}
             <button
               type="button"
-              className="transition-opacity hover:opacity-70"
+              className="w-10 h-10 flex items-center justify-center rounded-full transition-all hover:opacity-70 hover:bg-white/10"
               aria-label="Twitter/X"
               onClick={() => {}}
             >
               <svg
-                width="18"
-                height="18"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -53,13 +53,13 @@ export function Footer() {
             {/* Instagram */}
             <button
               type="button"
-              className="transition-opacity hover:opacity-70"
+              className="w-10 h-10 flex items-center justify-center rounded-full transition-all hover:opacity-70 hover:bg-white/10"
               aria-label="Instagram"
               onClick={() => {}}
             >
               <svg
-                width="18"
-                height="18"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -77,13 +77,13 @@ export function Footer() {
             {/* Facebook */}
             <button
               type="button"
-              className="transition-opacity hover:opacity-70"
+              className="w-10 h-10 flex items-center justify-center rounded-full transition-all hover:opacity-70 hover:bg-white/10"
               aria-label="Facebook"
               onClick={() => {}}
             >
               <svg
-                width="18"
-                height="18"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -100,7 +100,7 @@ export function Footer() {
         </div>
 
         {/* Nav links */}
-        <nav className="flex flex-wrap gap-x-6 gap-y-2 mb-6">
+        <nav className="flex flex-wrap gap-x-8 gap-y-3 mb-8">
           {[
             { label: "About", note: "Created by Shahed" },
             { label: "How Search Works" },
@@ -112,7 +112,7 @@ export function Footer() {
             <button
               key={link.label}
               type="button"
-              className="text-xs transition-colors hover:text-white"
+              className="text-sm py-1 transition-colors hover:text-white"
               style={{ color: "rgba(255,255,255,0.55)" }}
               title={link.note}
               onClick={() => {}}
@@ -124,12 +124,12 @@ export function Footer() {
 
         <Separator
           style={{ background: "rgba(255,255,255,0.12)" }}
-          className="mb-5"
+          className="mb-6"
         />
 
         {/* Copyright */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>
+        <div className="flex items-center justify-center">
+          <p className="text-sm" style={{ color: "rgba(255,255,255,0.45)" }}>
             <a
               href="https://shahed.gt.tc/"
               target="_blank"
@@ -140,18 +140,6 @@ export function Footer() {
               Shahed
             </a>{" "}
             © 2026 BeCat.Tech
-          </p>
-          <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>
-            Built with ❤️ using{" "}
-            <a
-              href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "becat.tech")}`}
-              className="hover:opacity-80 transition-opacity"
-              style={{ color: "rgba(255,255,255,0.45)" }}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              caffeine.ai
-            </a>
           </p>
         </div>
       </div>

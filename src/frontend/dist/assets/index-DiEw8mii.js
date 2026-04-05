@@ -22311,7 +22311,7 @@ function BreedsSection() {
     {
       id: "breeds",
       ref,
-      className: "py-16",
+      className: "py-24",
       style: { background: "var(--becat-section-bg)" },
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -22320,12 +22320,12 @@ function BreedsSection() {
             initial: { opacity: 0, y: 20 },
             animate: inView ? { opacity: 1, y: 0 } : {},
             transition: { duration: 0.5 },
-            className: "text-center mb-10",
+            className: "text-center mb-16",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "span",
                 {
-                  className: "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3",
+                  className: "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold mb-4",
                   style: {
                     background: "var(--becat-accent-light)",
                     color: "var(--becat-accent)"
@@ -22336,7 +22336,7 @@ function BreedsSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "h2",
                 {
-                  className: "text-3xl font-bold font-display",
+                  className: "text-4xl font-bold font-display",
                   style: { color: "var(--becat-text)" },
                   children: "Cat Breeds Guide"
                 }
@@ -22344,7 +22344,7 @@ function BreedsSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "mt-2 text-sm",
+                  className: "mt-3 text-base",
                   style: { color: "var(--becat-text-muted)" },
                   children: "Discover the world's most beloved cat breeds"
                 }
@@ -22352,20 +22352,20 @@ function BreedsSection() {
             ]
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5", children: CAT_BREEDS.map((breed, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6", children: CAT_BREEDS.map((breed, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
           motion.div,
           {
             initial: { opacity: 0, y: 20 },
             animate: inView ? { opacity: 1, y: 0 } : {},
             transition: { duration: 0.4, delay: i * 0.07 },
-            className: `group bg-white rounded-2xl p-5 border-2 flex flex-col gap-3 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-card ${breed.color}`,
+            className: `group bg-white rounded-2xl p-7 border-2 flex flex-col gap-4 cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-card ${breed.color}`,
             style: { boxShadow: "0 2px 12px rgba(58,42,34,0.07)" },
             "data-ocid": `breeds.item.${i + 1}`,
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "div",
                 {
-                  className: `w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto ${breed.color}`,
+                  className: `w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto ${breed.color}`,
                   children: breed.emoji
                 }
               ),
@@ -22373,7 +22373,7 @@ function BreedsSection() {
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "h3",
                   {
-                    className: "text-base font-bold font-display",
+                    className: "text-xl font-bold font-display",
                     style: { color: "var(--becat-text)" },
                     children: breed.name
                   }
@@ -22381,7 +22381,7 @@ function BreedsSection() {
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "p",
                   {
-                    className: "text-xs mt-0.5",
+                    className: "text-sm mt-1",
                     style: { color: "var(--becat-text-muted)" },
                     children: breed.origin
                   }
@@ -22390,7 +22390,7 @@ function BreedsSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "text-xs text-center font-medium",
+                  className: "text-sm text-center font-medium",
                   style: { color: "var(--becat-text-muted)" },
                   children: breed.temperament
                 }
@@ -22398,14 +22398,14 @@ function BreedsSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center gap-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "span",
                 {
-                  className: `px-2 py-0.5 rounded-full text-xs font-semibold ${SIZE_COLORS[breed.size]}`,
+                  className: `px-3 py-1 rounded-full text-sm font-semibold ${SIZE_COLORS[breed.size]}`,
                   children: breed.size
                 }
               ) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1 justify-center", children: breed.traits.map((trait) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-1.5 justify-center", children: breed.traits.map((trait) => /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "span",
                 {
-                  className: "px-2 py-0.5 rounded-full text-xs",
+                  className: "px-3 py-1 rounded-full text-sm",
                   style: {
                     background: "var(--becat-accent-light)",
                     color: "var(--becat-accent)"
@@ -22650,7 +22650,7 @@ function CommunitySection() {
     {
       id: "community",
       ref,
-      className: "py-16",
+      className: "py-24",
       style: { background: "var(--becat-bg)" },
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -22659,12 +22659,12 @@ function CommunitySection() {
             initial: { opacity: 0, y: 20 },
             animate: inView ? { opacity: 1, y: 0 } : {},
             transition: { duration: 0.5 },
-            className: "text-center mb-10",
+            className: "text-center mb-16",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "span",
                 {
-                  className: "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3",
+                  className: "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold mb-4",
                   style: {
                     background: "var(--becat-accent-light)",
                     color: "var(--becat-accent)"
@@ -22675,7 +22675,7 @@ function CommunitySection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "h2",
                 {
-                  className: "text-3xl font-bold font-display",
+                  className: "text-4xl font-bold font-display",
                   style: { color: "var(--becat-text)" },
                   children: "Cat Lover Community"
                 }
@@ -22683,7 +22683,7 @@ function CommunitySection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "mt-2 text-sm",
+                  className: "mt-3 text-base",
                   style: { color: "var(--becat-text-muted)" },
                   children: "Share your stories, ask questions, and connect with fellow cat enthusiasts"
                 }
@@ -22691,13 +22691,13 @@ function CommunitySection() {
             ]
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-4 mb-8", children: COMMUNITY_POSTS.map((post, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-5 mb-10", children: COMMUNITY_POSTS.map((post, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
           motion.article,
           {
             initial: { opacity: 0, x: -16 },
             animate: inView ? { opacity: 1, x: 0 } : {},
             transition: { duration: 0.4, delay: i * 0.08 },
-            className: "bg-white rounded-2xl p-5 sm:p-6 border flex flex-col sm:flex-row gap-4 transition-all hover:shadow-card",
+            className: "bg-white rounded-2xl p-7 sm:p-8 border flex flex-col sm:flex-row gap-5 transition-all hover:shadow-card",
             style: {
               borderColor: "var(--becat-border)",
               boxShadow: "0 2px 12px rgba(58,42,34,0.06)"
@@ -22707,16 +22707,16 @@ function CommunitySection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "div",
                 {
-                  className: "w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold text-white",
+                  className: "w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold text-white",
                   style: { background: "var(--becat-accent)" },
                   children: post.emoji
                 }
               ) }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-start justify-between gap-2 mb-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-start justify-between gap-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "h3",
                   {
-                    className: "text-base font-bold font-display leading-snug",
+                    className: "text-xl font-bold font-display leading-snug",
                     style: { color: "var(--becat-text)" },
                     children: post.title
                   }
@@ -22724,7 +22724,7 @@ function CommunitySection() {
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "p",
                   {
-                    className: "text-sm line-clamp-2 mb-3",
+                    className: "text-base line-clamp-2 mb-4",
                     style: { color: "var(--becat-text-muted)" },
                     children: post.excerpt
                   }
@@ -22733,7 +22733,7 @@ function CommunitySection() {
                   /* @__PURE__ */ jsxRuntimeExports.jsxs(
                     "span",
                     {
-                      className: "text-xs font-semibold",
+                      className: "text-sm font-semibold",
                       style: { color: "var(--becat-text-muted)" },
                       children: [
                         "@",
@@ -22744,18 +22744,18 @@ function CommunitySection() {
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "span",
                     {
-                      className: "text-xs",
+                      className: "text-sm",
                       style: { color: "var(--becat-text-muted)" },
                       children: post.date
                     }
                   ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 ml-auto", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 ml-auto", children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsxs(
                       "button",
                       {
                         type: "button",
                         onClick: () => handleLike(post.id),
-                        className: "flex items-center gap-1.5 text-xs font-medium transition-all active:scale-90",
+                        className: "flex items-center gap-2 text-sm font-medium transition-all active:scale-90",
                         style: {
                           color: liked.includes(post.id) ? "#e11d48" : "var(--becat-text-muted)"
                         },
@@ -22764,7 +22764,7 @@ function CommunitySection() {
                           /* @__PURE__ */ jsxRuntimeExports.jsx(
                             Heart,
                             {
-                              size: 14,
+                              size: 18,
                               fill: liked.includes(post.id) ? "#e11d48" : "none",
                               className: "transition-transform active:scale-125"
                             }
@@ -22777,10 +22777,10 @@ function CommunitySection() {
                       "button",
                       {
                         type: "button",
-                        className: "flex items-center gap-1.5 text-xs font-medium",
+                        className: "flex items-center gap-2 text-sm font-medium",
                         style: { color: "var(--becat-text-muted)" },
                         children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsx(MessageCircle, { size: 14 }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(MessageCircle, { size: 18 }),
                           "Reply"
                         ]
                       }
@@ -22798,14 +22798,14 @@ function CommunitySection() {
             initial: { opacity: 0, y: 20 },
             animate: inView ? { opacity: 1, y: 0 } : {},
             transition: { duration: 0.5, delay: 0.4 },
-            className: "text-center rounded-3xl p-8",
+            className: "text-center rounded-3xl p-12",
             style: { background: "var(--becat-section-bg)" },
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-4xl mb-3", children: "🐾" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-5xl mb-4", children: "🐾" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "h3",
                 {
-                  className: "text-xl font-bold font-display mb-2",
+                  className: "text-2xl font-bold font-display mb-3",
                   style: { color: "var(--becat-text)" },
                   children: "Join the Cat Lover Community"
                 }
@@ -22813,7 +22813,7 @@ function CommunitySection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "text-sm mb-5",
+                  className: "text-base mb-7",
                   style: { color: "var(--becat-text-muted)" },
                   children: "Share your cat stories, get advice, and connect with thousands of cat enthusiasts"
                 }
@@ -22822,7 +22822,7 @@ function CommunitySection() {
                 "button",
                 {
                   type: "button",
-                  className: "px-8 py-3 rounded-full font-semibold text-sm text-white transition-all hover:opacity-90 active:scale-95",
+                  className: "px-10 py-4 rounded-full font-semibold text-base text-white transition-all hover:opacity-90 active:scale-95",
                   style: { background: "var(--becat-accent)" },
                   "data-ocid": "community.primary_button",
                   children: "Join the Community 🐱"
@@ -25651,41 +25651,41 @@ function Footer() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     "footer",
     {
-      className: "py-8",
+      className: "py-12",
       style: {
         background: "var(--becat-text)",
         color: "rgba(255,255,255,0.75)"
       },
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row items-center justify-between gap-6 mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row items-center justify-between gap-8 mb-8", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "div",
               {
-                className: "flex items-center gap-2 font-display font-bold text-lg mb-1",
+                className: "flex items-center gap-3 font-display font-bold text-2xl mb-2",
                 style: { color: "rgba(255,255,255,0.95)" },
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "🐱" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: "🐱" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "BeCat.Tech" })
                 ]
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs", style: { color: "rgba(255,255,255,0.5)" }, children: "Your purr-fect search destination" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", style: { color: "rgba(255,255,255,0.5)" }, children: "Your purr-fect search destination" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 type: "button",
-                className: "transition-opacity hover:opacity-70",
+                className: "w-10 h-10 flex items-center justify-center rounded-full transition-all hover:opacity-70 hover:bg-white/10",
                 "aria-label": "Twitter/X",
                 onClick: () => {
                 },
                 children: /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "svg",
                   {
-                    width: "18",
-                    height: "18",
+                    width: "24",
+                    height: "24",
                     viewBox: "0 0 24 24",
                     fill: "none",
                     stroke: "currentColor",
@@ -25703,15 +25703,15 @@ function Footer() {
               "button",
               {
                 type: "button",
-                className: "transition-opacity hover:opacity-70",
+                className: "w-10 h-10 flex items-center justify-center rounded-full transition-all hover:opacity-70 hover:bg-white/10",
                 "aria-label": "Instagram",
                 onClick: () => {
                 },
                 children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "svg",
                   {
-                    width: "18",
-                    height: "18",
+                    width: "24",
+                    height: "24",
                     viewBox: "0 0 24 24",
                     fill: "none",
                     stroke: "currentColor",
@@ -25733,15 +25733,15 @@ function Footer() {
               "button",
               {
                 type: "button",
-                className: "transition-opacity hover:opacity-70",
+                className: "w-10 h-10 flex items-center justify-center rounded-full transition-all hover:opacity-70 hover:bg-white/10",
                 "aria-label": "Facebook",
                 onClick: () => {
                 },
                 children: /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "svg",
                   {
-                    width: "18",
-                    height: "18",
+                    width: "24",
+                    height: "24",
                     viewBox: "0 0 24 24",
                     fill: "none",
                     stroke: "currentColor",
@@ -25757,7 +25757,7 @@ function Footer() {
             )
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "flex flex-wrap gap-x-6 gap-y-2 mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { className: "flex flex-wrap gap-x-8 gap-y-3 mb-8", children: [
           { label: "About", note: "Created by Shahed" },
           { label: "How Search Works" },
           { label: "Privacy Policy" },
@@ -25768,7 +25768,7 @@ function Footer() {
           "button",
           {
             type: "button",
-            className: "text-xs transition-colors hover:text-white",
+            className: "text-sm py-1 transition-colors hover:text-white",
             style: { color: "rgba(255,255,255,0.55)" },
             title: link.note,
             onClick: () => {
@@ -25781,41 +25781,24 @@ function Footer() {
           Separator,
           {
             style: { background: "rgba(255,255,255,0.12)" },
-            className: "mb-5"
+            className: "mb-6"
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row items-center justify-between gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs", style: { color: "rgba(255,255,255,0.45)" }, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "a",
-              {
-                href: "https://shahed.gt.tc/",
-                target: "_blank",
-                rel: "noopener noreferrer",
-                className: "hover:text-white transition-colors font-semibold",
-                style: { color: "rgba(255,255,255,0.75)" },
-                children: "Shahed"
-              }
-            ),
-            " ",
-            "© 2026 BeCat.Tech"
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs", style: { color: "rgba(255,255,255,0.35)" }, children: [
-            "Built with ❤️ using",
-            " ",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "a",
-              {
-                href: `https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== "undefined" ? window.location.hostname : "becat.tech")}`,
-                className: "hover:opacity-80 transition-opacity",
-                style: { color: "rgba(255,255,255,0.45)" },
-                target: "_blank",
-                rel: "noopener noreferrer",
-                children: "caffeine.ai"
-              }
-            )
-          ] })
-        ] })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm", style: { color: "rgba(255,255,255,0.45)" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "a",
+            {
+              href: "https://shahed.gt.tc/",
+              target: "_blank",
+              rel: "noopener noreferrer",
+              className: "hover:text-white transition-colors font-semibold",
+              style: { color: "rgba(255,255,255,0.75)" },
+              children: "Shahed"
+            }
+          ),
+          " ",
+          "© 2026 BeCat.Tech"
+        ] }) })
       ] })
     }
   );
@@ -25827,7 +25810,7 @@ function GallerySection() {
     {
       id: "gallery",
       ref,
-      className: "py-16",
+      className: "py-24",
       style: { background: "var(--becat-section-bg)" },
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -25836,12 +25819,12 @@ function GallerySection() {
             initial: { opacity: 0, y: 20 },
             animate: inView ? { opacity: 1, y: 0 } : {},
             transition: { duration: 0.5 },
-            className: "text-center mb-10",
+            className: "text-center mb-16",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "span",
                 {
-                  className: "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3",
+                  className: "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold mb-4",
                   style: {
                     background: "var(--becat-accent-light)",
                     color: "var(--becat-accent)"
@@ -25852,7 +25835,7 @@ function GallerySection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "h2",
                 {
-                  className: "text-3xl font-bold font-display",
+                  className: "text-4xl font-bold font-display",
                   style: { color: "var(--becat-text)" },
                   children: "Beautiful Cat Moments"
                 }
@@ -25860,7 +25843,7 @@ function GallerySection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "mt-2 text-sm",
+                  className: "mt-3 text-base",
                   style: { color: "var(--becat-text-muted)" },
                   children: "Curated photos and illustrations from around the cat-loving world"
                 }
@@ -25868,7 +25851,7 @@ function GallerySection() {
             ]
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4", children: GALLERY_ITEMS.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 sm:grid-cols-3 gap-5", children: GALLERY_ITEMS.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
           motion.div,
           {
             initial: { opacity: 0, scale: 0.95 },
@@ -25883,13 +25866,13 @@ function GallerySection() {
                 {
                   className: "aspect-square flex flex-col items-center justify-center transition-transform duration-300 group-hover:scale-105",
                   style: { background: item.gradient },
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-4xl mb-2", children: item.emoji })
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-6xl mb-3", children: item.emoji })
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "div",
                 {
-                  className: "absolute bottom-0 left-0 right-0 p-3 text-xs font-semibold text-white text-center",
+                  className: "absolute bottom-0 left-0 right-0 p-4 text-sm font-semibold text-white text-center",
                   style: {
                     background: "linear-gradient(0deg, rgba(0,0,0,0.55) 0%, transparent 100%)"
                   },
@@ -25930,12 +25913,12 @@ function Header() {
       className: "sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b",
       style: { borderColor: "var(--becat-border)" },
       children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between h-16", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between h-20", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
               type: "button",
-              className: "flex items-center gap-2 font-display font-bold text-xl",
+              className: "flex items-center gap-3 font-display font-bold text-2xl",
               style: { color: "var(--becat-text)" },
               onClick: () => window.scrollTo({ top: 0, behavior: "smooth" }),
               "data-ocid": "nav.link",
@@ -25943,9 +25926,9 @@ function Header() {
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "span",
                   {
-                    className: "flex items-center justify-center w-8 h-8 rounded-full text-white text-sm",
+                    className: "flex items-center justify-center w-10 h-10 rounded-full text-white",
                     style: { background: "var(--becat-accent)" },
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(Cat, { size: 16 })
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(Cat, { size: 20 })
                   }
                 ),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
@@ -25958,14 +25941,14 @@ function Header() {
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "nav",
             {
-              className: "hidden md:flex items-center gap-1",
+              className: "hidden md:flex items-center gap-2",
               "aria-label": "Main navigation",
               children: NAV_LINKS.map((link) => /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "a",
                 {
                   href: link.href,
                   onClick: (e) => handleNavClick(e, link.href),
-                  className: "px-4 py-2 rounded-full text-sm font-medium transition-colors hover:bg-secondary",
+                  className: "px-5 py-3 rounded-full text-base font-medium transition-colors hover:bg-secondary",
                   style: { color: "var(--becat-text-muted)" },
                   "data-ocid": "nav.link",
                   children: link.label
@@ -25977,13 +25960,13 @@ function Header() {
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hidden md:flex items-center gap-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "div",
             {
-              className: "flex items-center gap-2 text-sm",
+              className: "flex items-center gap-2 text-base",
               style: { color: "var(--becat-text-muted)" },
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "div",
                   {
-                    className: "w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold",
+                    className: "w-10 h-10 rounded-full flex items-center justify-center text-white text-base font-bold",
                     style: { background: "var(--becat-accent)" },
                     children: "😺"
                   }
@@ -25996,12 +25979,12 @@ function Header() {
             "button",
             {
               type: "button",
-              className: "md:hidden p-2 rounded-lg transition-colors",
+              className: "md:hidden p-3 rounded-lg transition-colors",
               style: { color: "var(--becat-text)" },
               onClick: () => setMenuOpen(!menuOpen),
               "aria-label": "Toggle navigation menu",
               "data-ocid": "nav.toggle",
-              children: menuOpen ? /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 22 }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Menu, { size: 22 })
+              children: menuOpen ? /* @__PURE__ */ jsxRuntimeExports.jsx(X, { size: 26 }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Menu, { size: 26 })
             }
           )
         ] }) }),
@@ -26017,14 +26000,14 @@ function Header() {
             children: /* @__PURE__ */ jsxRuntimeExports.jsx(
               "nav",
               {
-                className: "px-4 py-3 flex flex-col gap-1",
+                className: "px-4 py-4 flex flex-col gap-1",
                 "aria-label": "Mobile navigation",
                 children: NAV_LINKS.map((link) => /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "a",
                   {
                     href: link.href,
                     onClick: (e) => handleNavClick(e, link.href),
-                    className: "px-4 py-3 rounded-xl text-sm font-medium transition-colors hover:bg-secondary",
+                    className: "px-5 py-4 rounded-xl text-base font-medium transition-colors hover:bg-secondary",
                     style: { color: "var(--becat-text)" },
                     "data-ocid": "nav.link",
                     children: link.label
@@ -26202,13 +26185,13 @@ function HeroSection({ onSearch }) {
             initial: { opacity: 0, y: -12 },
             animate: { opacity: 1, y: 0 },
             transition: { duration: 0.5 },
-            className: "flex items-center gap-2.5",
+            className: "flex items-center gap-3",
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: "🐱" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: "🐱" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "span",
                 {
-                  className: "font-bold text-xl tracking-tight",
+                  className: "font-bold text-2xl tracking-tight",
                   style: { color: "white", fontFamily: "var(--font-display)" },
                   children: [
                     "BeCat",
@@ -26228,7 +26211,7 @@ function HeroSection({ onSearch }) {
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 motion.div,
                 {
-                  className: "text-center mb-8",
+                  className: "text-center mb-10",
                   initial: { opacity: 0, y: 20 },
                   animate: { opacity: 1, y: 0 },
                   transition: { duration: 0.6 },
@@ -26236,10 +26219,10 @@ function HeroSection({ onSearch }) {
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "h1",
                       {
-                        className: "font-bold mb-3",
+                        className: "font-bold mb-4",
                         style: {
                           color: "white",
-                          fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                          fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
                           fontFamily: "var(--font-display)",
                           textShadow: "0 2px 12px rgba(0,0,0,0.4)",
                           letterSpacing: "-0.02em"
@@ -26250,7 +26233,7 @@ function HeroSection({ onSearch }) {
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "p",
                       {
-                        className: "text-lg sm:text-xl",
+                        className: "text-xl sm:text-2xl",
                         style: {
                           color: "rgba(255,255,255,0.88)",
                           textShadow: "0 1px 6px rgba(0,0,0,0.4)"
@@ -26265,24 +26248,24 @@ function HeroSection({ onSearch }) {
                 motion.form,
                 {
                   onSubmit: handleSubmit,
-                  className: "w-full max-w-2xl mb-4",
+                  className: "w-full max-w-2xl mb-5",
                   initial: { opacity: 0, y: 16 },
                   animate: { opacity: 1, y: 0 },
                   transition: { duration: 0.6, delay: 0.1 },
                   children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
                     "div",
                     {
-                      className: "hero-search-bar flex items-center rounded-full bg-white pl-5 pr-2 py-2",
+                      className: "hero-search-bar flex items-center rounded-full bg-white pl-6 pr-2 py-2",
                       style: {
                         boxShadow: "0 8px 32px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2)",
-                        height: "58px"
+                        height: "72px"
                       },
                       children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
                           Search,
                           {
-                            size: 20,
-                            className: "mr-3 flex-shrink-0",
+                            size: 22,
+                            className: "mr-4 flex-shrink-0",
                             style: { color: "#777" }
                           }
                         ),
@@ -26297,7 +26280,7 @@ function HeroSection({ onSearch }) {
                             className: "flex-1 bg-transparent outline-none",
                             style: {
                               color: "#1a1a1a",
-                              fontSize: "17px",
+                              fontSize: "20px",
                               fontFamily: "var(--font-body)"
                             },
                             "data-ocid": "search.input"
@@ -26308,11 +26291,10 @@ function HeroSection({ onSearch }) {
                           {
                             type: "button",
                             onClick: handleFeelPawsome,
-                            className: "hidden sm:flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium mr-1 transition-all hover:bg-orange-50 active:scale-95",
+                            className: "hidden sm:flex items-center gap-1.5 px-5 py-3 rounded-full text-base font-medium mr-2 transition-all hover:bg-orange-50 active:scale-95",
                             style: {
                               color: "var(--becat-accent)",
-                              whiteSpace: "nowrap",
-                              fontSize: "13px"
+                              whiteSpace: "nowrap"
                             },
                             "data-ocid": "search.secondary_button",
                             children: "🐾 Feeling Pawsome"
@@ -26322,12 +26304,12 @@ function HeroSection({ onSearch }) {
                           "button",
                           {
                             type: "submit",
-                            className: "flex-shrink-0 h-10 px-5 rounded-full text-white text-sm font-semibold flex items-center gap-2 transition-all hover:opacity-90 active:scale-95",
+                            className: "flex-shrink-0 h-12 px-7 rounded-full text-white text-base font-semibold flex items-center gap-2 transition-all hover:opacity-90 active:scale-95",
                             style: { background: "var(--becat-accent)" },
                             "aria-label": "Search",
                             "data-ocid": "search.submit_button",
                             children: [
-                              /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 15 }),
+                              /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 17 }),
                               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline", children: "Search" })
                             ]
                           }
@@ -26340,7 +26322,7 @@ function HeroSection({ onSearch }) {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 motion.div,
                 {
-                  className: "flex items-center gap-2 mb-5 flex-wrap justify-center",
+                  className: "flex items-center gap-2 mb-6 flex-wrap justify-center",
                   initial: { opacity: 0 },
                   animate: { opacity: 1 },
                   transition: { duration: 0.5, delay: 0.2 },
@@ -26349,7 +26331,7 @@ function HeroSection({ onSearch }) {
                     {
                       type: "button",
                       onClick: () => setActiveFilter(tab),
-                      className: "px-4 py-1.5 rounded-full text-sm font-medium transition-all",
+                      className: "px-6 py-2.5 rounded-full text-base font-medium transition-all",
                       style: {
                         background: activeFilter === tab ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.15)",
                         color: activeFilter === tab ? "#1a1a1a" : "rgba(255,255,255,0.9)",
@@ -26366,7 +26348,7 @@ function HeroSection({ onSearch }) {
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 motion.div,
                 {
-                  className: "flex flex-wrap gap-2 justify-center items-center max-w-xl",
+                  className: "flex flex-wrap gap-2.5 justify-center items-center max-w-xl",
                   initial: { opacity: 0 },
                   animate: { opacity: 1 },
                   transition: { duration: 0.5, delay: 0.3 },
@@ -26374,7 +26356,7 @@ function HeroSection({ onSearch }) {
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "span",
                       {
-                        className: "text-xs font-medium",
+                        className: "text-sm font-medium",
                         style: { color: "rgba(255,255,255,0.6)" },
                         children: "Trending:"
                       }
@@ -26384,7 +26366,7 @@ function HeroSection({ onSearch }) {
                       {
                         type: "button",
                         onClick: () => handleTrending(term),
-                        className: "px-3 py-1 rounded-full text-xs font-medium transition-all hover:bg-white/30 active:scale-95",
+                        className: "px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-white/30 active:scale-95",
                         style: {
                           background: "rgba(255,255,255,0.12)",
                           color: "rgba(255,255,255,0.85)",
@@ -26443,7 +26425,7 @@ function HeroSection({ onSearch }) {
             initial: { opacity: 0, y: 10 },
             animate: { opacity: 1, y: 0 },
             transition: { duration: 0.6, delay: 0.45 },
-            children: weather.loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { color: "rgba(255,255,255,0.6)", fontSize: "13px" }, children: "Loading weather…" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            children: weather.loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { color: "rgba(255,255,255,0.6)", fontSize: "14px" }, children: "Loading weather…" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-end gap-2 mb-0.5", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: weather.catEmoji }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -26476,7 +26458,7 @@ function HeroSection({ onSearch }) {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "text-xs",
+                  className: "text-sm",
                   style: {
                     color: "rgba(255,255,255,0.6)",
                     textShadow: "0 1px 4px rgba(0,0,0,0.4)"
@@ -26504,7 +26486,7 @@ function MarketplaceSection() {
     {
       id: "marketplace",
       ref,
-      className: "py-16",
+      className: "py-24",
       style: { background: "var(--becat-section-bg)" },
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -26513,12 +26495,12 @@ function MarketplaceSection() {
             initial: { opacity: 0, y: 20 },
             animate: inView ? { opacity: 1, y: 0 } : {},
             transition: { duration: 0.5 },
-            className: "text-center mb-10",
+            className: "text-center mb-16",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "span",
                 {
-                  className: "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3",
+                  className: "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold mb-4",
                   style: {
                     background: "var(--becat-accent-light)",
                     color: "var(--becat-accent)"
@@ -26529,7 +26511,7 @@ function MarketplaceSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "h2",
                 {
-                  className: "text-3xl font-bold font-display",
+                  className: "text-4xl font-bold font-display",
                   style: { color: "var(--becat-text)" },
                   children: "Shop for Your Cat"
                 }
@@ -26537,7 +26519,7 @@ function MarketplaceSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "mt-2 text-sm",
+                  className: "mt-3 text-base",
                   style: { color: "var(--becat-text-muted)" },
                   children: "Premium products curated for discerning cat owners"
                 }
@@ -26545,7 +26527,7 @@ function MarketplaceSection() {
             ]
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5", children: PRODUCTS.map((product, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6", children: PRODUCTS.map((product, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
           motion.div,
           {
             initial: { opacity: 0, y: 20 },
@@ -26561,14 +26543,14 @@ function MarketplaceSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "div",
                 {
-                  className: "h-36 flex items-center justify-center text-5xl relative",
+                  className: "h-52 flex items-center justify-center text-6xl relative",
                   style: { background: "var(--becat-section-bg)" },
                   children: [
                     product.emoji,
                     product.badge && /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "span",
                       {
-                        className: "absolute top-3 right-3 px-2 py-0.5 rounded-full text-xs font-bold text-white",
+                        className: "absolute top-3 right-3 px-3 py-1 rounded-full text-sm font-bold text-white",
                         style: { background: "var(--becat-accent)" },
                         children: product.badge
                       }
@@ -26576,11 +26558,11 @@ function MarketplaceSection() {
                   ]
                 }
               ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 flex flex-col flex-1 gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 flex flex-col flex-1 gap-3", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "span",
                   {
-                    className: "text-xs font-semibold px-2 py-0.5 rounded-full self-start",
+                    className: "text-sm font-semibold px-3 py-1 rounded-full self-start",
                     style: {
                       background: "var(--becat-accent-light)",
                       color: "var(--becat-accent)"
@@ -26591,7 +26573,7 @@ function MarketplaceSection() {
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "h3",
                   {
-                    className: "text-sm font-bold font-display leading-snug",
+                    className: "text-base font-bold font-display leading-snug",
                     style: { color: "var(--becat-text)" },
                     children: product.name
                   }
@@ -26599,7 +26581,7 @@ function MarketplaceSection() {
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "p",
                   {
-                    className: "text-xs line-clamp-2 flex-1",
+                    className: "text-sm line-clamp-2 flex-1",
                     style: { color: "var(--becat-text-muted)" },
                     children: product.description
                   }
@@ -26608,7 +26590,7 @@ function MarketplaceSection() {
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "span",
                     {
-                      className: "text-lg font-bold",
+                      className: "text-2xl font-bold",
                       style: { color: "var(--becat-text)" },
                       children: product.price
                     }
@@ -26618,15 +26600,15 @@ function MarketplaceSection() {
                     {
                       type: "button",
                       onClick: () => handleAddToCart(product.id),
-                      className: "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all active:scale-95",
+                      className: "flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all active:scale-95",
                       style: {
                         background: added.includes(product.id) ? "var(--becat-accent)" : "var(--becat-accent-light)",
                         color: added.includes(product.id) ? "white" : "var(--becat-accent)"
                       },
                       "data-ocid": `marketplace.button.${i + 1}`,
                       children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { size: 12 }),
-                        added.includes(product.id) ? "Added!" : "Add"
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(ShoppingCart, { size: 14 }),
+                        added.includes(product.id) ? "Added!" : "Add to Cart"
                       ]
                     }
                   )
@@ -26654,7 +26636,7 @@ function NewsSection() {
     {
       id: "news",
       ref,
-      className: "py-16",
+      className: "py-24",
       style: { background: "var(--becat-bg)" },
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -26663,12 +26645,12 @@ function NewsSection() {
             initial: { opacity: 0, y: 20 },
             animate: inView ? { opacity: 1, y: 0 } : {},
             transition: { duration: 0.5 },
-            className: "text-center mb-10",
+            className: "text-center mb-16",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "span",
                 {
-                  className: "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3",
+                  className: "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold mb-4",
                   style: {
                     background: "var(--becat-accent-light)",
                     color: "var(--becat-accent)"
@@ -26679,7 +26661,7 @@ function NewsSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "h2",
                 {
-                  className: "text-3xl font-bold font-display",
+                  className: "text-4xl font-bold font-display",
                   style: { color: "var(--becat-text)" },
                   children: "Latest Cat Stories"
                 }
@@ -26687,7 +26669,7 @@ function NewsSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "mt-2 text-sm",
+                  className: "mt-3 text-base",
                   style: { color: "var(--becat-text-muted)" },
                   children: "Stay up to date with the purr-fect world of cats"
                 }
@@ -26695,13 +26677,13 @@ function NewsSection() {
             ]
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5", children: CAT_NEWS.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6", children: CAT_NEWS.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
           motion.article,
           {
             initial: { opacity: 0, y: 20 },
             animate: inView ? { opacity: 1, y: 0 } : {},
             transition: { duration: 0.4, delay: i * 0.08 },
-            className: "group bg-white rounded-2xl p-6 border flex flex-col gap-3 cursor-pointer transition-all hover:-translate-y-0.5",
+            className: "group bg-white rounded-2xl p-7 border flex flex-col gap-4 cursor-pointer transition-all hover:-translate-y-0.5",
             style: {
               borderColor: "var(--becat-border)",
               boxShadow: "0 2px 12px rgba(58,42,34,0.07)"
@@ -26709,11 +26691,11 @@ function NewsSection() {
             "data-ocid": `news.item.${i + 1}`,
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-3", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: item.emoji }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-4xl", children: item.emoji }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
                   "span",
                   {
-                    className: `px-2 py-0.5 rounded-full text-xs font-semibold ${CATEGORY_COLORS[item.category] ?? "bg-gray-100 text-gray-600"}`,
+                    className: `px-3 py-1 rounded-full text-sm font-semibold ${CATEGORY_COLORS[item.category] ?? "bg-gray-100 text-gray-600"}`,
                     children: item.category
                   }
                 )
@@ -26721,7 +26703,7 @@ function NewsSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "h3",
                 {
-                  className: "text-base font-bold font-display leading-snug group-hover:opacity-80 transition-opacity",
+                  className: "text-xl font-bold font-display leading-snug group-hover:opacity-80 transition-opacity",
                   style: { color: "var(--becat-text)" },
                   children: item.title
                 }
@@ -26729,7 +26711,7 @@ function NewsSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "p",
                 {
-                  className: "text-sm line-clamp-3 flex-1",
+                  className: "text-base line-clamp-3 flex-1",
                   style: { color: "var(--becat-text-muted)" },
                   children: item.summary
                 }
@@ -26737,7 +26719,7 @@ function NewsSection() {
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "div",
                 {
-                  className: "flex items-center justify-between pt-2 border-t text-xs",
+                  className: "flex items-center justify-between pt-3 border-t text-sm",
                   style: {
                     borderColor: "var(--becat-border)",
                     color: "var(--becat-text-muted)"
@@ -26748,8 +26730,11 @@ function NewsSection() {
                       "button",
                       {
                         type: "button",
-                        className: "font-semibold transition-colors hover:opacity-70",
-                        style: { color: "var(--becat-accent)" },
+                        className: "text-sm font-semibold px-4 py-1.5 rounded-full border transition-all hover:opacity-80 active:scale-95",
+                        style: {
+                          color: "var(--becat-accent)",
+                          borderColor: "var(--becat-accent)"
+                        },
                         children: "Learn More"
                       }
                     )

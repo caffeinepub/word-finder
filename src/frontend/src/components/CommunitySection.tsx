@@ -26,7 +26,7 @@ export function CommunitySection() {
     <section
       id="community"
       ref={ref}
-      className="py-16"
+      className="py-24"
       style={{ background: "var(--becat-bg)" }}
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,10 +34,10 @@ export function CommunitySection() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10"
+          className="text-center mb-16"
         >
           <span
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3"
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold mb-4"
             style={{
               background: "var(--becat-accent-light)",
               color: "var(--becat-accent)",
@@ -46,13 +46,13 @@ export function CommunitySection() {
             💬 Community
           </span>
           <h2
-            className="text-3xl font-bold font-display"
+            className="text-4xl font-bold font-display"
             style={{ color: "var(--becat-text)" }}
           >
             Cat Lover Community
           </h2>
           <p
-            className="mt-2 text-sm"
+            className="mt-3 text-base"
             style={{ color: "var(--becat-text-muted)" }}
           >
             Share your stories, ask questions, and connect with fellow cat
@@ -60,14 +60,14 @@ export function CommunitySection() {
           </p>
         </motion.div>
 
-        <div className="flex flex-col gap-4 mb-8">
+        <div className="flex flex-col gap-5 mb-10">
           {COMMUNITY_POSTS.map((post, i) => (
             <motion.article
               key={post.id}
               initial={{ opacity: 0, x: -16 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="bg-white rounded-2xl p-5 sm:p-6 border flex flex-col sm:flex-row gap-4 transition-all hover:shadow-card"
+              className="bg-white rounded-2xl p-7 sm:p-8 border flex flex-col sm:flex-row gap-5 transition-all hover:shadow-card"
               style={{
                 borderColor: "var(--becat-border)",
                 boxShadow: "0 2px 12px rgba(58,42,34,0.06)",
@@ -77,7 +77,7 @@ export function CommunitySection() {
               {/* Author avatar */}
               <div className="flex-shrink-0">
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold text-white"
+                  className="w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold text-white"
                   style={{ background: "var(--becat-accent)" }}
                 >
                   {post.emoji}
@@ -86,38 +86,38 @@ export function CommunitySection() {
 
               {/* Content */}
               <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2 mb-1">
+                <div className="flex items-start justify-between gap-2 mb-2">
                   <h3
-                    className="text-base font-bold font-display leading-snug"
+                    className="text-xl font-bold font-display leading-snug"
                     style={{ color: "var(--becat-text)" }}
                   >
                     {post.title}
                   </h3>
                 </div>
                 <p
-                  className="text-sm line-clamp-2 mb-3"
+                  className="text-base line-clamp-2 mb-4"
                   style={{ color: "var(--becat-text-muted)" }}
                 >
                   {post.excerpt}
                 </p>
                 <div className="flex items-center gap-4">
                   <span
-                    className="text-xs font-semibold"
+                    className="text-sm font-semibold"
                     style={{ color: "var(--becat-text-muted)" }}
                   >
                     @{post.author}
                   </span>
                   <span
-                    className="text-xs"
+                    className="text-sm"
                     style={{ color: "var(--becat-text-muted)" }}
                   >
                     {post.date}
                   </span>
-                  <div className="flex items-center gap-3 ml-auto">
+                  <div className="flex items-center gap-4 ml-auto">
                     <button
                       type="button"
                       onClick={() => handleLike(post.id)}
-                      className="flex items-center gap-1.5 text-xs font-medium transition-all active:scale-90"
+                      className="flex items-center gap-2 text-sm font-medium transition-all active:scale-90"
                       style={{
                         color: liked.includes(post.id)
                           ? "#e11d48"
@@ -126,7 +126,7 @@ export function CommunitySection() {
                       data-ocid={`community.toggle.${i + 1}`}
                     >
                       <Heart
-                        size={14}
+                        size={18}
                         fill={liked.includes(post.id) ? "#e11d48" : "none"}
                         className="transition-transform active:scale-125"
                       />
@@ -134,10 +134,10 @@ export function CommunitySection() {
                     </button>
                     <button
                       type="button"
-                      className="flex items-center gap-1.5 text-xs font-medium"
+                      className="flex items-center gap-2 text-sm font-medium"
                       style={{ color: "var(--becat-text-muted)" }}
                     >
-                      <MessageCircle size={14} />
+                      <MessageCircle size={18} />
                       Reply
                     </button>
                   </div>
@@ -152,18 +152,18 @@ export function CommunitySection() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center rounded-3xl p-8"
+          className="text-center rounded-3xl p-12"
           style={{ background: "var(--becat-section-bg)" }}
         >
-          <div className="text-4xl mb-3">🐾</div>
+          <div className="text-5xl mb-4">🐾</div>
           <h3
-            className="text-xl font-bold font-display mb-2"
+            className="text-2xl font-bold font-display mb-3"
             style={{ color: "var(--becat-text)" }}
           >
             Join the Cat Lover Community
           </h3>
           <p
-            className="text-sm mb-5"
+            className="text-base mb-7"
             style={{ color: "var(--becat-text-muted)" }}
           >
             Share your cat stories, get advice, and connect with thousands of
@@ -171,7 +171,7 @@ export function CommunitySection() {
           </p>
           <button
             type="button"
-            className="px-8 py-3 rounded-full font-semibold text-sm text-white transition-all hover:opacity-90 active:scale-95"
+            className="px-10 py-4 rounded-full font-semibold text-base text-white transition-all hover:opacity-90 active:scale-95"
             style={{ background: "var(--becat-accent)" }}
             data-ocid="community.primary_button"
           >
