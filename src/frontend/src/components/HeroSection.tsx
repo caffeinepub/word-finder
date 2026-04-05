@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { TRENDING_SEARCHES } from "@/data/catData";
 import { Search } from "lucide-react";
 import { motion } from "motion/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface HeroSectionProps {
   onSearch: (query: string) => void;
@@ -11,6 +11,24 @@ interface HeroSectionProps {
 export function HeroSection({ onSearch }: HeroSectionProps) {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const timeStr = now.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  const dateStr = now.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -167,9 +185,9 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
             </div>
           </motion.div>
 
-          {/* Right: Cat illustration */}
+          {/* Right: Cat illustration + live clock */}
           <motion.div
-            className="hidden lg:block flex-shrink-0"
+            className="hidden lg:flex flex-col items-center gap-4 flex-shrink-0"
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -185,11 +203,33 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
               <img
                 src="/assets/generated/hero-cat-transparent.dim_400x400.png"
                 alt="Cute sitting cat illustration"
-                className="relative w-72 h-72 object-contain animate-float"
+                className="relative w-64 h-64 object-contain animate-float"
                 style={{
                   filter: "drop-shadow(0 8px 24px rgba(58,42,34,0.12))",
                 }}
               />
+            </div>
+
+            {/* Live clock */}
+            <div
+              className="text-right rounded-2xl px-5 py-3"
+              style={{
+                background: "rgba(58,42,34,0.06)",
+                border: "1px solid var(--becat-border)",
+              }}
+            >
+              <p
+                className="text-2xl font-bold font-display leading-none mb-1"
+                style={{ color: "var(--becat-text)" }}
+              >
+                {timeStr}
+              </p>
+              <p
+                className="text-xs"
+                style={{ color: "var(--becat-text-muted)" }}
+              >
+                {dateStr}
+              </p>
             </div>
           </motion.div>
         </div>

@@ -9,6 +9,7 @@ import { HeroSection } from "@/components/HeroSection";
 import { MarketplaceSection } from "@/components/MarketplaceSection";
 import { NewsSection } from "@/components/NewsSection";
 import { SearchResults } from "@/components/SearchResults";
+import { WidgetsSection } from "@/components/WidgetsSection";
 import { useState } from "react";
 
 export default function App() {
@@ -36,6 +37,7 @@ export default function App() {
         ) : (
           <>
             <HeroSection onSearch={handleSearch} />
+            <WidgetsSection />
             <ExploreSection />
             <GallerySection />
             <NewsSection />

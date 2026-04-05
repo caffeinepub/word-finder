@@ -26188,6 +26188,22 @@ function Header() {
 function HeroSection({ onSearch }) {
   const [query, setQuery] = reactExports.useState("");
   const inputRef = reactExports.useRef(null);
+  const [now2, setNow] = reactExports.useState(/* @__PURE__ */ new Date());
+  reactExports.useEffect(() => {
+    const timer = setInterval(() => setNow(/* @__PURE__ */ new Date()), 1e3);
+    return () => clearInterval(timer);
+  }, []);
+  const timeStr = now2.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+  const dateStr = now2.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
   function handleSubmit(e) {
     e.preventDefault();
     if (query.trim()) {
@@ -26355,35 +26371,65 @@ function HeroSection({ onSearch }) {
             ]
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
           motion.div,
           {
-            className: "hidden lg:block flex-shrink-0",
+            className: "hidden lg:flex flex-col items-center gap-4 flex-shrink-0",
             initial: { opacity: 0, x: 30 },
             animate: { opacity: 1, x: 0 },
             transition: { duration: 0.6, delay: 0.2 },
-            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "div",
+                  {
+                    className: "absolute inset-0 rounded-full blur-3xl opacity-30",
+                    style: {
+                      background: "radial-gradient(circle, #f4a261 0%, transparent 70%)"
+                    }
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "img",
+                  {
+                    src: "/assets/generated/hero-cat-transparent.dim_400x400.png",
+                    alt: "Cute sitting cat illustration",
+                    className: "relative w-64 h-64 object-contain animate-float",
+                    style: {
+                      filter: "drop-shadow(0 8px 24px rgba(58,42,34,0.12))"
+                    }
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "div",
                 {
-                  className: "absolute inset-0 rounded-full blur-3xl opacity-30",
+                  className: "text-right rounded-2xl px-5 py-3",
                   style: {
-                    background: "radial-gradient(circle, #f4a261 0%, transparent 70%)"
-                  }
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "img",
-                {
-                  src: "/assets/generated/hero-cat-transparent.dim_400x400.png",
-                  alt: "Cute sitting cat illustration",
-                  className: "relative w-72 h-72 object-contain animate-float",
-                  style: {
-                    filter: "drop-shadow(0 8px 24px rgba(58,42,34,0.12))"
-                  }
+                    background: "rgba(58,42,34,0.06)",
+                    border: "1px solid var(--becat-border)"
+                  },
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "p",
+                      {
+                        className: "text-2xl font-bold font-display leading-none mb-1",
+                        style: { color: "var(--becat-text)" },
+                        children: timeStr
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "p",
+                      {
+                        className: "text-xs",
+                        style: { color: "var(--becat-text-muted)" },
+                        children: dateStr
+                      }
+                    )
+                  ]
                 }
               )
-            ] })
+            ]
           }
         )
       ] }) })
@@ -26663,8 +26709,109 @@ function NewsSection() {
     }
   );
 }
+function Skeleton({ className, ...props }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      "data-slot": "skeleton",
+      className: cn("bg-accent animate-pulse rounded-md", className),
+      ...props
+    }
+  );
+}
+function extractTitle(text) {
+  if (!text) return "";
+  const firstSentence = text.split(/[.!?]\s/)[0];
+  if (firstSentence.length <= 80) return firstSentence;
+  return `${text.slice(0, 60)}…`;
+}
+function parseResults(data) {
+  const results = [];
+  if (data.AbstractText && data.AbstractURL) {
+    results.push({
+      title: data.Heading || extractTitle(data.AbstractText),
+      snippet: data.AbstractText,
+      url: data.AbstractURL,
+      type: "web"
+    });
+  }
+  if (Array.isArray(data.Results)) {
+    for (const r2 of data.Results) {
+      if (r2.Text && r2.FirstURL) {
+        results.push({
+          title: extractTitle(r2.Text),
+          snippet: r2.Text,
+          url: r2.FirstURL,
+          type: "web"
+        });
+      }
+    }
+  }
+  if (Array.isArray(data.RelatedTopics)) {
+    for (const topic of data.RelatedTopics) {
+      if (topic.Text && topic.FirstURL) {
+        results.push({
+          title: extractTitle(topic.Text),
+          snippet: topic.Text,
+          url: topic.FirstURL,
+          type: "web"
+        });
+      } else if (Array.isArray(topic.Topics)) {
+        for (const sub of topic.Topics) {
+          if (sub.Text && sub.FirstURL) {
+            results.push({
+              title: extractTitle(sub.Text),
+              snippet: sub.Text,
+              url: sub.FirstURL,
+              type: "web"
+            });
+          }
+        }
+      }
+    }
+  }
+  return results.filter((r2) => r2.title && r2.url).slice(0, 12);
+}
+function useSearch(query) {
+  const [results, setResults] = reactExports.useState([]);
+  const [loading, setLoading] = reactExports.useState(false);
+  const [error, setError] = reactExports.useState(null);
+  reactExports.useEffect(() => {
+    if (!query || !query.trim()) {
+      setResults([]);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
+    const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(ddgUrl)}`;
+    fetch(proxyUrl).then((res) => {
+      if (!res.ok) throw new Error("Search unavailable");
+      return res.json();
+    }).then((data) => {
+      if (cancelled) return;
+      const parsed = parseResults(data);
+      setResults(parsed);
+      setLoading(false);
+    }).catch(() => {
+      if (!cancelled) {
+        setResults([]);
+        setLoading(false);
+        setError("Could not load web results right now");
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [query]);
+  return { results, loading, error, query: query ?? "" };
+}
 const FILTERS = [
   "All",
+  "Web",
   "Breeds",
   "News",
   "Marketplace",
@@ -26678,17 +26825,30 @@ const CATEGORY_COLORS = {
   Gallery: "bg-purple-100 text-purple-700",
   Community: "bg-pink-100 text-pink-700"
 };
-function filterResults(results, query, filter2) {
+function filterLocalResults(results, query, filter2) {
   const q = query.toLowerCase();
   return results.filter((r2) => {
-    const matchesFilter = filter2 === "All" || r2.category === filter2;
+    const matchesFilter = filter2 === "All" || filter2 === "Web" || r2.category === filter2;
     const matchesQuery = r2.title.toLowerCase().includes(q) || r2.description.toLowerCase().includes(q) || r2.category.toLowerCase().includes(q);
     return matchesFilter && matchesQuery;
   });
 }
 function SearchResults({ query, onBack }) {
   const [activeFilter, setActiveFilter] = reactExports.useState("All");
-  const results = filterResults(SEARCH_RESULTS, query, activeFilter);
+  const [searchInput, setSearchInput] = reactExports.useState(query);
+  const inputRef = reactExports.useRef(null);
+  const { results: webResults, loading: webLoading } = useSearch(
+    activeFilter === "All" || activeFilter === "Web" ? query : null
+  );
+  const localResults = filterLocalResults(SEARCH_RESULTS, query, activeFilter);
+  function handleSearchSubmit(e) {
+    e.preventDefault();
+    if (searchInput.trim() && searchInput.trim() !== query) {
+      onBack();
+    }
+  }
+  const showWebSection = activeFilter === "All" || activeFilter === "Web";
+  const showLocalSection = activeFilter !== "Web";
   return /* @__PURE__ */ jsxRuntimeExports.jsx(
     "section",
     {
@@ -26696,21 +26856,65 @@ function SearchResults({ query, onBack }) {
       style: { background: "var(--becat-bg)" },
       "data-ocid": "search.section",
       children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: onBack,
-              className: "flex items-center gap-2 text-sm font-medium mb-4 transition-colors hover:opacity-80",
-              style: { color: "var(--becat-accent)" },
-              "data-ocid": "search.back_button",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { size: 16 }),
-                "Back to Home"
-              ]
-            }
-          ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            type: "button",
+            onClick: onBack,
+            className: "flex items-center gap-2 text-sm font-medium mb-5 transition-colors hover:opacity-80",
+            style: { color: "var(--becat-accent)" },
+            "data-ocid": "search.back_button",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { size: 16 }),
+              "Back to Home"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("form", { onSubmit: handleSearchSubmit, className: "mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: "flex items-center rounded-full bg-white pl-4 pr-2 py-1.5",
+            style: {
+              border: "2px solid var(--becat-border)",
+              boxShadow: "0 2px 12px rgba(58,42,34,0.08)",
+              maxWidth: "600px"
+            },
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Search,
+                {
+                  size: 18,
+                  style: { color: "var(--becat-text-muted)" },
+                  className: "mr-2 flex-shrink-0"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  ref: inputRef,
+                  type: "text",
+                  value: searchInput,
+                  onChange: (e) => setSearchInput(e.target.value),
+                  placeholder: "Search for anything cat…",
+                  className: "flex-1 bg-transparent outline-none text-sm",
+                  style: { color: "var(--becat-text)", fontSize: "16px" },
+                  "data-ocid": "search.input"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  type: "submit",
+                  className: "ml-2 h-8 px-4 rounded-full text-white text-xs font-semibold flex items-center gap-1 transition-all hover:opacity-90 active:scale-95",
+                  style: { background: "var(--becat-accent)" },
+                  "data-ocid": "search.submit_button",
+                  children: "Search"
+                }
+              )
+            ]
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-5", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "h2",
             {
@@ -26723,17 +26927,12 @@ function SearchResults({ query, onBack }) {
               ]
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm", style: { color: "var(--becat-text-muted)" }, children: [
-            results.length,
-            " result",
-            results.length !== 1 ? "s" : "",
-            " found"
-          ] })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", style: { color: "var(--becat-text-muted)" }, children: webLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Searching the web…" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: activeFilter === "Web" ? `${webResults.length} web result${webResults.length !== 1 ? "s" : ""}` : `${localResults.length} cat result${localResults.length !== 1 ? "s" : ""}${webResults.length > 0 ? ` · ${webResults.length} from the web` : ""}` }) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
-            className: "flex flex-wrap gap-2 mb-6",
+            className: "flex flex-wrap gap-2 mb-7",
             role: "tablist",
             "data-ocid": "search.tab",
             children: FILTERS.map((f) => /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -26750,93 +26949,519 @@ function SearchResults({ query, onBack }) {
                   borderColor: activeFilter === f ? "var(--becat-accent)" : "var(--becat-border)"
                 },
                 "data-ocid": "search.tab",
-                children: f
+                children: f === "Web" ? "🌐 Web" : f
               },
               f
             ))
           }
         ),
-        results.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            className: "text-center py-16 rounded-2xl",
-            style: { background: "var(--becat-section-bg)" },
-            "data-ocid": "search.empty_state",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-5xl mb-4", children: "😿" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "h3",
+        showWebSection && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
+          activeFilter === "All" && webResults.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "h3",
+            {
+              className: "text-sm font-semibold uppercase tracking-wide mb-3 flex items-center gap-1.5",
+              style: { color: "var(--becat-text-muted)" },
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "🌐" }),
+                " From the Web"
+              ]
+            }
+          ),
+          webLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "div",
+            {
+              className: "flex flex-col gap-3",
+              "data-ocid": "search.loading_state",
+              children: [1, 2, 3].map((i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "div",
                 {
-                  className: "text-lg font-semibold mb-2",
-                  style: { color: "var(--becat-text)" },
-                  children: "No results found"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm", style: { color: "var(--becat-text-muted)" }, children: "Try a different search term or category" })
-            ]
-          }
-        ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4", children: results.map((result, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          motion.div,
-          {
-            initial: { opacity: 0, y: 16 },
-            animate: { opacity: 1, y: 0 },
-            transition: { duration: 0.3, delay: i * 0.05 },
-            className: "group bg-white rounded-2xl p-5 border transition-all hover:shadow-card-hover hover:-translate-y-0.5 cursor-pointer",
-            style: {
-              borderColor: "var(--becat-border)",
-              boxShadow: "0 2px 12px rgba(58,42,34,0.07)"
-            },
-            "data-ocid": `search.item.${i + 1}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3 mb-3", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl flex-shrink-0", children: result.emoji }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+                  className: "bg-white rounded-2xl p-5 border",
+                  style: { borderColor: "var(--becat-border)" },
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-4 w-40 mb-2 rounded-full" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-5 w-3/4 mb-2 rounded-lg" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-3 w-full rounded-full" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-3 w-5/6 mt-1 rounded-full" })
+                  ]
+                },
+                i
+              ))
+            }
+          ) : webResults.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-col gap-3", children: (activeFilter === "All" ? webResults.slice(0, 3) : webResults).map((result, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            motion.a,
+            {
+              href: result.url,
+              target: "_blank",
+              rel: "noopener noreferrer",
+              initial: { opacity: 0, y: 12 },
+              animate: { opacity: 1, y: 0 },
+              transition: { duration: 0.3, delay: i * 0.05 },
+              className: "group bg-white rounded-2xl p-5 border flex flex-col gap-2 hover:-translate-y-0.5 transition-all",
+              style: {
+                borderColor: "var(--becat-border)",
+                boxShadow: "0 2px 12px rgba(58,42,34,0.07)"
+              },
+              "data-ocid": `search.item.${i + 1}`,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: "🌐" }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "p",
+                    {
+                      className: "text-xs truncate",
+                      style: { color: "var(--becat-text-muted)" },
+                      children: result.url
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "h3",
+                  {
+                    className: "text-base font-bold leading-snug group-hover:underline",
+                    style: { color: "var(--becat-accent)" },
+                    children: result.title
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm line-clamp-2",
+                    style: { color: "var(--becat-text-muted)" },
+                    children: result.snippet
+                  }
+                )
+              ]
+            },
+            result.url
+          )) }) : activeFilter === "Web" ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "div",
+            {
+              className: "text-center py-10 rounded-2xl",
+              style: { background: "var(--becat-section-bg)" },
+              "data-ocid": "search.empty_state",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-4xl mb-3", children: "😿" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm",
+                    style: { color: "var(--becat-text-muted)" },
+                    children: "No web results found for this search."
+                  }
+                )
+              ]
+            }
+          ) : null
+        ] }),
+        showLocalSection && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          activeFilter === "All" && localResults.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "h3",
+            {
+              className: "text-sm font-semibold uppercase tracking-wide mb-3 flex items-center gap-1.5",
+              style: { color: "var(--becat-text-muted)" },
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "🐾" }),
+                " Cat Content"
+              ]
+            }
+          ),
+          localResults.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "div",
+            {
+              className: "text-center py-16 rounded-2xl",
+              style: { background: "var(--becat-section-bg)" },
+              "data-ocid": "search.empty_state",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-5xl mb-4", children: "😿" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "h3",
+                  {
+                    className: "text-lg font-semibold mb-2",
+                    style: { color: "var(--becat-text)" },
+                    children: "No results found"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm",
+                    style: { color: "var(--becat-text-muted)" },
+                    children: "Try a different search term or category"
+                  }
+                )
+              ]
+            }
+          ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4", children: localResults.map((result, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            motion.div,
+            {
+              initial: { opacity: 0, y: 16 },
+              animate: { opacity: 1, y: 0 },
+              transition: { duration: 0.3, delay: i * 0.05 },
+              className: "group bg-white rounded-2xl p-5 border transition-all hover:shadow-md hover:-translate-y-0.5 cursor-pointer",
+              style: {
+                borderColor: "var(--becat-border)",
+                boxShadow: "0 2px 12px rgba(58,42,34,0.07)"
+              },
+              "data-ocid": `search.item.${i + 1}`,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3 mb-3", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl flex-shrink-0", children: result.emoji }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "span",
+                      {
+                        className: `inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-2 ${CATEGORY_COLORS[result.category]}`,
+                        children: result.category
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "h3",
+                      {
+                        className: "text-base font-bold font-display leading-snug",
+                        style: { color: "var(--becat-text)" },
+                        children: result.title
+                      }
+                    )
+                  ] })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "p",
+                  {
+                    className: "text-sm line-clamp-3 mb-3",
+                    style: { color: "var(--becat-text-muted)" },
+                    children: result.description
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    type: "button",
+                    onClick: () => {
+                      onBack();
+                      setTimeout(() => {
+                        var _a2;
+                        (_a2 = document.querySelector(result.link)) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth" });
+                      }, 100);
+                    },
+                    className: "text-sm font-semibold transition-colors hover:opacity-70",
+                    style: { color: "var(--becat-accent)" },
+                    children: "View More →"
+                  }
+                )
+              ]
+            },
+            result.id
+          )) })
+        ] })
+      ] })
+    }
+  );
+}
+function mapWeatherCode(code) {
+  if (code === 0) return { condition: "Clear Sky", catEmoji: "😸" };
+  if (code <= 3) return { condition: "Partly Cloudy", catEmoji: "😼" };
+  if (code === 45 || code === 48) return { condition: "Foggy", catEmoji: "🙀" };
+  if (code >= 51 && code <= 65) return { condition: "Rainy", catEmoji: "😿" };
+  if (code >= 71 && code <= 77) return { condition: "Snowy", catEmoji: "🐱" };
+  if (code >= 80 && code <= 82) return { condition: "Showers", catEmoji: "😾" };
+  if (code >= 95 && code <= 99)
+    return { condition: "Thunderstorm", catEmoji: "🙀" };
+  return { condition: "Cloudy", catEmoji: "😺" };
+}
+const FALLBACK = {
+  temp: 22,
+  feelsLike: 20,
+  humidity: 60,
+  windSpeed: 12,
+  condition: "Partly Cloudy",
+  cityName: "Your City",
+  catEmoji: "😸",
+  loading: false,
+  error: null
+};
+function useWeather() {
+  const [data, setData] = reactExports.useState({
+    ...FALLBACK,
+    loading: true,
+    error: null
+  });
+  reactExports.useEffect(() => {
+    let cancelled = false;
+    function handleError() {
+      if (!cancelled) setData(FALLBACK);
+    }
+    async function fetchWeather(lat, lon) {
+      try {
+        const [geoRes, weatherRes] = await Promise.all([
+          fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
+            { headers: { "Accept-Language": "en" } }
+          ),
+          fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&temperature_unit=celsius`
+          )
+        ]);
+        if (!geoRes.ok || !weatherRes.ok) {
+          handleError();
+          return;
+        }
+        const [geoJson, weatherJson] = await Promise.all([
+          geoRes.json(),
+          weatherRes.json()
+        ]);
+        if (cancelled) return;
+        const addr = (geoJson == null ? void 0 : geoJson.address) ?? {};
+        const cityName = addr.city || addr.town || addr.village || addr.county || "Your City";
+        const cur = (weatherJson == null ? void 0 : weatherJson.current) ?? {};
+        const temp = Math.round(cur.temperature_2m ?? 22);
+        const feelsLike = Math.round(cur.apparent_temperature ?? 20);
+        const humidity = Math.round(cur.relative_humidity_2m ?? 60);
+        const windSpeed = Math.round(cur.wind_speed_10m ?? 12);
+        const weatherCode = cur.weather_code ?? 1;
+        const { condition, catEmoji } = mapWeatherCode(weatherCode);
+        setData({
+          temp,
+          feelsLike,
+          humidity,
+          windSpeed,
+          condition,
+          cityName,
+          catEmoji,
+          loading: false,
+          error: null
+        });
+      } catch {
+        if (!cancelled) handleError();
+      }
+    }
+    if (!navigator.geolocation) {
+      handleError();
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        fetchWeather(pos.coords.latitude, pos.coords.longitude);
+      },
+      () => {
+        if (!cancelled) handleError();
+      },
+      { timeout: 8e3 }
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return data;
+}
+function getPurrMessage(condition) {
+  switch (condition) {
+    case "Clear Sky":
+      return "Purr-fect day for a sunbath! ☀️";
+    case "Partly Cloudy":
+      return "Ideal for window watching 🪟";
+    case "Foggy":
+      return "Mysterious vibes, stay cozy 🌫️";
+    case "Rainy":
+      return "Curl up and purr 🌧️";
+    case "Snowy":
+      return "Snow paws! Stay warm indoors ❄️";
+    case "Showers":
+      return "Perfect nap weather 💤";
+    case "Thunderstorm":
+      return "Hide under the blanket! ⛈️";
+    default:
+      return "A good day for cat things 🐾";
+  }
+}
+function WidgetsSection() {
+  const weather = useWeather();
+  const { ref, inView } = useInView();
+  const newsItems = CAT_NEWS.slice(0, 3);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "section",
+    {
+      ref,
+      id: "widgets",
+      className: "py-10",
+      style: { background: "var(--becat-section-bg)" },
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        motion.div,
+        {
+          className: "flex flex-col lg:flex-row gap-5",
+          initial: { opacity: 0, y: 20 },
+          animate: inView ? { opacity: 1, y: 0 } : {},
+          transition: { duration: 0.5 },
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "div",
+              {
+                className: "w-full lg:w-2/5 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden",
+                style: {
+                  background: "linear-gradient(135deg, oklch(96% 0.035 60) 0%, oklch(93% 0.05 55) 100%)",
+                  border: "1px solid var(--becat-border)",
+                  boxShadow: "0 4px 18px rgba(58,42,34,0.10)",
+                  minHeight: "200px"
+                },
+                "data-ocid": "widgets.card",
+                children: weather.loading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-5 w-32 rounded-full" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-12 w-24 rounded-xl" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-4 w-28 rounded-full" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Skeleton, { className: "h-4 w-full rounded-full" })
+                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                      "p",
+                      {
+                        className: "text-xs font-semibold uppercase tracking-wide",
+                        style: { color: "var(--becat-text-muted)" },
+                        children: [
+                          "📍 ",
+                          weather.cityName
+                        ]
+                      }
+                    ) }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: weather.catEmoji })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-1", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
                     "span",
                     {
-                      className: `inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-2 ${CATEGORY_COLORS[result.category]}`,
-                      children: result.category
+                      className: "text-5xl font-bold leading-none",
+                      style: { color: "var(--becat-text)" },
+                      children: [
+                        weather.temp,
+                        "°C"
+                      ]
+                    }
+                  ) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "p",
+                    {
+                      className: "text-sm font-semibold mb-3",
+                      style: { color: "var(--becat-accent)" },
+                      children: weather.condition
                     }
                   ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(
-                    "h3",
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "p",
                     {
-                      className: "text-base font-bold font-display leading-snug",
-                      style: { color: "var(--becat-text)" },
-                      children: result.title
+                      className: "text-xs mb-3",
+                      style: { color: "var(--becat-text-muted)" },
+                      children: [
+                        "Feels like ",
+                        weather.feelsLike,
+                        "°C   💧",
+                        " ",
+                        weather.humidity,
+                        "%   🌬️ ",
+                        weather.windSpeed,
+                        " km/h"
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "div",
+                    {
+                      className: "flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium",
+                      style: {
+                        background: "rgba(255,255,255,0.55)",
+                        color: "var(--becat-text)"
+                      },
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(
+                          "img",
+                          {
+                            src: "/assets/generated/hero-cat-transparent.dim_400x400.png",
+                            alt: "cat",
+                            className: "w-7 h-7 object-contain flex-shrink-0"
+                          }
+                        ),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: getPurrMessage(weather.condition) })
+                      ]
                     }
                   )
                 ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "h2",
                 {
-                  className: "text-sm line-clamp-3 mb-3",
-                  style: { color: "var(--becat-text-muted)" },
-                  children: result.description
+                  className: "text-base font-bold font-display flex items-center gap-2",
+                  style: { color: "var(--becat-text)" },
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: "📰" }),
+                    " Today's Cat News"
+                  ]
                 }
               ),
+              newsItems.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                motion.div,
+                {
+                  initial: { opacity: 0, x: 16 },
+                  animate: inView ? { opacity: 1, x: 0 } : {},
+                  transition: { duration: 0.4, delay: i * 0.08 },
+                  className: "bg-white rounded-xl px-4 py-3 flex items-start gap-3 border hover:shadow-md transition-all hover:-translate-y-0.5 cursor-pointer",
+                  style: {
+                    borderColor: "var(--becat-border)",
+                    boxShadow: "0 2px 8px rgba(58,42,34,0.06)"
+                  },
+                  "data-ocid": `widgets.item.${i + 1}`,
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl flex-shrink-0 mt-0.5", children: item.emoji }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "h3",
+                        {
+                          className: "text-sm font-semibold leading-snug line-clamp-2 mb-1",
+                          style: { color: "var(--becat-text)" },
+                          children: item.title
+                        }
+                      ),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                        "div",
+                        {
+                          className: "flex items-center gap-2 text-xs",
+                          style: { color: "var(--becat-text-muted)" },
+                          children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(
+                              "span",
+                              {
+                                className: "px-2 py-0.5 rounded-full text-xs font-medium",
+                                style: {
+                                  background: "var(--becat-accent-light)",
+                                  color: "var(--becat-accent)"
+                                },
+                                children: item.category
+                              }
+                            ),
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: item.date })
+                          ]
+                        }
+                      )
+                    ] })
+                  ]
+                },
+                item.id
+              )),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "button",
                 {
                   type: "button",
                   onClick: () => {
-                    onBack();
-                    setTimeout(() => {
-                      var _a2;
-                      (_a2 = document.querySelector(result.link)) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth" });
-                    }, 100);
+                    var _a2;
+                    return (_a2 = document.querySelector("#news")) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth" });
                   },
-                  className: "text-sm font-semibold transition-colors hover:opacity-70",
+                  className: "text-sm font-semibold self-start transition-colors hover:opacity-70",
                   style: { color: "var(--becat-accent)" },
-                  children: "View More →"
+                  "data-ocid": "widgets.button",
+                  children: "See all news ↓"
                 }
               )
-            ]
-          },
-          result.id
-        )) })
-      ] })
+            ] })
+          ]
+        }
+      ) })
     }
   );
 }
@@ -26859,6 +27484,7 @@ function App() {
         /* @__PURE__ */ jsxRuntimeExports.jsx(Header, {}),
         /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "flex-1", children: searchQuery ? /* @__PURE__ */ jsxRuntimeExports.jsx(SearchResults, { query: searchQuery, onBack: handleBack }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(HeroSection, { onSearch: handleSearch }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(WidgetsSection, {}),
           /* @__PURE__ */ jsxRuntimeExports.jsx(ExploreSection, {}),
           /* @__PURE__ */ jsxRuntimeExports.jsx(GallerySection, {}),
           /* @__PURE__ */ jsxRuntimeExports.jsx(NewsSection, {}),
