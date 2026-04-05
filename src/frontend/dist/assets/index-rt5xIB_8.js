@@ -24641,7 +24641,7 @@ const __iconNode = [
 ];
 const Search = createLucideIcon("search", __iconNode);
 const FILTER_TABS = ["All", "Images", "News", "Videos", "Maps"];
-const CAT_BG = "/assets/generated/becat-hero-bg.dim_1920x1080.jpg";
+const CAT_BG = "/assets/alexas_fotos-cat-1455468_1920-019d5f4c-57d9-700e-a21b-680de6585a77.jpg";
 function HeroSection({ onSearch }) {
   const [query, setQuery] = reactExports.useState("");
   const [activeFilter, setActiveFilter] = reactExports.useState("All");
