@@ -1,6 +1,6 @@
 import { TRENDING_SEARCHES } from "@/data/catData";
 import { useWeather } from "@/hooks/useWeather";
-import { Search } from "lucide-react";
+import { Mic, ScanSearch, Search } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -8,11 +8,11 @@ interface HeroSectionProps {
   onSearch: (query: string) => void;
 }
 
-const CAT_BG =
-  "/assets/alexas_fotos-cat-1455468_1920-019d5f4c-57d9-700e-a21b-680de6585a77.jpg";
+const CINEMATIC_BG = "/assets/generated/cinematic-landscape.dim_1920x1080.jpg";
 
 export function HeroSection({ onSearch }: HeroSectionProps) {
   const [query, setQuery] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [now, setNow] = useState(new Date());
   const weather = useWeather();
@@ -46,13 +46,6 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
     onSearch(term);
   }
 
-  function handleFeelPawsome() {
-    const random =
-      TRENDING_SEARCHES[Math.floor(Math.random() * TRENDING_SEARCHES.length)];
-    setQuery(random);
-    onSearch(random);
-  }
-
   return (
     <section
       id="search"
@@ -60,18 +53,18 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
       style={{
         height: "100vh",
         minHeight: "600px",
-        backgroundImage: `url(${CAT_BG})`,
+        backgroundImage: `url(${CINEMATIC_BG})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Dark overlay */}
+      {/* Cinematic overlay — lighter to preserve landscape drama */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.65) 100%)",
+            "linear-gradient(180deg, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.38) 100%)",
         }}
       />
 
@@ -86,7 +79,11 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
           <span className="text-3xl">🐱</span>
           <span
             className="font-bold text-xl sm:text-2xl tracking-tight"
-            style={{ color: "white", fontFamily: "var(--font-display)" }}
+            style={{
+              color: "white",
+              fontFamily: "var(--font-display)",
+              textShadow: "0 1px 8px rgba(0,0,0,0.45)",
+            }}
           >
             BeCat<span style={{ color: "#f4a261" }}>.Tech</span>
           </span>
@@ -103,7 +100,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
           className="text-center mb-8 sm:mb-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7 }}
         >
           <h1
             className="font-bold mb-3"
@@ -111,7 +108,8 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
               color: "white",
               fontSize: "clamp(2.2rem, 6vw, 4.5rem)",
               fontFamily: "var(--font-display)",
-              textShadow: "0 2px 12px rgba(0,0,0,0.4)",
+              textShadow:
+                "0 2px 16px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.35)",
               letterSpacing: "-0.02em",
             }}
           >
@@ -120,82 +118,171 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
           <p
             className="text-lg sm:text-xl md:text-2xl"
             style={{
-              color: "rgba(255,255,255,0.88)",
-              textShadow: "0 1px 6px rgba(0,0,0,0.4)",
+              color: "rgba(255,255,255,0.92)",
+              textShadow: "0 1px 8px rgba(0,0,0,0.45)",
             }}
           >
             Search the world, discover every cat 🐾
           </p>
         </motion.div>
 
-        {/* Search bar */}
+        {/* Glassmorphism pill search bar */}
         <motion.form
           onSubmit={handleSubmit}
-          className="w-full max-w-xl sm:max-w-2xl mb-5"
+          className="w-full max-w-2xl sm:max-w-3xl mb-5"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          transition={{ duration: 0.65, delay: 0.1 }}
+          style={{
+            transform: isFocused ? "scale(1.012)" : "scale(1)",
+            transition: "transform 0.2s ease",
+          }}
         >
           <div
-            className="hero-search-bar flex items-center rounded-full bg-white pl-5 sm:pl-6 pr-2 py-2"
+            className="glass-search-bar flex items-center rounded-full pl-5 sm:pl-6 pr-2"
             style={{
+              background: isFocused
+                ? "rgba(255,255,255,0.24)"
+                : "rgba(255,255,255,0.18)",
+              backdropFilter: "blur(20px) saturate(180%)",
+              WebkitBackdropFilter: "blur(20px) saturate(180%)",
+              border: "1.5px solid rgba(255,255,255,0.4)",
               boxShadow:
-                "0 8px 40px rgba(0,0,0,0.4), 0 2px 12px rgba(0,0,0,0.25)",
-              height: "64px",
-              border: "2px solid rgba(255,255,255,0.6)",
-              outline: "2px solid rgba(244,162,97,0.3)",
-              outlineOffset: "2px",
+                "0 8px 32px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5)",
+              height: "clamp(56px, 8vw, 66px)",
+              transition: "background 0.2s ease, box-shadow 0.2s ease",
             }}
           >
-            {/* Search icon with accent background */}
+            {/* Left: Search icon */}
             <span
-              className="flex-shrink-0 mr-3 sm:mr-4 flex items-center justify-center w-9 h-9 rounded-full"
-              style={{ background: "rgba(244,162,97,0.12)" }}
+              className="flex-shrink-0 mr-3 flex items-center justify-center"
+              aria-hidden="true"
             >
-              <Search size={18} style={{ color: "#d4722a" }} />
+              <Search size={20} style={{ color: "rgba(255,255,255,0.9)" }} />
             </span>
+
+            {/* Input */}
             <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               placeholder="Search anything…"
-              className="flex-1 bg-transparent outline-none min-w-0"
+              className="glass-search-input flex-1 bg-transparent outline-none min-w-0 border-none"
               style={{
-                color: "#1a1a1a",
-                fontSize: "clamp(16px, 2.5vw, 19px)",
+                color: "rgba(255,255,255,0.95)",
+                fontSize: "clamp(16px, 2.2vw, 18px)",
                 fontFamily: "var(--font-body)",
               }}
               data-ocid="search.input"
             />
-            <button
-              type="button"
-              onClick={handleFeelPawsome}
-              className="hidden sm:flex items-center gap-1.5 px-4 py-2.5 rounded-full text-[14px] font-medium mr-2 transition-all hover:bg-orange-50 active:scale-95 whitespace-nowrap"
-              style={{ color: "var(--becat-accent)" }}
-              data-ocid="search.secondary_button"
-            >
-              🐾 Feeling Pawsome
-            </button>
+
+            {/* Divider between input and right icons */}
+            <div
+              className="flex-shrink-0 self-stretch mx-2"
+              style={{
+                width: "1px",
+                background: "rgba(255,255,255,0.3)",
+                margin: "12px 8px",
+              }}
+              aria-hidden="true"
+            />
+
+            {/* Right icons group */}
+            <div className="flex items-center gap-0.5 mr-2">
+              {/* Microphone icon */}
+              <button
+                type="button"
+                aria-label="Voice search"
+                className="glass-icon-btn flex-shrink-0 flex items-center justify-center rounded-full transition-all duration-150 hover:scale-105 active:scale-95"
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "rgba(255,255,255,0.15)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "transparent";
+                }}
+                data-ocid="search.secondary_button"
+              >
+                <Mic size={20} style={{ color: "rgba(255,255,255,0.9)" }} />
+              </button>
+
+              {/* Thin divider between mic and lens */}
+              <div
+                className="flex-shrink-0 self-stretch"
+                style={{
+                  width: "1px",
+                  background: "rgba(255,255,255,0.3)",
+                  margin: "10px 4px",
+                }}
+                aria-hidden="true"
+              />
+
+              {/* Lens / Visual search icon */}
+              <button
+                type="button"
+                aria-label="Visual search"
+                className="glass-icon-btn flex-shrink-0 flex items-center justify-center rounded-full transition-all duration-150 hover:scale-105 active:scale-95"
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "rgba(255,255,255,0.15)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    "transparent";
+                }}
+                data-ocid="search.upload_button"
+              >
+                <ScanSearch
+                  size={20}
+                  style={{ color: "rgba(255,255,255,0.9)" }}
+                />
+              </button>
+            </div>
+
+            {/* Submit search button */}
             <button
               type="submit"
-              className="flex-shrink-0 h-11 px-5 sm:px-7 rounded-full text-white text-sm sm:text-base font-semibold flex items-center gap-2 transition-all hover:opacity-90 active:scale-95"
-              style={{ background: "var(--becat-accent)" }}
+              className="flex-shrink-0 flex items-center justify-center rounded-full transition-all hover:opacity-90 active:scale-95"
+              style={{
+                background: "oklch(74% 0.16 55)",
+                width: "44px",
+                height: "44px",
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 2px 8px rgba(244,162,97,0.4)",
+              }}
               aria-label="Search"
               data-ocid="search.submit_button"
             >
-              <Search size={15} />
-              <span className="hidden sm:inline">Search</span>
+              <Search size={18} style={{ color: "white" }} />
             </button>
           </div>
         </motion.form>
 
         {/* Trending searches */}
         <motion.div
-          className="flex flex-wrap gap-2 sm:gap-2.5 justify-center items-center max-w-2xl px-2"
+          className="flex flex-wrap gap-2 sm:gap-2.5 justify-center items-center max-w-3xl px-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.25 }}
         >
           <span
             className="text-sm sm:text-base font-bold tracking-wide"
@@ -215,9 +302,9 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
               style={{
                 background: "rgba(255,255,255,0.14)",
                 color: "rgba(255,255,255,0.93)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                border: "1.5px solid rgba(255,255,255,0.25)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                border: "1.5px solid rgba(255,255,255,0.28)",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
               }}
               data-ocid="search.tab"
@@ -256,7 +343,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
         </p>
       </motion.div>
 
-      {/* Bottom-right: weather widget — no city name */}
+      {/* Bottom-right: weather widget */}
       <motion.div
         className="absolute bottom-5 sm:bottom-6 right-4 sm:right-6 z-10 text-right"
         initial={{ opacity: 0, y: 10 }}

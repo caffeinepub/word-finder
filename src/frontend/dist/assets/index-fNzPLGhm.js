@@ -24624,11 +24624,38 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$1 = [
+const __iconNode$3 = [
   ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
   ["path", { d: "M19 12H5", key: "x3x0zl" }]
 ];
-const ArrowLeft = createLucideIcon("arrow-left", __iconNode$1);
+const ArrowLeft = createLucideIcon("arrow-left", __iconNode$3);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$2 = [
+  ["path", { d: "M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z", key: "131961" }],
+  ["path", { d: "M19 10v2a7 7 0 0 1-14 0v-2", key: "1vc78b" }],
+  ["line", { x1: "12", x2: "12", y1: "19", y2: "22", key: "x3vr5v" }]
+];
+const Mic = createLucideIcon("mic", __iconNode$2);
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$1 = [
+  ["path", { d: "M3 7V5a2 2 0 0 1 2-2h2", key: "aa7l1z" }],
+  ["path", { d: "M17 3h2a2 2 0 0 1 2 2v2", key: "4qcy5o" }],
+  ["path", { d: "M21 17v2a2 2 0 0 1-2 2h-2", key: "6vwrx8" }],
+  ["path", { d: "M7 21H5a2 2 0 0 1-2-2v-2", key: "ioqczr" }],
+  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }],
+  ["path", { d: "m16 16-1.9-1.9", key: "1dq9hf" }]
+];
+const ScanSearch = createLucideIcon("scan-search", __iconNode$1);
 /**
  * @license lucide-react v0.511.0 - ISC
  *
@@ -24640,9 +24667,10 @@ const __iconNode = [
   ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
 ];
 const Search = createLucideIcon("search", __iconNode);
-const CAT_BG = "/assets/alexas_fotos-cat-1455468_1920-019d5f4c-57d9-700e-a21b-680de6585a77.jpg";
+const CINEMATIC_BG = "/assets/generated/cinematic-landscape.dim_1920x1080.jpg";
 function HeroSection({ onSearch }) {
   const [query, setQuery] = reactExports.useState("");
+  const [isFocused, setIsFocused] = reactExports.useState(false);
   const inputRef = reactExports.useRef(null);
   const [now2, setNow] = reactExports.useState(/* @__PURE__ */ new Date());
   const weather = useWeather();
@@ -24671,11 +24699,6 @@ function HeroSection({ onSearch }) {
     setQuery(term);
     onSearch(term);
   }
-  function handleFeelPawsome() {
-    const random = TRENDING_SEARCHES[Math.floor(Math.random() * TRENDING_SEARCHES.length)];
-    setQuery(random);
-    onSearch(random);
-  }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "section",
     {
@@ -24684,7 +24707,7 @@ function HeroSection({ onSearch }) {
       style: {
         height: "100vh",
         minHeight: "600px",
-        backgroundImage: `url(${CAT_BG})`,
+        backgroundImage: `url(${CINEMATIC_BG})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat"
@@ -24695,7 +24718,7 @@ function HeroSection({ onSearch }) {
           {
             className: "absolute inset-0",
             style: {
-              background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.65) 100%)"
+              background: "linear-gradient(180deg, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.38) 100%)"
             }
           }
         ),
@@ -24712,7 +24735,11 @@ function HeroSection({ onSearch }) {
                 "span",
                 {
                   className: "font-bold text-xl sm:text-2xl tracking-tight",
-                  style: { color: "white", fontFamily: "var(--font-display)" },
+                  style: {
+                    color: "white",
+                    fontFamily: "var(--font-display)",
+                    textShadow: "0 1px 8px rgba(0,0,0,0.45)"
+                  },
                   children: [
                     "BeCat",
                     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#f4a261" }, children: ".Tech" })
@@ -24734,7 +24761,7 @@ function HeroSection({ onSearch }) {
                   className: "text-center mb-8 sm:mb-10",
                   initial: { opacity: 0, y: 20 },
                   animate: { opacity: 1, y: 0 },
-                  transition: { duration: 0.6 },
+                  transition: { duration: 0.7 },
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "h1",
@@ -24744,7 +24771,7 @@ function HeroSection({ onSearch }) {
                           color: "white",
                           fontSize: "clamp(2.2rem, 6vw, 4.5rem)",
                           fontFamily: "var(--font-display)",
-                          textShadow: "0 2px 12px rgba(0,0,0,0.4)",
+                          textShadow: "0 2px 16px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.35)",
                           letterSpacing: "-0.02em"
                         },
                         children: "BeCat.Tech"
@@ -24755,8 +24782,8 @@ function HeroSection({ onSearch }) {
                       {
                         className: "text-lg sm:text-xl md:text-2xl",
                         style: {
-                          color: "rgba(255,255,255,0.88)",
-                          textShadow: "0 1px 6px rgba(0,0,0,0.4)"
+                          color: "rgba(255,255,255,0.92)",
+                          textShadow: "0 1px 8px rgba(0,0,0,0.45)"
                         },
                         children: "Search the world, discover every cat 🐾"
                       }
@@ -24768,28 +24795,34 @@ function HeroSection({ onSearch }) {
                 motion.form,
                 {
                   onSubmit: handleSubmit,
-                  className: "w-full max-w-xl sm:max-w-2xl mb-5",
+                  className: "w-full max-w-2xl sm:max-w-3xl mb-5",
                   initial: { opacity: 0, y: 16 },
                   animate: { opacity: 1, y: 0 },
-                  transition: { duration: 0.6, delay: 0.1 },
+                  transition: { duration: 0.65, delay: 0.1 },
+                  style: {
+                    transform: isFocused ? "scale(1.012)" : "scale(1)",
+                    transition: "transform 0.2s ease"
+                  },
                   children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
                     "div",
                     {
-                      className: "hero-search-bar flex items-center rounded-full bg-white pl-5 sm:pl-6 pr-2 py-2",
+                      className: "glass-search-bar flex items-center rounded-full pl-5 sm:pl-6 pr-2",
                       style: {
-                        boxShadow: "0 8px 40px rgba(0,0,0,0.4), 0 2px 12px rgba(0,0,0,0.25)",
-                        height: "64px",
-                        border: "2px solid rgba(255,255,255,0.6)",
-                        outline: "2px solid rgba(244,162,97,0.3)",
-                        outlineOffset: "2px"
+                        background: isFocused ? "rgba(255,255,255,0.24)" : "rgba(255,255,255,0.18)",
+                        backdropFilter: "blur(20px) saturate(180%)",
+                        WebkitBackdropFilter: "blur(20px) saturate(180%)",
+                        border: "1.5px solid rgba(255,255,255,0.4)",
+                        boxShadow: "0 8px 32px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5)",
+                        height: "clamp(56px, 8vw, 66px)",
+                        transition: "background 0.2s ease, box-shadow 0.2s ease"
                       },
                       children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
                           "span",
                           {
-                            className: "flex-shrink-0 mr-3 sm:mr-4 flex items-center justify-center w-9 h-9 rounded-full",
-                            style: { background: "rgba(244,162,97,0.12)" },
-                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 18, style: { color: "#d4722a" } })
+                            className: "flex-shrink-0 mr-3 flex items-center justify-center",
+                            "aria-hidden": "true",
+                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 20, style: { color: "rgba(255,255,255,0.9)" } })
                           }
                         ),
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -24799,39 +24832,112 @@ function HeroSection({ onSearch }) {
                             type: "text",
                             value: query,
                             onChange: (e) => setQuery(e.target.value),
+                            onFocus: () => setIsFocused(true),
+                            onBlur: () => setIsFocused(false),
                             placeholder: "Search anything…",
-                            className: "flex-1 bg-transparent outline-none min-w-0",
+                            className: "glass-search-input flex-1 bg-transparent outline-none min-w-0 border-none",
                             style: {
-                              color: "#1a1a1a",
-                              fontSize: "clamp(16px, 2.5vw, 19px)",
+                              color: "rgba(255,255,255,0.95)",
+                              fontSize: "clamp(16px, 2.2vw, 18px)",
                               fontFamily: "var(--font-body)"
                             },
                             "data-ocid": "search.input"
                           }
                         ),
                         /* @__PURE__ */ jsxRuntimeExports.jsx(
-                          "button",
+                          "div",
                           {
-                            type: "button",
-                            onClick: handleFeelPawsome,
-                            className: "hidden sm:flex items-center gap-1.5 px-4 py-2.5 rounded-full text-[14px] font-medium mr-2 transition-all hover:bg-orange-50 active:scale-95 whitespace-nowrap",
-                            style: { color: "var(--becat-accent)" },
-                            "data-ocid": "search.secondary_button",
-                            children: "🐾 Feeling Pawsome"
+                            className: "flex-shrink-0 self-stretch mx-2",
+                            style: {
+                              width: "1px",
+                              background: "rgba(255,255,255,0.3)",
+                              margin: "12px 8px"
+                            },
+                            "aria-hidden": "true"
                           }
                         ),
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-0.5 mr-2", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(
+                            "button",
+                            {
+                              type: "button",
+                              "aria-label": "Voice search",
+                              className: "glass-icon-btn flex-shrink-0 flex items-center justify-center rounded-full transition-all duration-150 hover:scale-105 active:scale-95",
+                              style: {
+                                width: "36px",
+                                height: "36px",
+                                background: "transparent",
+                                border: "none",
+                                cursor: "pointer"
+                              },
+                              onMouseEnter: (e) => {
+                                e.currentTarget.style.background = "rgba(255,255,255,0.15)";
+                              },
+                              onMouseLeave: (e) => {
+                                e.currentTarget.style.background = "transparent";
+                              },
+                              "data-ocid": "search.secondary_button",
+                              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 20, style: { color: "rgba(255,255,255,0.9)" } })
+                            }
+                          ),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(
+                            "div",
+                            {
+                              className: "flex-shrink-0 self-stretch",
+                              style: {
+                                width: "1px",
+                                background: "rgba(255,255,255,0.3)",
+                                margin: "10px 4px"
+                              },
+                              "aria-hidden": "true"
+                            }
+                          ),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(
+                            "button",
+                            {
+                              type: "button",
+                              "aria-label": "Visual search",
+                              className: "glass-icon-btn flex-shrink-0 flex items-center justify-center rounded-full transition-all duration-150 hover:scale-105 active:scale-95",
+                              style: {
+                                width: "36px",
+                                height: "36px",
+                                background: "transparent",
+                                border: "none",
+                                cursor: "pointer"
+                              },
+                              onMouseEnter: (e) => {
+                                e.currentTarget.style.background = "rgba(255,255,255,0.15)";
+                              },
+                              onMouseLeave: (e) => {
+                                e.currentTarget.style.background = "transparent";
+                              },
+                              "data-ocid": "search.upload_button",
+                              children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                                ScanSearch,
+                                {
+                                  size: 20,
+                                  style: { color: "rgba(255,255,255,0.9)" }
+                                }
+                              )
+                            }
+                          )
+                        ] }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(
                           "button",
                           {
                             type: "submit",
-                            className: "flex-shrink-0 h-11 px-5 sm:px-7 rounded-full text-white text-sm sm:text-base font-semibold flex items-center gap-2 transition-all hover:opacity-90 active:scale-95",
-                            style: { background: "var(--becat-accent)" },
+                            className: "flex-shrink-0 flex items-center justify-center rounded-full transition-all hover:opacity-90 active:scale-95",
+                            style: {
+                              background: "oklch(74% 0.16 55)",
+                              width: "44px",
+                              height: "44px",
+                              border: "none",
+                              cursor: "pointer",
+                              boxShadow: "0 2px 8px rgba(244,162,97,0.4)"
+                            },
                             "aria-label": "Search",
                             "data-ocid": "search.submit_button",
-                            children: [
-                              /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 15 }),
-                              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline", children: "Search" })
-                            ]
+                            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { size: 18, style: { color: "white" } })
                           }
                         )
                       ]
@@ -24842,10 +24948,10 @@ function HeroSection({ onSearch }) {
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 motion.div,
                 {
-                  className: "flex flex-wrap gap-2 sm:gap-2.5 justify-center items-center max-w-2xl px-2",
+                  className: "flex flex-wrap gap-2 sm:gap-2.5 justify-center items-center max-w-3xl px-2",
                   initial: { opacity: 0 },
                   animate: { opacity: 1 },
-                  transition: { duration: 0.5, delay: 0.2 },
+                  transition: { duration: 0.5, delay: 0.25 },
                   children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(
                       "span",
@@ -24867,9 +24973,9 @@ function HeroSection({ onSearch }) {
                         style: {
                           background: "rgba(255,255,255,0.14)",
                           color: "rgba(255,255,255,0.93)",
-                          backdropFilter: "blur(8px)",
-                          WebkitBackdropFilter: "blur(8px)",
-                          border: "1.5px solid rgba(255,255,255,0.25)",
+                          backdropFilter: "blur(10px)",
+                          WebkitBackdropFilter: "blur(10px)",
+                          border: "1.5px solid rgba(255,255,255,0.28)",
                           boxShadow: "0 2px 8px rgba(0,0,0,0.15)"
                         },
                         "data-ocid": "search.tab",

@@ -155,11 +155,52 @@ body {
 }
 
 /* =========================================================
-   HERO FULL-SCREEN STYLES
+   HERO GLASSMORPHISM SEARCH BAR
 ========================================================= */
 .hero-search-bar {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+
+.glass-search-bar {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-search-bar:focus-within {
+  background: rgba(255, 255, 255, 0.24);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.glass-search-input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.glass-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.glass-search-input:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+.glass-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.glass-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
 }
 
 /* =========================================================
