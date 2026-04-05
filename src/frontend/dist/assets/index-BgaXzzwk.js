@@ -24360,8 +24360,8 @@ function Footer() {
                 "button",
                 {
                   type: "button",
-                  className: "text-sm sm:text-base font-medium transition-colors hover:text-white focus:outline-none focus-visible:text-white",
-                  style: { color: "rgba(255,255,255,0.52)" },
+                  className: "text-sm sm:text-base font-medium transition-colors hover:opacity-80 focus:outline-none focus-visible:opacity-80",
+                  style: { color: "#ffffff" },
                   onClick: () => {
                   },
                   "data-ocid": "nav.link",
@@ -24372,7 +24372,7 @@ function Footer() {
                 "span",
                 {
                   className: "text-xs select-none pointer-events-none",
-                  style: { color: "rgba(255,255,255,0.18)" },
+                  style: { color: "rgba(255,255,255,0.4)" },
                   "aria-hidden": "true",
                   children: "·"
                 }
